@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Details — ProjectPilot</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Background Blobs -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Sidebar Placeholder -->
+    <div class="sidebar" id="sidebar-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header" style="margin-bottom: 25px;">
+        <div class="page-title-area">
+          <span style="font-size:0.9rem; color:var(--text-secondary);"><a href="/projects" style="color:var(--text-secondary); text-decoration:none;">📂 Projects</a> &gt; Details</span>
+          <h1 id="proj-detail-title">Project Title</h1>
+          <p id="proj-detail-desc">Loading details...</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn-clay primary" id="open-task-modal">➕ Add Task</button>
+        </div>
+      </div>
+
+      <!-- Details Top Bento Grid -->
+      <div class="bento-grid" style="grid-auto-rows: minmax(110px, auto); margin-bottom: 30px;">
+        <div class="bento-card col-span-2 row-span-1" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div style="display:flex; justify-content:space-between;">
+            <span style="font-size:0.85rem; color:var(--text-secondary); text-transform:uppercase; font-weight:700;">Project Progress</span>
+            <span id="proj-detail-progress-val" style="font-size:1.1rem; font-weight:800; color:var(--accent-secondary);">-</span>
+          </div>
+          <div class="progress-container" style="height: 12px; margin-top: 10px;">
+            <div class="progress-bar" id="proj-detail-progress-bar" style="width: 0%;"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-secondary); margin-top:5px;">
+            <span id="proj-detail-deadline">Deadline: -</span>
+            <span id="proj-detail-category">Category: -</span>
+          </div>
+        </div>
+
+        <div class="bento-card stat-card-3d purple col-span-1">
+          <div class="stat-header"><span>Tasks in Project</span></div>
+          <div class="stat-value" id="stats-total-tasks" style="font-size: 2.2rem; margin: 5px 0;">0</div>
+          <div class="stat-desc" id="stats-completed-tasks">0 completed</div>
+        </div>
+
+        <div class="bento-card stat-card-3d red col-span-1">
+          <div class="stat-header"><span>Overdue Tasks</span></div>
+          <div class="stat-value" id="stats-overdue-tasks" style="font-size: 2.2rem; margin: 5px 0;">0</div>
+          <div class="stat-desc" id="stats-pending-tasks">0 pending</div>
+        </div>
+      </div>
+
+      <!-- Kanban Task Board -->
+      <h2 style="font-size:1.4rem; font-weight:800; margin-bottom: 20px; display:flex; align-items:center; gap:8px;">
+        <span>📋</span> Task Board
+      </h2>
+      
+      <div class="task-board">
+        <!-- Pending Column -->
+        <div class="task-column">
+          <div class="task-column-header">
+            <h3><span>⏳</span> Pending</h3>
+            <span class="task-count-badge" id="count-pending">0</span>
+          </div>
+          <div class="task-list" id="list-pending"></div>
+        </div>
+
+        <!-- In Progress Column -->
+        <div class="task-column">
+          <div class="task-column-header">
+            <h3><span>⚙️</span> In Progress</h3>
+            <span class="task-count-badge" id="count-inprogress">0</span>
+          </div>
+          <div class="task-list" id="list-inprogress"></div>
+        </div>
+
+        <!-- Completed Column -->
+        <div class="task-column">
+          <div class="task-column-header">
+            <h3><span>🎉</span> Completed</h3>
+            <span class="task-count-badge" id="count-completed">0</span>
+          </div>
+          <div class="task-list" id="list-completed"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Create Task Modal -->
+  <div class="modal-overlay" id="task-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="task-modal-title">Add Task to Project</h2>
+        <button class="modal-close" id="close-task-modal">&times;</button>
+      </div>
+      <form id="task-form">
+        <input type="hidden" id="task-id">
+        <div class="form-group">
+          <label for="task-title">Task Title</label>
+          <input type="text" id="task-title" class="form-control" placeholder="e.g. Design homepage mockup" required>
+        </div>
+        <div class="form-group">
+          <label for="task-desc">Description</label>
+          <textarea id="task-desc" class="form-control" rows="3" placeholder="Describe the task instructions..." required style="resize:none;"></textarea>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+          <div class="form-group">
+            <label for="task-priority">Priority</label>
+            <select id="task-priority" class="form-control" required>
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="task-assignee">Assigned To</label>
+            <select id="task-assignee" class="form-control" required>
+              <option value="">Select Member</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="task-deadline">Deadline</label>
+          <input type="date" id="task-deadline" class="form-control" required>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:20px;">
+          <button type="button" class="btn-clay neutral" id="cancel-task-modal">Cancel</button>
+          <button type="submit" class="btn-clay primary" id="save-task-btn">Save Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Parse Project ID from query parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectId = urlParams.get('id');
+
+      if (!projectId) {
+        window.location.href = '/projects';
+        return;
+      }
+
+      const taskModal = document.getElementById('task-modal');
+      const taskForm = document.getElementById('task-form');
+      const taskModalTitle = document.getElementById('task-modal-title');
+      const assigneeSelect = document.getElementById('task-assignee');
+
+      // Bind modal close buttons
+      document.getElementById('open-task-modal').addEventListener('click', () => openTaskModal());
+      document.getElementById('close-task-modal').addEventListener('click', closeTaskModal);
+      document.getElementById('cancel-task-modal').addEventListener('click', closeTaskModal);
+      taskForm.addEventListener('submit', handleTaskFormSubmit);
+
+      // Load initial project details & members
+      loadProjectDetails();
+      loadUsers();
+
+      // Fetch project details and render task boards
+      async function loadProjectDetails() {
+        try {
+          const response = await API.getProject(projectId);
+          if (response.success) {
+            const { project, tasks } = response;
+            
+            // Render Project Header Info
+            document.getElementById('proj-detail-title').innerText = project.title;
+            document.getElementById('proj-detail-desc').innerText = project.description;
+            document.getElementById('proj-detail-progress-val').innerText = `${project.progress}%`;
+            document.getElementById('proj-detail-progress-bar').style.width = `${project.progress}%`;
+            
+            const categoryText = project.category;
+            const deadlineStr = new Date(project.deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            document.getElementById('proj-detail-category').innerText = `Category: ${categoryText}`;
+            document.getElementById('proj-detail-deadline').innerText = `Deadline: ${deadlineStr}`;
+
+            // Render Kanban Columns
+            renderKanban(tasks);
+          }
+        } catch (error) {
+          alert(`Failed to load project details: ${error.message}`);
+          window.location.href = '/projects';
+        }
+      }
+
+      // Populate Assignee Select
+      async function loadUsers() {
+        try {
+          const response = await API.getUsers();
+          if (response.success) {
+            const users = response.data;
+            assigneeSelect.innerHTML = '<option value="">Select Member</option>' + users.map(user => `
+              <option value="${user._id}">${user.username} (${user.role})</option>
+            `).join('');
+          }
+        } catch (error) {
+          console.error('Failed to load users list:', error);
+        }
+      }
+
+      // Render Task Columns
+      function renderKanban(tasks) {
+        const listPending = document.getElementById('list-pending');
+        const listInProgress = document.getElementById('list-inprogress');
+        const listCompleted = document.getElementById('list-completed');
+
+        listPending.innerHTML = '';
+        listInProgress.innerHTML = '';
+        listCompleted.innerHTML = '';
+
+        let countPending = 0;
+        let countInProgress = 0;
+        let countCompleted = 0;
+        let overdueCount = 0;
+
+        tasks.forEach(task => {
+          const deadlineDate = new Date(task.deadline);
+          const formattedDeadline = deadlineDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          const isOverdue = deadlineDate < new Date() && task.status !== 'completed';
+          const overdueHtml = isOverdue ? '<span class="overdue-tag">OVERDUE</span>' : '';
+          
+          if (isOverdue) overdueCount++;
+
+          const initials = task.assignedTo ? task.assignedTo.username.substring(0, 2).toUpperCase() : '??';
+          const assigneeName = task.assignedTo ? task.assignedTo.username : 'Unassigned';
+
+          // Options to modify status inline via select dropdown
+          const statusSelector = `
+            <select onchange="window.updateTaskStatus('${task._id}', this.value)" style="background:rgba(0,0,0,0.1); border:1px solid var(--glass-border); border-radius:6px; padding:2px 5px; color:var(--text-primary); font-size:0.75rem; cursor:pointer;">
+              <option value="pending" ${task.status === 'pending' ? 'selected' : ''}>Pending</option>
+              <option value="in_progress" ${task.status === 'in_progress' ? 'selected' : ''}>In Progress</option>
+              <option value="completed" ${task.status === 'completed' ? 'selected' : ''}>Completed</option>
+            </select>
+          `;
+
+          const taskCardHtml = `
+            <div class="task-card">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <span class="task-priority-badge priority-${task.priority}">${task.priority}</span>
+                <div style="display:flex; gap:5px;">
+                  <button onclick="window.editTask('${task._id}')" style="background:none; border:none; cursor:pointer; font-size:0.95rem;">✏️</button>
+                  <button onclick="window.deleteTask('${task._id}')" style="background:none; border:none; cursor:pointer; font-size:0.95rem;">🗑️</button>
+                </div>
+              </div>
+              <h4>${task.title}</h4>
+              <p>${task.description}</p>
+              
+              <div style="margin-bottom: 12px; display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:0.75rem; color:var(--text-secondary);">Move:</span>
+                ${statusSelector}
+              </div>
+
+              <div class="task-card-footer">
+                <div class="task-assignee">
+                  <div class="assignee-avatar">${initials}</div>
+                  <span>${assigneeName}</span>
+                </div>
+                <span>Due: ${formattedDeadline} ${overdueHtml}</span>
+              </div>
+            </div>
+          `;
+
+          if (task.status === 'pending') {
+            listPending.innerHTML += taskCardHtml;
+            countPending++;
+          } else if (task.status === 'in_progress') {
+            listInProgress.innerHTML += taskCardHtml;
+            countInProgress++;
+          } else if (task.status === 'completed') {
+            listCompleted.innerHTML += taskCardHtml;
+            countCompleted++;
+          }
+        });
+
+        // Update column counts
+        document.getElementById('count-pending').innerText = countPending;
+        document.getElementById('count-inprogress').innerText = countInProgress;
+        document.getElementById('count-completed').innerText = countCompleted;
+
+        // Update top Bento metrics cards
+        document.getElementById('stats-total-tasks').innerText = tasks.length;
+        document.getElementById('stats-completed-tasks').innerText = `${countCompleted} completed`;
+        document.getElementById('stats-overdue-tasks').innerText = overdueCount;
+        document.getElementById('stats-pending-tasks').innerText = `${countPending + countInProgress} active`;
+      }
+
+      // Open Task Modal
+      function openTaskModal(task = null) {
+        if (task) {
+          taskModalTitle.innerText = 'Edit Task Details';
+          document.getElementById('task-id').value = task._id;
+          document.getElementById('task-title').value = task.title;
+          document.getElementById('task-desc').value = task.description;
+          document.getElementById('task-priority').value = task.priority;
+          document.getElementById('task-assignee').value = task.assignedTo ? task.assignedTo._id : '';
+          
+          const date = new Date(task.deadline);
+          document.getElementById('task-deadline').value = date.toISOString().split('T')[0];
+        } else {
+          taskModalTitle.innerText = 'Add Task to Project';
+          taskForm.reset();
+          document.getElementById('task-id').value = '';
+          
+          // Set default date to tomorrow
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          document.getElementById('task-deadline').value = tomorrow.toISOString().split('T')[0];
+        }
+        taskModal.classList.add('active');
+      }
+
+      // Close Task Modal
+      function closeTaskModal() {
+        taskModal.classList.remove('active');
+        taskForm.reset();
+      }
+
+      // Submit task form (creation / update)
+      async function handleTaskFormSubmit(e) {
+        e.preventDefault();
+        
+        const taskId = document.getElementById('task-id').value;
+        const taskData = {
+          title: document.getElementById('task-title').value.trim(),
+          description: document.getElementById('task-desc').value.trim(),
+          projectId, // Automatically map to this project
+          assignedTo: document.getElementById('task-assignee').value,
+          priority: document.getElementById('task-priority').value,
+          deadline: document.getElementById('task-deadline').value
+        };
+
+        try {
+          let response;
+          if (taskId) {
+            response = await API.updateTask(taskId, taskData);
+          } else {
+            response = await API.createTask(taskData);
+          }
+
+          if (response.success) {
+            closeTaskModal();
+            loadProjectDetails();
+          }
+        } catch (error) {
+          alert(`Failed to save task details: ${error.message}`);
+        }
+      }
+
+      // Global window helpers for inline updates, edit, and deletion
+      window.updateTaskStatus = async (id, status) => {
+        try {
+          const response = await API.updateTask(id, { status });
+          if (response.success) {
+            loadProjectDetails();
+          }
+        } catch (error) {
+          alert(`Failed to update task status: ${error.message}`);
+        }
+      };
+
+      window.editTask = async (id) => {
+        try {
+          const response = await API.getTask(id);
+          if (response.success) {
+            openTaskModal(response.data);
+          }
+        } catch (error) {
+          alert(`Failed to retrieve task details: ${error.message}`);
+        }
+      };
+
+      window.deleteTask = async (id) => {
+        if (confirm('Are you sure you want to delete this task?')) {
+          try {
+            const response = await API.deleteTask(id);
+            if (response.success) {
+              loadProjectDetails();
+            }
+          } catch (error) {
+            alert(`Failed to delete task: ${error.message}`);
+          }
+        }
+      };
+    });
+  </script>
+</body>
+</html>

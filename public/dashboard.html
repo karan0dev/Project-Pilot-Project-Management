@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - ProjectPilot</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="dashboard-page light-mode">
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="dashboard-wave-mesh" aria-hidden="true"></div>
+
+  <div class="app-container">
+    <div class="sidebar" id="sidebar-placeholder"></div>
+
+    <main class="main-content">
+      <div class="page-header">
+        <div class="page-title-area">
+          <h1 id="welcome-message">Hello, user! &#128075;</h1>
+          <p id="today-date"></p>
+        </div>
+      </div>
+
+      <div class="bento-grid">
+        <div class="bento-card stat-card-3d purple col-span-1">
+          <div class="stat-info-left">
+            <span class="stat-title">Total Projects</span>
+            <div class="stat-value" id="stat-total-projects">-</div>
+            <div class="stat-desc" id="stat-completed-projects-desc">No projects loaded</div>
+          </div>
+          <div class="stat-icon-3d">
+            <img src="/images/dashboard_total_projects.png" alt="Projects" onerror="this.onerror=null; this.classList.add('fallback-icon'); this.src='/images/3d_folder.png';">
+          </div>
+        </div>
+
+        <div class="bento-card stat-card-3d cyan col-span-1">
+          <div class="stat-info-left">
+            <span class="stat-title">Active Projects</span>
+            <div class="stat-value" id="stat-active-projects">-</div>
+            <div class="stat-desc">Currently in progress</div>
+          </div>
+          <div class="stat-icon-3d">
+            <img src="/images/dashboard_active_projects.png" alt="Active" onerror="this.onerror=null; this.classList.add('fallback-icon'); this.src='/images/3d_lightning.png';">
+          </div>
+        </div>
+
+        <div class="bento-card stat-card-3d green col-span-1">
+          <div class="stat-info-left">
+            <span class="stat-title">Completed Tasks</span>
+            <div class="stat-value" id="stat-completed-tasks">-</div>
+            <div class="stat-desc" id="stat-total-tasks-desc">No tasks loaded</div>
+          </div>
+          <div class="stat-icon-3d">
+            <img src="/images/dashboard_completed_tasks.png" alt="Completed" onerror="this.onerror=null; this.classList.add('fallback-icon'); this.src='/images/3d_checkmark.png';">
+          </div>
+        </div>
+
+        <div class="bento-card stat-card-3d red col-span-1">
+          <div class="stat-info-left">
+            <span class="stat-title">Overdue Tasks</span>
+            <div class="stat-value" id="stat-overdue-tasks">-</div>
+            <div class="stat-desc" id="stat-pending-tasks-desc">No deadlines missed</div>
+          </div>
+          <div class="stat-icon-3d">
+            <img src="/images/dashboard_overdue_tasks.png" alt="Overdue" onerror="this.onerror=null; this.classList.add('fallback-icon'); this.src='/images/3d_alarm.png';">
+          </div>
+        </div>
+
+        <div class="bento-card col-span-2 row-span-2">
+          <div class="bento-card-title">
+            <span>&#9889; Active Projects Progress</span>
+            <span class="card-menu-dots">&bull;&bull;&bull;</span>
+          </div>
+          <div id="active-projects-container" class="project-progress-list">
+            <p class="dashboard-empty-state">Loading projects...</p>
+          </div>
+        </div>
+
+        <div class="bento-card col-span-2 row-span-2">
+          <div class="bento-card-title">
+            <span>&#128338; Recent Activities</span>
+            <button class="link-button" type="button" onclick="window.location.href='/reports'">View all</button>
+          </div>
+          <ul class="activity-list" id="activity-feed-container">
+            <li class="dashboard-empty-state">Loading activity feed...</li>
+          </ul>
+        </div>
+
+        <div class="bento-card col-span-4 stats-breakdown-card">
+          <div class="bento-card-title">
+            <span>&#128202; Workspace Statistics Breakdown</span>
+          </div>
+          <div class="stats-breakdown-grid">
+            <div>
+              <h3 id="breakdown-projects">-</h3>
+              <p>Created Projects</p>
+            </div>
+            <div>
+              <h3 id="breakdown-tasks">-</h3>
+              <p>Tracked Tasks</p>
+            </div>
+            <div>
+              <h3 id="breakdown-completed-projects">-</h3>
+              <p>Completed Projects</p>
+            </div>
+            <div>
+              <h3 id="breakdown-team">-</h3>
+              <p>Workspace Users</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = API.getUser();
+      if (user) {
+        document.getElementById('welcome-message').innerHTML = `Hello, ${user.username}! &#128075;`;
+      }
+
+      const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+      document.getElementById('today-date').innerText = new Date().toLocaleDateString('en-US', options);
+
+      try {
+        const response = await API.getDashboardStats();
+        if (response.success) {
+          const stats = response.stats;
+
+          document.getElementById('stat-total-projects').innerText = stats.totalProjects;
+          document.getElementById('stat-completed-projects-desc').innerText = `${stats.completedProjects} projects completed`;
+          document.getElementById('stat-active-projects').innerText = stats.activeProjects;
+          document.getElementById('stat-completed-tasks').innerText = stats.completedTasks;
+          document.getElementById('stat-total-tasks-desc').innerText = `Out of ${stats.totalTasks} total tasks`;
+          document.getElementById('stat-overdue-tasks').innerText = stats.overdueTasks;
+          document.getElementById('stat-pending-tasks-desc').innerText = `${stats.pendingTasks} tasks currently pending`;
+
+          document.getElementById('breakdown-projects').innerText = stats.totalProjects;
+          document.getElementById('breakdown-tasks').innerText = stats.totalTasks;
+          document.getElementById('breakdown-completed-projects').innerText = stats.completedProjects;
+          document.getElementById('breakdown-team').innerText = stats.totalUsers;
+
+          renderActivities(response.recentActivities);
+          fetchActiveProjectsProgress();
+        }
+      } catch (error) {
+        console.error('Failed to load dashboard metrics:', error);
+      }
+
+      function renderActivities(activities) {
+        const container = document.getElementById('activity-feed-container');
+        if (!activities || activities.length === 0) {
+          container.innerHTML = '<li class="dashboard-empty-state">No recent activities logged</li>';
+          return;
+        }
+
+        container.innerHTML = activities.map((act) => {
+          const initials = act.user ? act.user.username.substring(0, 2).toUpperCase() : 'PP';
+          const relativeTime = getRelativeTime(new Date(act.createdAt));
+
+          return `
+            <li class="activity-item">
+              <div class="activity-avatar">${initials}</div>
+              <div class="activity-copy">
+                <span>${act.description}</span>
+                <span>${relativeTime}</span>
+              </div>
+            </li>
+          `;
+        }).join('');
+      }
+
+      async function fetchActiveProjectsProgress() {
+        const container = document.getElementById('active-projects-container');
+        try {
+          const response = await API.getProjects({ status: 'active' });
+          if (response.success) {
+            const projects = response.data.slice(0, 3);
+
+            if (projects.length === 0) {
+              container.innerHTML = '<p class="dashboard-empty-state">No active projects in progress.</p>';
+              return;
+            }
+
+            container.innerHTML = projects.map((proj) => {
+              const overdueText = new Date(proj.deadline) < new Date() ? '<span class="overdue-tag">OVERDUE</span>' : '';
+              const deadlineStr = new Date(proj.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+              return `
+                <div class="project-progress-capsule">
+                  <div class="proj-header-row">
+                    <div>
+                      <span class="proj-title-txt"><a href="/project-details?id=${proj._id}">${proj.title}</a></span>
+                      <span class="proj-category-txt">(${proj.category})</span>
+                    </div>
+                    <span class="proj-percent-txt">${proj.progress}%</span>
+                  </div>
+                  <div class="progress-container">
+                    <div class="progress-bar" style="width: ${proj.progress}%;"></div>
+                  </div>
+                  <div class="proj-footer-row">
+                    <span>&#128197; Deadline: ${deadlineStr} ${overdueText}</span>
+                    <span>Created by: <b>${proj.createdBy ? proj.createdBy.username : 'Unknown'}</b></span>
+                  </div>
+                </div>
+              `;
+            }).join('');
+          }
+        } catch (error) {
+          container.innerHTML = '<p class="dashboard-empty-state error-state">Failed to load active progress.</p>';
+        }
+      }
+
+      function getRelativeTime(date) {
+        const delta = Math.round((new Date() - date) / 1000);
+        const minute = 60;
+        const hour = minute * 60;
+        const day = hour * 24;
+
+        if (delta < 30) return 'just now';
+        if (delta < minute) return delta + ' seconds ago';
+        if (delta < 2 * minute) return 'a minute ago';
+        if (delta < hour) return Math.floor(delta / minute) + ' minutes ago';
+        if (delta < 2 * hour) return 'an hour ago';
+        if (delta < day) return Math.floor(delta / hour) + ' hours ago';
+        if (delta < 2 * day) return 'yesterday';
+        return Math.floor(delta / day) + ' days ago';
+      }
+    });
+  </script>
+</body>
+</html>

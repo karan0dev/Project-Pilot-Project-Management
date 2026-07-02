@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProjectPilot - Project and Task Management</title>
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body class="landing-page">
+  <div class="scroll-meter" aria-hidden="true">
+    <span id="scroll-meter-fill"></span>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <a class="brand" href="#home" aria-label="ProjectPilot home">
+      <span class="brand-mark">P</span>
+      <span>ProjectPilot</span>
+    </a>
+
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open navigation" aria-controls="landing-nav" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="nav-menu" id="landing-nav" aria-label="Landing sections">
+      <a class="nav-link active" href="#home">Home</a>
+      <a class="nav-link" href="#about">About</a>
+      <a class="nav-link" href="#features">Features</a>
+      <a class="nav-link" href="#design">Design</a>
+      <a class="nav-link" href="#cta">Start</a>
+      <a class="nav-link mobile-auth-link" href="/login">Login</a>
+    </nav>
+
+    <div class="header-actions" id="landing-auth-links">
+      <a class="primary-action compact" href="/dashboard">Go to Dashboard</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-section" id="home">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">
+          <span class="eyebrow-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 3l2.2 5.2L20 10.4l-5.2 2.2L12 19l-2.8-6.4L4 10.4l5.8-2.2L12 3z"/></svg>
+          </span>
+          Organize. Track. Visualize.
+        </p>
+
+        <h1>Your Projects, Organized in One <span>Tactile Space</span></h1>
+        <p class="hero-lede">
+          A structured workspace for projects, tasks, deadlines, reports, and teams,
+          wrapped in a polished glass interface with lively 3D-inspired motion.
+        </p>
+
+        <div class="hero-actions">
+          <a class="primary-action" href="/register">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 17H3L12 3zm0 5.1L7.9 17h8.2L12 8.1z"/></svg>
+            Initialize Workspace
+          </a>
+          <a class="secondary-action" href="/login">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zm9 0h7v5h-7V4zM4 13h7v7H4v-7zm9-2h7v9h-7v-9z"/></svg>
+            Access Panel
+          </a>
+        </div>
+
+        <div class="trust-points" aria-label="Product strengths">
+          <span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 5 13h6l-1 9 8-12h-6l1-8Z"/></svg>
+            AI-ready insights
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.3 2.7 8.1 7 10 4.3-1.9 7-5.7 7-10V6l-7-3Z"/></svg>
+            Secure by design
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6M20 12A8 8 0 0 1 6.3 17.6M18 4v4h-4M6 20v-4h4"/></svg>
+            Real-time sync
+          </span>
+          <span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a4 4 0 1 0-8 0M4 21a8 8 0 0 1 16 0M19 8a3 3 0 0 1 0 6M22 21a6 6 0 0 0-4-5.7"/></svg>
+            Built for teams
+          </span>
+        </div>
+
+        <div class="brand-row" aria-label="Trusted companies">
+          <p>Trusted by modern teams worldwide</p>
+          <div>
+            <span>novu</span>
+            <span>arcane</span>
+            <span>cloudly</span>
+            <span>layer</span>
+            <span>circle</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal delay-1" data-tilt>
+        <div class="device-frame">
+          <div class="jelly-glow-blob"></div>
+          <div class="panel-card progress-card float-one">
+            <div class="panel-head">
+              <span class="icon-tile violet">
+                <svg viewBox="0 0 24 24"><path d="M4 7h6l2 2h8v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/></svg>
+              </span>
+              <div>
+                <strong>Project Progress</strong>
+                <small>Website Redesign</small>
+              </div>
+              <b>80%</b>
+            </div>
+            <div class="progress-track"><span style="width: 80%"></span></div>
+            <div class="avatar-strip">
+              <span>A</span>
+              <span>M</span>
+              <span>J</span>
+              <button aria-label="Add teammate">+</button>
+            </div>
+          </div>
+
+          <div class="panel-card dark-card task-ring-card float-two">
+            <div class="panel-head">
+              <span class="icon-tile blue">
+                <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+              </span>
+              <strong>Tasks Overview</strong>
+            </div>
+            <div class="ring-wrap">
+              <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="46"></circle>
+                <circle class="ring-value" cx="60" cy="60" r="46"></circle>
+              </svg>
+              <div><b>86%</b><span>complete</span></div>
+            </div>
+            <ul class="dark-list">
+              <li><span class="dot done"></span>Completed <b>43</b></li>
+              <li><span class="dot work"></span>In Progress <b>7</b></li>
+              <li><span class="dot review"></span>Pending <b>12</b></li>
+            </ul>
+          </div>
+
+          <div class="panel-card chart-card float-three">
+            <div class="panel-head">
+              <span class="icon-tile pink">
+                <svg viewBox="0 0 24 24"><path d="M5 9.2h3V20H5V9.2zm5.5-4h3V20h-3V5.2zM16 12h3v8h-3v-8z"/></svg>
+              </span>
+              <strong>Team Performance</strong>
+            </div>
+            <div class="donut-row">
+              <div class="donut" aria-hidden="true"></div>
+              <div class="legend">
+                <span><i class="violet-dot"></i>Design 40%</span>
+                <span><i class="blue-dot"></i>Development 30%</span>
+                <span><i class="pink-dot"></i>Content 20%</span>
+                <span><i class="amber-dot"></i>Marketing 10%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-card milestone-card float-four">
+            <div class="panel-head">
+              <span class="icon-tile green">
+                <svg viewBox="0 0 24 24"><path d="M12 2l2.8 6 6.2.9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9.2 8 12 2z"/></svg>
+              </span>
+              <strong>Milestones</strong>
+            </div>
+            <ol class="timeline">
+              <li class="done"><span></span>Project Kickoff <b>Apr 10</b></li>
+              <li class="done"><span></span>Wireframes <b>Apr 24</b></li>
+              <li class="active"><span></span>Design System <b>May 08</b></li>
+              <li><span></span>Final Review <b>May 24</b></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section section-band" id="about">
+      <div class="about-copy reveal">
+        <div class="about-badge">
+          <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px; margin-right: 6px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
+          <span>PLANNING SMARTER. DELIVERING BETTER.</span>
+        </div>
+        <h2>Built to help teams plan, focus, and deliver</h2>
+        <p>ProjectPilot was created for teams who want clarity without complexity. It combines practical workflows with a visual system that makes daily project work easier to manage.</p>
+        <div class="hero-actions">
+          <a class="primary-action" href="/register">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M4.5 16.5c-1.5 1.26-2 3.42-2 3.42s2.16-.5 3.42-2M22 2s-5.5 1.5-8.5 5.5S10 15 10 15s.5.5 1 1 1.5.5 1.5.5 5.5-1.5 9.5-4.5S22 2 22 2zM9 15l-3 3v3h3l3-3-3-3z"/></svg>
+            Get Started for Free
+          </a>
+          <a class="secondary-action" href="/login">
+            Watch Our Story
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <article class="about-card reveal">
+          <div class="card-icon purple-bg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          </div>
+          <h3>Our mission</h3>
+          <p>Give teams clarity, focus, and confidence to deliver their best work.</p>
+        </article>
+        <article class="about-card reveal delay-1">
+          <div class="card-icon blue-bg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>How we work</h3>
+          <p>We blend strategy, design, and engineering into focused workflows.</p>
+        </article>
+        <article class="about-card values-card reveal delay-2">
+          <div class="card-icon pink-bg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <h3>Our values</h3>
+          <ul>
+            <li><span class="value-dot purple"></span>Clarity</li>
+            <li><span class="value-dot blue"></span>Collaboration</li>
+            <li><span class="value-dot pink"></span>Ownership</li>
+            <li><span class="value-dot green"></span>Growth</li>
+          </ul>
+        </article>
+        <figure class="team-image-card reveal delay-3">
+          <img src="/images/about_characters.png" alt="Project team collaborating around laptops" loading="lazy">
+        </figure>
+      </div>
+
+    </section>
+
+    <section class="feature-section section-band" id="features">
+      <div class="features-container reveal">
+        <div class="features-left">
+          <div class="about-badge">
+            <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px; margin-right: 6px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
+            <span>All-in-One. Intuitive. Effortless.</span>
+          </div>
+          <h2>Powerful Features <br><span class="gradient-text">for Smarter <br>Project Management</span></h2>
+          <p>Everything you need to plan, track, collaborate, and deliver successful projects. ProjectPilot brings your team, tasks, and goals together in one beautiful workspace.</p>
+          <div class="hero-actions">
+            <a class="primary-action" href="/register">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M4.5 16.5c-1.5 1.26-2 3.42-2 3.42s2.16-.5 3.42-2M22 2s-5.5 1.5-8.5 5.5S10 15 10 15s.5.5 1 1 1.5.5 1.5.5 5.5-1.5 9.5-4.5S22 2 22 2zM9 15l-3 3v3h3l3-3-3-3z"/></svg>
+              Start Free Trial
+            </a>
+            <a class="secondary-action" href="/login">
+              View Demo
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+            </a>
+          </div>
+          
+          <div class="features-bullets">
+            <div class="feature-bullet-item">
+              <div class="bullet-icon purple-bg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
+              </div>
+              <div class="bullet-content">
+                <h4>All-in-One Platform</h4>
+                <p>Everything in one connected workspace.</p>
+              </div>
+            </div>
+            <div class="feature-bullet-item">
+              <div class="bullet-icon blue-bg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <div class="bullet-content">
+                <h4>Enterprise Secure</h4>
+                <p>Your data is protected with bank-grade security.</p>
+              </div>
+            </div>
+            <div class="feature-bullet-item">
+              <div class="bullet-icon pink-bg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <div class="bullet-content">
+                <h4>Real-time Sync</h4>
+                <p>Stay updated with instant real-time collaboration.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="features-right">
+          <div class="features-image-container">
+            <img src="/images/features_showcase.png" alt="Interactive features dashboard showcase cards and 3D shapes" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="design-section section-band" id="design">
+      <div class="design-container reveal">
+        <div class="design-left">
+          <div class="about-badge">
+            <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px; margin-right: 6px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
+            <span>Design. System. Support.</span>
+          </div>
+          <h2>Design Systems <br><span class="gradient-text">That Feel Tactile <br>and Effortless</span></h2>
+          <p>Craft beautiful, consistent experiences with a design system built for clarity and scale. From foundational tokens to responsive components, everything works together seamlessly.</p>
+          <div class="hero-actions">
+            <a class="primary-action" href="/register">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M4.5 16.5c-1.5 1.26-2 3.42-2 3.42s2.16-.5 3.42-2M22 2s-5.5 1.5-8.5 5.5S10 15 10 15s.5.5 1 1 1.5.5 1.5.5 5.5-1.5 9.5-4.5S22 2 22 2zM9 15l-3 3v3h3l3-3-3-3z"/></svg>
+              Explore Design System
+            </a>
+            <a class="secondary-action" href="/login">
+              View Components
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </a>
+          </div>
+          
+          <div class="design-bullets">
+            <div class="bullet-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
+              <span>Consistent by Design</span>
+            </div>
+            <div class="bullet-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              <span>Responsive Ready</span>
+            </div>
+            <div class="bullet-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polygon points="2 17 12 22 22 17 2 17"/><polygon points="2 12 12 17 22 12 2 12"/></svg>
+              <span>Built for Scale</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="design-right">
+          <div class="design-image-container">
+            <img src="/images/design_showcase.png" alt="Interactive design system showcase cards and 3D clay shapes" loading="lazy">
+          </div>
+        </div>
+      </div>
+      
+      <div class="logos-footer reveal delay-1">
+        <p class="logos-title">Trusted by modern teams worldwide</p>
+        <div class="logos-grid">
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; margin-right: 6px;"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <span>novu</span>
+          </div>
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; margin-right: 6px;"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v12"/><path d="M8 10h8"/></svg>
+            <span>arcane</span>
+          </div>
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; margin-right: 6px;"><path d="M17.5 19a4.5 4.5 0 0 1-1.25-8.8 4 4 0 0 1-7.5-1.5 4.5 4.5 0 0 1-1.25 8.8"/></svg>
+            <span>cloudly</span>
+          </div>
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; margin-right: 6px;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>
+            <span>layer</span>
+          </div>
+          <div class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; margin-right: 6px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
+            <span>circle</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section section-band reveal" id="cta">
+      <div class="cta-card">
+        <!-- Floating 3D Peeking Characters -->
+        <img class="cta-character peeking-left" src="/images/peeking_boy.png" alt="Peeking Character Left" loading="lazy">
+        <img class="cta-character peeking-right" src="/images/peeking_girl.png" alt="Peeking Character Right" loading="lazy">
+
+        <div class="cta-content">
+          <div class="about-badge">
+            <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px; margin-right: 6px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
+            <span>Get Started Instantly</span>
+          </div>
+          <h2>Ready to transform your workflow?</h2>
+          <p>Join thousands of teams using ProjectPilot to deliver their best work, faster. Create your free account or sign in to your workspace today.</p>
+          <div class="hero-actions cta-buttons">
+            <a class="primary-action" href="/register">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              Create Free Account
+            </a>
+            <a class="secondary-action" href="/login">
+              Sign In to Workspace
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/landing.js"></script>
+</body>
+</html>

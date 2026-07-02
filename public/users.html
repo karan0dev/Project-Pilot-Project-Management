@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users Administration — ProjectPilot</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Background Blobs -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Sidebar Placeholder -->
+    <div class="sidebar" id="sidebar-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div class="page-title-area">
+          <h1>Users Administration</h1>
+          <p>Manage workspace members and account roles</p>
+        </div>
+      </div>
+
+      <!-- Quick Members stats -->
+      <div class="bento-grid" style="grid-auto-rows: minmax(110px, auto); margin-bottom: 30px;">
+        <div class="bento-card stat-card-3d purple col-span-2">
+          <div class="stat-header"><span>Workspace Directory</span></div>
+          <div class="stat-value" id="stats-total-users" style="font-size: 2.2rem; margin: 5px 0;">0</div>
+          <div class="stat-desc">Total registered accounts</div>
+        </div>
+        <div class="bento-card stat-card-3d pink col-span-1">
+          <div class="stat-header"><span>Administrators</span></div>
+          <div class="stat-value" id="stats-admin-users" style="font-size: 2.2rem; margin: 5px 0;">0</div>
+          <div class="stat-desc">Full directory access</div>
+        </div>
+        <div class="bento-card stat-card-3d cyan col-span-1">
+          <div class="stat-header"><span>Standard Users</span></div>
+          <div class="stat-value" id="stats-standard-users" style="font-size: 2.2rem; margin: 5px 0;">0</div>
+          <div class="stat-desc">Project & task access</div>
+        </div>
+      </div>
+
+      <!-- Users Table Bento Panel -->
+      <div class="bento-card col-span-4">
+        <div class="bento-card-title">
+          <span>👥</span> Registered Members Directory
+        </div>
+        <div class="users-table-card">
+          <table class="users-table">
+            <thead>
+              <tr>
+                <th>Member</th>
+                <th>Email Address</th>
+                <th>System Role</th>
+                <th>Joined Date</th>
+                <th style="text-align: right;">Directory Actions</th>
+              </tr>
+            </thead>
+            <tbody id="users-directory-body">
+              <tr>
+                <td colspan="5" style="color:var(--text-secondary); text-align:center; padding: 40px;">Loading workspace directory...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load Directory on start
+      fetchUsers();
+
+      async function fetchUsers() {
+        try {
+          const response = await API.getUsers();
+          if (response.success) {
+            const users = response.data;
+            renderDirectory(users);
+            updateUserMetrics(users);
+          }
+        } catch (error) {
+          document.getElementById('users-directory-body').innerHTML = `
+            <tr>
+              <td colspan="5" style="color:var(--accent-danger); text-align:center; padding: 40px;">Error loading user directory: ${error.message}</td>
+            </tr>
+          `;
+        }
+      }
+
+      function renderDirectory(users) {
+        const body = document.getElementById('users-directory-body');
+        if (!users || users.length === 0) {
+          body.innerHTML = `
+            <tr>
+              <td colspan="5" style="color:var(--text-secondary); text-align:center; padding: 40px;">No registered users found.</td>
+            </tr>
+          `;
+          return;
+        }
+
+        const currentUser = API.getUser();
+
+        body.innerHTML = users.map(user => {
+          const initials = user.username.substring(0,2).toUpperCase();
+          const roleClass = user.role === 'admin' ? 'role-admin' : 'role-user';
+          const joinedDate = new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+          
+          // Prevent deleting yourself
+          const isSelf = currentUser && currentUser._id === user._id;
+          const actionsHtml = isSelf ? `
+            <span style="font-size:0.8rem; color:var(--text-secondary); font-style:italic;">Logged In</span>
+          ` : `
+            <button class="btn-clay danger" onclick="window.deleteUserAccount('${user._id}', '${user.username}')" style="padding: 6px 12px; font-size: 0.8rem;">
+              🗑️ Delete
+            </button>
+          `;
+
+          return `
+            <tr>
+              <td>
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <div class="assignee-avatar" style="background:linear-gradient(135deg, var(--accent-primary), var(--accent-pink)); box-shadow:none;">${initials}</div>
+                  <span style="font-weight:600;">${user.username}</span>
+                </div>
+              </td>
+              <td style="color:var(--text-secondary);">${user.email}</td>
+              <td><span class="role-badge ${roleClass}">${user.role}</span></td>
+              <td style="color:var(--text-secondary);">${joinedDate}</td>
+              <td style="text-align: right;">${actionsHtml}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function updateUserMetrics(users) {
+        const total = users.length;
+        const admins = users.filter(u => u.role === 'admin').length;
+        const standard = total - admins;
+
+        document.getElementById('stats-total-users').innerText = total;
+        document.getElementById('stats-admin-users').innerText = admins;
+        document.getElementById('stats-standard-users').innerText = standard;
+      }
+
+      // Expose globally for click handlers
+      window.deleteUserAccount = async (id, name) => {
+        if (confirm(`CRITICAL WARNING: Are you sure you want to delete user account '${name}'? This will permanently delete all projects created by them and all tasks assigned to them.`)) {
+          try {
+            const response = await API.deleteUser(id);
+            if (response.success) {
+              fetchUsers();
+            }
+          } catch (error) {
+            alert(`Failed to delete user account: ${error.message}`);
+          }
+        }
+      };
+    });
+  </script>
+</body>
+</html>

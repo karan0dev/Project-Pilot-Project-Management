@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Settings — ProjectPilot</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="workspace-page light-mode profile-page">
+
+  <!-- Background Blobs -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Sidebar Placeholder -->
+    <div class="sidebar" id="sidebar-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div class="page-title-area">
+          <h1>Profile Settings</h1>
+          <p>Manage your account credentials and security preferences</p>
+        </div>
+      </div>
+
+      <div class="details-grid">
+        <!-- Account Info Card (Glassmorphic) -->
+        <div class="details-main">
+          <div class="bento-card">
+            <div class="bento-card-title">
+              <span>👤</span> User Account Profile
+            </div>
+            
+            <div style="display:flex; align-items:center; gap:25px; margin-bottom: 30px; padding-bottom: 25px; border-bottom:1px solid var(--glass-border);">
+              <div class="user-avatar" id="profile-avatar" style="width: 70px; height: 70px; font-size: 1.8rem; border-radius: 20px; box-shadow: var(--clay-shadow-pink);">PP</div>
+              <div>
+                <h2 id="profile-username" style="font-size: 1.6rem; font-weight:700;">Loading...</h2>
+                <span class="role-badge role-user" id="profile-role" style="margin-top: 5px; display:inline-block;">Loading...</span>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div>
+                <label style="font-size:0.8rem; color:var(--text-secondary); font-weight:600; text-transform:uppercase;">Email Address</label>
+                <p id="profile-email" style="font-size: 1.05rem; font-weight:500; margin-top: 5px;">Loading...</p>
+              </div>
+              <div>
+                <label style="font-size:0.8rem; color:var(--text-secondary); font-weight:600; text-transform:uppercase;">Member Since</label>
+                <p id="profile-joined" style="font-size: 1.05rem; font-weight:500; margin-top: 5px;">Loading...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security / Password Card (Glassmorphic) -->
+        <div class="details-sidebar">
+          <div class="bento-card">
+            <div class="bento-card-title">
+              <span>🔒</span> Security Settings
+            </div>
+
+            <div id="alert-container" style="display:none; margin-bottom: 20px; padding: 12px 18px; border-radius: 12px; font-size: 0.85rem; font-weight: 600;"></div>
+
+            <form id="password-form">
+              <div class="form-group">
+                <label for="current-password">Current Password</label>
+                <input type="password" id="current-password" class="form-control" placeholder="••••••••" required>
+              </div>
+              <div class="form-group">
+                <label for="new-password">New Password</label>
+                <input type="password" id="new-password" class="form-control" placeholder="••••••••" required minlength="6">
+              </div>
+              <div class="form-group">
+                <label for="confirm-password">Confirm New Password</label>
+                <input type="password" id="confirm-password" class="form-control" placeholder="••••••••" required minlength="6">
+              </div>
+              <button type="submit" class="btn-clay primary" style="width: 100%; justify-content: center; margin-top: 10px; padding: 12px;">
+                Update Password
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <section class="profile-work-panel bento-card">
+        <div class="profile-work-header">
+          <div>
+            <div class="bento-card-title">
+              <span>&#127942;</span> Completed Work Portfolio
+            </div>
+            <p>Finished projects and delivery tasks attached to this profile.</p>
+          </div>
+          <div class="profile-work-summary">
+            <div>
+              <strong id="profile-completed-project-count">0</strong>
+              <span>Completed Projects</span>
+            </div>
+            <div>
+              <strong id="profile-completed-task-count">0</strong>
+              <span>Completed Tasks</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-work-grid">
+          <div>
+            <div class="profile-section-label">Project Showcase</div>
+            <div id="profile-completed-projects" class="profile-completed-projects">
+              <div class="profile-work-empty">Loading completed projects...</div>
+            </div>
+          </div>
+          <div>
+            <div class="profile-section-label">Task Milestones</div>
+            <div id="profile-completed-tasks" class="profile-completed-tasks">
+              <div class="profile-work-empty">Loading completed tasks...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const passwordForm = document.getElementById('password-form');
+      const alertContainer = document.getElementById('alert-container');
+
+      // Load Profile Information
+      loadProfileInfo();
+      loadCompletedWork();
+
+      async function loadProfileInfo() {
+        try {
+          const response = await API.getProfile();
+          if (response.success) {
+            const user = response;
+            document.getElementById('profile-username').innerText = user.username;
+            document.getElementById('profile-email').innerText = user.email;
+            
+            // Format Role badge
+            const roleEl = document.getElementById('profile-role');
+            roleEl.innerText = user.role;
+            roleEl.className = `role-badge role-${user.role}`;
+
+            // Joined date
+            const date = new Date(user.createdAt);
+            document.getElementById('profile-joined').innerText = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            // Avatar letters
+            document.getElementById('profile-avatar').innerText = user.username.substring(0,2).toUpperCase();
+          }
+        } catch (error) {
+          console.error('Failed to load profile details:', error);
+        }
+      }
+
+      async function loadCompletedWork() {
+        const projectsContainer = document.getElementById('profile-completed-projects');
+        const tasksContainer = document.getElementById('profile-completed-tasks');
+
+        try {
+          const [projectsResponse, tasksResponse] = await Promise.all([
+            API.getProjects({ status: 'completed' }),
+            API.getTasks({ status: 'completed' })
+          ]);
+
+          const projects = projectsResponse.success ? projectsResponse.data : [];
+          const tasks = tasksResponse.success ? tasksResponse.data : [];
+
+          document.getElementById('profile-completed-project-count').innerText = projects.length;
+          document.getElementById('profile-completed-task-count').innerText = tasks.length;
+
+          renderCompletedProjects(projects, projectsContainer);
+          renderCompletedTasks(tasks, tasksContainer);
+        } catch (error) {
+          projectsContainer.innerHTML = `<div class="profile-work-empty">Could not load completed projects: ${escapeHtml(error.message)}</div>`;
+          tasksContainer.innerHTML = '<div class="profile-work-empty">Could not load completed tasks.</div>';
+        }
+      }
+
+      function renderCompletedProjects(projects, container) {
+        if (!projects || projects.length === 0) {
+          container.innerHTML = '<div class="profile-work-empty">No completed projects yet.</div>';
+          return;
+        }
+
+        container.innerHTML = projects.map(project => {
+          const deadline = formatDate(project.deadline);
+          const owner = project.createdBy ? project.createdBy.username : 'ProjectPilot';
+          return `
+            <article class="profile-project-achievement">
+              <div class="profile-project-topline">
+                <span>${escapeHtml(project.category)}</span>
+                <strong>${project.progress || 100}%</strong>
+              </div>
+              <h3>${escapeHtml(project.title)}</h3>
+              <p>${escapeHtml(project.description)}</p>
+              <div class="profile-project-footer">
+                <span>Completed by ${escapeHtml(owner)}</span>
+                <span>${deadline}</span>
+              </div>
+            </article>
+          `;
+        }).join('');
+      }
+
+      function renderCompletedTasks(tasks, container) {
+        if (!tasks || tasks.length === 0) {
+          container.innerHTML = '<div class="profile-work-empty">No completed tasks yet.</div>';
+          return;
+        }
+
+        container.innerHTML = tasks.map(task => {
+          const projectTitle = task.projectId ? task.projectId.title : 'Workspace Task';
+          return `
+            <article class="profile-task-achievement">
+              <div class="profile-task-check">&#10003;</div>
+              <div>
+                <h4>${escapeHtml(task.title)}</h4>
+                <p>${escapeHtml(projectTitle)}</p>
+              </div>
+            </article>
+          `;
+        }).join('');
+      }
+
+      function formatDate(value) {
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return 'Completed';
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+
+      function escapeHtml(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      passwordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const currentPassword = document.getElementById('current-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        // Reset Alert
+        alertContainer.style.display = 'none';
+
+        if (newPassword !== confirmPassword) {
+          showAlert('New passwords do not match', 'danger');
+          return;
+        }
+
+        try {
+          const response = await API.updatePassword(currentPassword, newPassword);
+          if (response.success) {
+            showAlert('Password updated successfully', 'success');
+            passwordForm.reset();
+          }
+        } catch (error) {
+          showAlert(error.message || 'Incorrect current password', 'danger');
+        }
+      });
+
+      function showAlert(message, type) {
+        alertContainer.innerText = message;
+        alertContainer.style.display = 'block';
+
+        if (type === 'danger') {
+          alertContainer.style.background = 'rgba(255, 92, 92, 0.15)';
+          alertContainer.style.border = '1px solid var(--accent-danger)';
+          alertContainer.style.color = 'var(--accent-danger)';
+        } else {
+          alertContainer.style.background = 'rgba(0, 255, 135, 0.15)';
+          alertContainer.style.border = '1px solid var(--accent-success)';
+          alertContainer.style.color = 'var(--accent-success)';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

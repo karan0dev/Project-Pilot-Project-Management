@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workspace Reports — ProjectPilot</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="workspace-page light-mode reports-page">
+
+  <!-- Background Blobs -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Sidebar Placeholder -->
+    <div class="sidebar" id="sidebar-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <div class="page-title-area">
+          <h1>Analytics Reports</h1>
+          <p>Review comprehensive workspace stats and project metrics</p>
+        </div>
+      </div>
+
+      <!-- Bento Analytics Grid -->
+      <div class="bento-grid" style="grid-auto-rows: minmax(130px, auto); margin-bottom: 30px;">
+        
+        <!-- Category Segment Chart (Bento col-span-2) -->
+        <div class="bento-card col-span-2 row-span-2">
+          <div class="bento-card-title">
+            <span>🏷️</span> Category Distribution Report
+          </div>
+          <div style="display:flex; flex-direction:column; justify-content:center; align-items:stretch; height: 80%; gap:20px;" id="category-report-container">
+            <p style="color:var(--text-secondary); text-align:center; padding: 40px;">Generating distribution reports...</p>
+          </div>
+        </div>
+
+        <!-- Project Completion Summary (Bento col-span-2) -->
+        <div class="bento-card col-span-2 row-span-2">
+          <div class="bento-card-title">
+            <span>📈</span> Completion Ratios
+          </div>
+          <div style="display:flex; flex-direction:column; gap: 20px; justify-content:center; height:80%;">
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:0.9rem; font-weight:600; margin-bottom:6px;">
+                <span>Completed vs Active Projects</span>
+                <span id="proj-ratio-val" style="color:var(--accent-secondary);">-</span>
+              </div>
+              <div class="progress-container" style="height:12px; margin-top:0;">
+                <div class="progress-bar" id="proj-ratio-bar" style="width:0%;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:0.9rem; font-weight:600; margin-bottom:6px;">
+                <span>Completed vs Total Tasks</span>
+                <span id="task-ratio-val" style="color:var(--accent-success);">-</span>
+              </div>
+              <div class="progress-container" style="height:12px; margin-top:0;">
+                <div class="progress-bar" id="task-ratio-bar" style="width:0%; background:linear-gradient(90deg, var(--accent-success) 0%, var(--accent-secondary) 100%);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comprehensive Projects Summary Table (Bento col-span-4) -->
+        <div class="bento-card col-span-4">
+          <div class="bento-card-title">
+            <span>📋</span> Project Progress & Deliverables Summary
+          </div>
+          <div class="users-table-card">
+            <table class="users-table">
+              <thead>
+                <tr>
+                  <th>Project Name</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Target Deadline</th>
+                  <th style="width: 250px;">Progress Metrics</th>
+                </tr>
+              </thead>
+              <tbody id="reports-table-body">
+                <tr>
+                  <td colspan="5" style="color:var(--text-secondary); text-align:center; padding: 40px;">Generating summaries...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadReportsData();
+
+      async function loadReportsData() {
+        try {
+          const statsRes = await API.getDashboardStats();
+          const projectsRes = await API.getProjects();
+
+          if (statsRes.success && projectsRes.success) {
+            renderRatios(statsRes.stats);
+            renderCategoryBreakdown(statsRes.categoryStats, statsRes.stats.totalProjects);
+            renderProjectsReport(projectsRes.data);
+          }
+        } catch (error) {
+          console.error('Failed to load analytical reports:', error);
+        }
+      }
+
+      function renderRatios(stats) {
+        // Project Ratios
+        const projCompleted = stats.completedProjects;
+        const projTotal = stats.totalProjects;
+        const projPercent = projTotal > 0 ? Math.round((projCompleted / projTotal) * 100) : 0;
+        document.getElementById('proj-ratio-val').innerText = `${projCompleted} / ${projTotal} (${projPercent}%)`;
+        document.getElementById('proj-ratio-bar').style.width = `${projPercent}%`;
+
+        // Task Ratios
+        const taskCompleted = stats.completedTasks;
+        const taskTotal = stats.totalTasks;
+        const taskPercent = taskTotal > 0 ? Math.round((taskCompleted / taskTotal) * 100) : 0;
+        document.getElementById('task-ratio-val').innerText = `${taskCompleted} / ${taskTotal} (${taskPercent}%)`;
+        document.getElementById('task-ratio-bar').style.width = `${taskPercent}%`;
+      }
+
+      function renderCategoryBreakdown(categories, totalProjects) {
+        const container = document.getElementById('category-report-container');
+        if (!categories || categories.length === 0) {
+          container.innerHTML = `<p style="color:var(--text-secondary); text-align:center; padding: 20px;">No categories registered</p>`;
+          return;
+        }
+
+        const colors = ['var(--accent-primary)', 'var(--accent-secondary)', 'var(--accent-pink)', 'var(--accent-success)', 'var(--accent-warning)'];
+
+        container.innerHTML = categories.map((cat, idx) => {
+          const percent = totalProjects > 0 ? Math.round((cat.count / totalProjects) * 100) : 0;
+          const barColor = colors[idx % colors.length];
+
+          return `
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size: 0.85rem; font-weight:600; margin-bottom: 5px;">
+                <span>📂 ${cat._id || 'Unspecified'}</span>
+                <span>${cat.count} projects (${percent}%)</span>
+              </div>
+              <div class="progress-container" style="height: 8px; margin-top:0; background: rgba(0,0,0,0.15);">
+                <div class="progress-bar" style="width: ${percent}%; background: ${barColor}; box-shadow: none;"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function renderProjectsReport(projects) {
+        const body = document.getElementById('reports-table-body');
+        if (!projects || projects.length === 0) {
+          body.innerHTML = `
+            <tr>
+              <td colspan="5" style="color:var(--text-secondary); text-align:center; padding: 40px;">No projects directory found to report.</td>
+            </tr>
+          `;
+          return;
+        }
+
+        body.innerHTML = projects.map(proj => {
+          const statusClass = `status-${proj.status}`;
+          const statusText = proj.status.replace('_', ' ');
+          const deadlineStr = new Date(proj.deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+          const isOverdue = new Date(proj.deadline) < new Date() && proj.status !== 'completed';
+          const overdueHtml = isOverdue ? '<span class="overdue-tag">OVERDUE</span>' : '';
+
+          return `
+            <tr>
+              <td>
+                <a href="/project-details?id=${proj._id}" style="color:var(--text-primary); text-decoration:none; font-weight:600;">${proj.title}</a>
+              </td>
+              <td><span style="font-size:0.85rem; font-weight:500; color:var(--text-secondary);">${proj.category}</span></td>
+              <td><span class="project-status-badge ${statusClass}">${statusText}</span></td>
+              <td style="color:var(--text-secondary); font-size:0.9rem;">
+                ${deadlineStr} ${overdueHtml}
+              </td>
+              <td>
+                <div style="display:flex; justify-content:space-between; font-size: 0.75rem; margin-bottom: 3px; font-weight:600;">
+                  <span>Progress</span>
+                  <span>${proj.progress}%</span>
+                </div>
+                <div class="progress-container" style="height: 6px; margin-top:0;">
+                  <div class="progress-bar" style="width: ${proj.progress}%;"></div>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+    });
+  </script>
+</body>
+</html>

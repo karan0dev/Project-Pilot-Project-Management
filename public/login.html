@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication - ProjectPilot</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-page login-page">
+
+  <!-- Background Blobs & Clay Bubbles -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    
+    <!-- 3D Clay Bubbles -->
+    <div class="clay-bubble bubble-1"></div>
+    <div class="clay-bubble bubble-2"></div>
+    <div class="clay-bubble bubble-3"></div>
+    
+    <!-- Sparkling particles -->
+    <div class="sparkle sparkle-1"></div>
+    <div class="sparkle sparkle-2"></div>
+    <div class="sparkle sparkle-3"></div>
+  </div>
+
+  <div class="auth-wrapper">
+    <section class="auth-showcase" aria-label="ProjectPilot overview">
+      <div class="auth-showcase-inner">
+        <p class="auth-pill"><span>&#10022;</span> Plan. Track. Deliver.</p>
+        <h1>Welcome to your <span>organized workflow</span></h1>
+        <p class="auth-showcase-copy">
+          Plan projects, assign tasks, track progress, and collaborate with your team all in one beautifully organized workspace.
+          Stay focused. Deliver on time. Every time.
+        </p>
+
+        <div class="auth-showcase-actions">
+          <a class="auth-showcase-primary" href="/register"><span>&#9651;</span> Get Started Free</a>
+          <a class="auth-showcase-secondary" href="#auth-card"><span>&#9658;</span> See How It Works</a>
+        </div>
+
+        <div class="auth-mini-stage" aria-hidden="true">
+          <article class="auth-mini-card tasks-card">
+            <div class="mini-icon check-icon">&#10003;</div>
+            <h3>Tasks Overview</h3>
+            <div class="mini-ring"><strong>86%</strong><span>Complete</span></div>
+          </article>
+
+          <article class="auth-mini-card progress-card">
+            <div class="mini-icon folder-icon">&#9632;</div>
+            <div>
+              <h3>Project Progress</h3>
+              <p>Website Redesign</p>
+            </div>
+            <strong class="mini-percent">80%</strong>
+            <div class="mini-progress"><span></span></div>
+            <div class="mini-team"><span>A</span><span>M</span><span>J</span><span>+</span></div>
+          </article>
+
+          <article class="auth-mini-card milestone-card">
+            <div class="mini-icon star-icon">&#9733;</div>
+            <h3>Milestones</h3>
+            <p><span></span>Project Kickoff <em>Apr 10</em></p>
+            <p><span></span>Wireframes <em>Apr 24</em></p>
+            <p><i></i>Design System <em>May 08</em></p>
+          </article>
+
+          <article class="auth-mini-card team-card">
+            <div class="mini-icon chart-icon">&#9618;</div>
+            <h3>Team Performance</h3>
+            <div class="mini-pie"></div>
+            <ul>
+              <li><span></span>Design 40%</li>
+              <li><span></span>Development 30%</li>
+              <li><span></span>Content 20%</li>
+            </ul>
+          </article>
+
+          <article class="auth-mini-card activity-card">
+            <h3>Task Activity</h3>
+            <small>This Week</small>
+            <div class="mini-bars"><span></span><span></span><span></span><span></span><span></span></div>
+          </article>
+        </div>
+
+        <div class="auth-feature-row" aria-hidden="true">
+          <span><i>&#9889;</i> Smart planning</span>
+          <span><i>&#9783;</i> Team sync</span>
+          <span><i>&#8599;</i> Progress tracking</span>
+          <span><i>&#9635;</i> Clean dashboard</span>
+        </div>
+      </div>
+
+      <img class="auth-showcase-girl" src="/images/peeking_girl.png" alt="">
+    </section>
+
+    <div class="auth-card-container" id="auth-card">
+      <!-- Peeking characters -->
+      <div class="peeking-character character-girl">
+        <img src="/images/peeking_girl.png" alt="Peeking Girl">
+      </div>
+      <div class="peeking-character character-boy">
+        <img src="/images/peeking_boy.png" alt="Peeking Boy">
+      </div>
+      
+      <!-- 3D Card Flipper -->
+      <div class="auth-card-flipper">
+        
+        <!-- FRONT SIDE: Login -->
+        <div class="bento-card auth-card auth-card-front">
+          <div class="auth-header">
+            <div class="logo-icon">P</div>
+            <h2>Welcome Back</h2>
+            <p>Access your ProjectPilot workspace</p>
+          </div>
+
+          <div id="login-alert" class="auth-alert" style="display:none; margin-bottom: 20px; padding: 12px 18px; border-radius: 12px; font-size: 0.9rem; font-weight: 600;"></div>
+
+          <form id="login-form">
+            <div class="form-group">
+              <label for="login-email">Email Address</label>
+              <div class="input-wrapper">
+                <span class="input-icon">&#9993;</span>
+                <input type="email" id="login-email" class="auth-input" placeholder="alex@projectpilot.com" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <div class="input-wrapper">
+                <span class="input-icon">&#128274;</span>
+                <input type="password" id="login-password" class="auth-input" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" required style="padding-right: 48px;">
+                <span class="password-toggle" id="toggle-login-password" aria-label="Toggle password visibility"></span>
+              </div>
+            </div>
+            <button type="submit" class="btn-authenticate">
+              Authenticate
+            </button>
+          </form>
+
+          <div class="auth-footer">
+            Don't have an account? <a href="/register" id="go-to-register">Create one</a>
+          </div>
+        </div>
+
+        <!-- BACK SIDE: Register -->
+        <div class="bento-card auth-card auth-card-back">
+          <div class="auth-header">
+            <div class="logo-icon">P</div>
+            <h2>Create Account</h2>
+            <p>Start tracking projects in 3D space</p>
+          </div>
+
+          <div id="register-alert" class="auth-alert" style="display:none; margin-bottom: 20px; padding: 12px 18px; border-radius: 12px; font-size: 0.9rem; font-weight: 600;"></div>
+
+          <form id="register-form">
+            <div class="form-group">
+              <label for="register-username">Username</label>
+              <div class="input-wrapper">
+                <span class="input-icon">&#128100;</span>
+                <input type="text" id="register-username" class="auth-input" placeholder="alexm" required minlength="3">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="register-email">Email Address</label>
+              <div class="input-wrapper">
+                <span class="input-icon">&#9993;</span>
+                <input type="email" id="register-email" class="auth-input" placeholder="name@company.com" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="register-role">Account Type</label>
+              <div class="input-wrapper">
+                <span class="input-icon">&#128188;</span>
+                <select id="register-role" class="auth-input" required>
+                  <option value="user">Standard User</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="register-password">Password</label>
+              <div class="input-wrapper">
+                <span class="input-icon">&#128274;</span>
+                <input type="password" id="register-password" class="auth-input" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" required minlength="6" style="padding-right: 48px;">
+                <span class="password-toggle" id="toggle-register-password" aria-label="Toggle password visibility"></span>
+              </div>
+            </div>
+            <button type="submit" class="btn-authenticate">
+              Initialize Workspace
+            </button>
+          </form>
+
+          <div class="auth-footer">
+            Already have an account? <a href="/login" id="go-to-login">Sign in</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.querySelector('.auth-card-container');
+      const flipper = document.querySelector('.auth-card-flipper');
+      
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const loginAlert = document.getElementById('login-alert');
+      const registerAlert = document.getElementById('register-alert');
+      
+      const loginPassword = document.getElementById('login-password');
+      const registerPassword = document.getElementById('register-password');
+      const toggleLoginPassword = document.getElementById('toggle-login-password');
+      const toggleRegisterPassword = document.getElementById('toggle-register-password');
+      
+      const goToRegister = document.getElementById('go-to-register');
+      const goToLogin = document.getElementById('go-to-login');
+      const showcaseRegister = document.querySelector('.auth-showcase-primary');
+
+      // Initialize state based on path
+      function updateTabFromUrl(instant = false) {
+        const isRegister = window.location.pathname.includes('/register') || window.location.search.includes('tab=register');
+        if (isRegister) {
+          if (instant) flipper.style.transition = 'none';
+          container.classList.add('flipped');
+          if (instant) {
+            flipper.offsetHeight; // Force reflow
+            flipper.style.transition = '';
+          }
+        } else {
+          if (instant) flipper.style.transition = 'none';
+          container.classList.remove('flipped');
+          if (instant) {
+            flipper.offsetHeight;
+            flipper.style.transition = '';
+          }
+        }
+      }
+
+      // Initial run
+      updateTabFromUrl(true);
+
+      // Listen to popstate
+      window.addEventListener('popstate', () => {
+        updateTabFromUrl(false);
+      });
+
+      // Navigation overrides for smooth flip
+      goToRegister.addEventListener('click', (e) => {
+        e.preventDefault();
+        container.classList.add('flipped');
+        history.pushState({ tab: 'register' }, '', '/register');
+      });
+
+      goToLogin.addEventListener('click', (e) => {
+        e.preventDefault();
+        container.classList.remove('flipped');
+        history.pushState({ tab: 'login' }, '', '/login');
+      });
+
+      if (showcaseRegister) {
+        showcaseRegister.addEventListener('click', (e) => {
+          e.preventDefault();
+          container.classList.add('flipped');
+          history.pushState({ tab: 'register' }, '', '/register');
+        });
+      }
+
+      // Password Toggles
+      toggleLoginPassword.addEventListener('click', () => {
+        if (loginPassword.type === 'password') {
+          loginPassword.type = 'text';
+          toggleLoginPassword.textContent = 'hide';
+        } else {
+          loginPassword.type = 'password';
+          toggleLoginPassword.textContent = 'show';
+        }
+      });
+
+      toggleRegisterPassword.addEventListener('click', () => {
+        if (registerPassword.type === 'password') {
+          registerPassword.type = 'text';
+          toggleRegisterPassword.textContent = 'hide';
+        } else {
+          registerPassword.type = 'password';
+          toggleRegisterPassword.textContent = 'show';
+        }
+      });
+
+      // Parallax effect on mousemove
+      document.addEventListener('mousemove', (e) => {
+        const blobs = document.querySelectorAll('.blob');
+        const x = (window.innerWidth / 2 - e.clientX) / 50;
+        const y = (window.innerHeight / 2 - e.clientY) / 50;
+        
+        blobs.forEach((blob, idx) => {
+          const speed = (idx + 1) * 0.45;
+          blob.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+        });
+      });
+
+      // Submit Login
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value.trim();
+        const password = loginPassword.value;
+        hideAlerts();
+
+        try {
+          const response = await API.login(email, password);
+          if (response.success) {
+            window.location.href = '/dashboard';
+          } else {
+            showError(loginAlert, response.message || 'Login failed');
+          }
+        } catch (error) {
+          showError(loginAlert, error.message || 'Network error occurred');
+        }
+      });
+
+      // Submit Register
+      registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('register-username').value.trim();
+        const email = document.getElementById('register-email').value.trim();
+        const password = registerPassword.value;
+        hideAlerts();
+
+        try {
+          const response = await API.register(username, email, password);
+          if (response.success) {
+            window.location.href = '/dashboard';
+          } else {
+            showError(registerAlert, response.message || 'Registration failed');
+          }
+        } catch (error) {
+          showError(registerAlert, error.message || 'Network error occurred');
+        }
+      });
+
+      function hideAlerts() {
+        loginAlert.style.display = 'none';
+        registerAlert.style.display = 'none';
+      }
+
+      function showError(alertEl, message) {
+        alertEl.innerText = message;
+        alertEl.style.display = 'block';
+        alertEl.style.background = 'rgba(255, 92, 92, 0.15)';
+        alertEl.style.border = '1px solid var(--accent-danger)';
+        alertEl.style.color = 'var(--accent-danger)';
+      }
+    });
+  </script>
+</body>
+</html>

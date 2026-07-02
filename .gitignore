@@ -1,0 +1,6 @@
+node_modules/
+.env
+.agents/
+.codex/
+server.err.log
+server.out.log
