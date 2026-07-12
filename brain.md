@@ -96,6 +96,9 @@ erDiagram
         string email
         string password
         string role
+        string teamName
+        ObjectId teamAdmin FK
+        ObjectIdArray teamMembers FK
         date createdAt
     }
     PROJECT {
@@ -128,10 +131,25 @@ erDiagram
         ObjectId task FK
         date createdAt
     }
+    CHAT_MESSAGE {
+        ObjectId _id PK
+        ObjectId sender FK
+        string text
+        date createdAt
+    }
+    TEAM_REQUEST {
+        ObjectId _id PK
+        ObjectId sender FK
+        ObjectId recipient FK
+        string status
+        date createdAt
+    }
 
     USER ||--o{ PROJECT : "creates"
     USER ||--o{ TASK : "is assigned to"
     USER ||--o{ ACTIVITY : "performs"
+    USER ||--o{ CHAT_MESSAGE : "sends"
+    USER ||--o{ TEAM_REQUEST : "sends/receives"
     PROJECT ||--o{ TASK : "contains"
     PROJECT ||--o{ ACTIVITY : "logs"
     TASK ||--o{ ACTIVITY : "logs"
@@ -144,6 +162,9 @@ erDiagram
 * **`email`**: Unique string, verified by standard email regex, lowercase (uniquely indexed).
 * **`password`**: Hashed string. *Select default is false* (excluded by default from queries to prevent exposure, must be explicitly queried via `.select('+password')` where needed).
 * **`role`**: Enums `['user', 'admin']`, defaults to `'user'`.
+* **`teamName`**: String, name of the user's workspace team.
+* **`teamAdmin`**: ObjectId reference to User (the team creator/admin).
+* **`teamMembers`**: Array of ObjectId references to Users (members in the team).
 * **Signup role policy**: Public registration ignores client-submitted role values. In a fresh empty database, the first registered account becomes `admin`; all later public signups become `user`. Seed data also creates a known admin account.
 * **Hooks**:
   * `pre('save')`: Evaluates if the password field is modified. If yes, hashes the password using `bcryptjs` with 10 salt rounds before saving.
@@ -173,6 +194,17 @@ erDiagram
 * **`user`**: ObjectId reference to User, required.
 * **`project`**: Optional ObjectId reference to Project (linked if activity relates to a project).
 * **`task`**: Optional ObjectId reference to Task (linked if activity relates to a task).
+
+#### 5. ChatMessage Model (`models/ChatMessage.js`)
+* **`sender`**: ObjectId reference to User, required (the message author).
+* **`text`**: String, required (the message content).
+* **`createdAt`**: Date, defaults to `Date.now`.
+
+#### 6. TeamRequest Model (`models/TeamRequest.js`)
+* **`sender`**: ObjectId reference to User, required (the admin sending the invite).
+* **`recipient`**: ObjectId reference to User, required (the user being invited).
+* **`status`**: Enums `['pending', 'accepted', 'rejected']`, defaults to `'pending'`.
+* **`createdAt`**: Date, defaults to `Date.now`.
 
 ### Database Indexes
 * **User**: `username` and `email` use unique constraints, which create indexes for account lookups without duplicate manual index declarations.

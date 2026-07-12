@@ -28,6 +28,10 @@ The application includes a premium landing page, animated login/register experie
 - 🔐 **JWT Authentication** — Secure token-based auth with role-based access control (`user` / `admin`)
 - 📁 **Project Management** — Create, update, filter, and delete projects with live progress tracking
 - ✅ **Task Management** — Full task CRUD with priority levels, status tracking, and deadline management
+- 💬 **Team Space & Chat** — Floating team chat panel with message history, active member directory, and real-time alerts
+- 🔔 **Interactive Chat Alerts** — CSS shake keyframe animations on the chat bubble and popping speech-bubble notifications showing the teammate's name and message snippet
+- 👤 **Profile Dropdown Menu** — Sleek header profile card with full name support, a rotating chevron indicator, and options for *My Profile* and *Log Out*
+- 💾 **Persistent Database** — Configured MongoDB replica set server to save user, team, and task records locally in the workspace `.db-data` folder across server restarts
 - 📊 **Dashboard Analytics** — Real-time overview of project counts, task stats, overdue items, and team activity
 - 👥 **Admin Panel** — Admin-only user management with safe cascading account deletion
 - 📝 **Activity Logs** — Automatic system logging for all create/update/delete operations
@@ -221,14 +225,24 @@ All endpoints are prefixed with `/api`. Protected routes require an `Authorizati
 ## 🗄 Database Schema
 
 ```
-USER ──< PROJECT ──< TASK
-  │                   │
-  └──< ACTIVITY >─────┘
+          ┌──────────────┐
+          │     USER     │◀──────────────┐
+          └──────────────┘               │
+            │          │                 │
+            ▼          ▼                 │
+     ┌───────────┐  ┌──────────────┐     │
+     │  PROJECT  │  │ CHAT_MESSAGE │     │
+     └───────────┘  └──────────────┘     │
+        │      │                         │
+        ▼      ▼                         │
+     ┌──────┐ ┌──────────┐ ┌──────────────┐
+     │ TASK │ │ ACTIVITY │ │ TEAM_REQUEST │
+     └──────┘ └──────────┘ └──────────────┘
 ```
 
-- A **User** can create many **Projects** and be assigned to many **Tasks**
-- A **Project** contains many **Tasks**
-- All key operations log entries to **Activity**
+- A **User** can create many **Projects**, be assigned to many **Tasks**, send **ChatMessages**, and issue/receive **TeamRequests**.
+- A **Project** contains many **Tasks**.
+- All key operations log entries to **Activity** for auditing.
 
 ---
 
