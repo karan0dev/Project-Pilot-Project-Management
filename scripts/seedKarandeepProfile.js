@@ -11,7 +11,7 @@ const PROFILE = {
   username: 'Karandeep Singh',
   email: 'karandeep@projectpilot.com',
   password: 'karandeep123',
-  role: 'user'
+  role: 'admin'
 };
 
 const projects = [
@@ -172,6 +172,13 @@ async function upsertProject(user, projectSeed) {
 
 async function run() {
   await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/projectpilot');
+
+  // Skip profile seeding if Karandeep Singh profile already exists to persist updates
+  const existingUser = await User.findOne({ email: PROFILE.email });
+  if (existingUser) {
+    console.log('Seed: Karandeep Singh profile already exists. Skipping profile seed to persist user data.');
+    return;
+  }
 
   const user = await upsertProfile();
   const savedProjects = [];

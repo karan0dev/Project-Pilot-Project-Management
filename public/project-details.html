@@ -6,7 +6,7 @@
   <title>Project Details — ProjectPilot</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
+<body class="workspace-page light-mode project-details-page">
 
   <!-- Background Blobs -->
   <div class="bg-blobs">
@@ -199,12 +199,21 @@
       // Populate Assignee Select
       async function loadUsers() {
         try {
-          const response = await API.getUsers();
-          if (response.success) {
-            const users = response.data;
-            assigneeSelect.innerHTML = '<option value="">Select Member</option>' + users.map(user => `
-              <option value="${user._id}">${user.username} (${user.role})</option>
-            `).join('');
+          const me = API.getUser();
+          if (me) {
+            if (me.role === 'admin') {
+              const teamRes = await API.getTeamMembers();
+              const members = teamRes.success ? teamRes.data : [];
+              const assignableUsers = [
+                { _id: me._id, username: `${me.username} (You)`, role: 'admin' },
+                ...members
+              ];
+              assigneeSelect.innerHTML = '<option value="">Select Member</option>' + assignableUsers.map(user => `
+                <option value="${user._id}">${user.username} (${user.role})</option>
+              `).join('');
+            } else {
+              assigneeSelect.innerHTML = `<option value="">Select Member</option><option value="${me._id}">${me.username} (You)</option>`;
+            }
           }
         } catch (error) {
           console.error('Failed to load users list:', error);

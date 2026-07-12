@@ -399,10 +399,19 @@ npm run seed     # or node seed.js
 
 ### Running Locally
 To launch the Node server on localhost:
-```bash
-npm start        # runs node server.js on port 5000 (or process.env.PORT)
-npm run dev      # runs node server.js in development mode
-```
+
+* **In-Memory Run (Recommended for Dev/Testing)**:
+  Runs an in-memory MongoDB server, seeds standard mock data, seeds the Karandeep profile, and starts the Express server. No external MongoDB installation or `.env` configuration is required.
+  ```bash
+  npm run dev:mem  # Runs node run-mem.js
+  ```
+
+* **Standard Run**:
+  Requires a running local or remote MongoDB instance configured in `.env` or defaulting to `mongodb://127.0.0.1:27017/projectpilot`.
+  ```bash
+  npm start        # Runs node server.js on port 5000 (or process.env.PORT)
+  npm run dev      # Runs node server.js in development mode
+  ```
 
 ### Production Security & JWT Policies
 * **JWT Expiration**: Generated tokens are configured with an expiration window of **30 days** (`30d`).

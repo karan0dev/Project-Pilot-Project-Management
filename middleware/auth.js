@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { JWT_SECRET } = require('../config/jwt');
 
 // Protect routes - verify token
 const protect = async (req, res, next) => {
@@ -14,13 +15,18 @@ const protect = async (req, res, next) => {
       token = req.headers.authorization.split(' ')[1];
 
       // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'supersecretkeyprojectpilot2026');
+      const decoded = jwt.verify(token, JWT_SECRET);
 
       // Get user from the token, excluding password
       req.user = await User.findById(decoded.id).select('-password');
 
       if (!req.user) {
         return res.status(401).json({ success: false, message: 'User not found' });
+      }
+
+      // Check if password changed after token was issued
+      if (req.user.passwordChangedAt && decoded.iat * 1000 < req.user.passwordChangedAt.getTime()) {
+        return res.status(401).json({ success: false, message: 'Token invalid, password was changed. Please log in again.' });
       }
 
       next();

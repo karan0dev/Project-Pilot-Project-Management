@@ -27,22 +27,26 @@ const getProjects = async (req, res) => {
       });
     }
 
-    // Apply status filter
-    if (status) {
+    // Apply status filter - validate enum
+    const VALID_PROJECT_STATUSES = ['planning', 'active', 'completed', 'on_hold'];
+    if (status && VALID_PROJECT_STATUSES.includes(status)) {
       andConditions.push({ status });
     }
 
+    const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
     // Apply category filter
-    if (category) {
-      andConditions.push({ category: { $regex: category, $options: 'i' } });
+    if (category && typeof category === 'string') {
+      andConditions.push({ category: { $regex: escapeRegex(category), $options: 'i' } });
     }
 
     // Apply search filter
-    if (search) {
+    if (search && typeof search === 'string') {
+      const escapedSearch = escapeRegex(search);
       andConditions.push({
         $or: [
-          { title: { $regex: search, $options: 'i' } },
-          { description: { $regex: search, $options: 'i' } }
+          { title: { $regex: escapedSearch, $options: 'i' } },
+          { description: { $regex: escapedSearch, $options: 'i' } }
         ]
       });
     }
@@ -55,26 +59,31 @@ const getProjects = async (req, res) => {
       .populate('createdBy', 'username email')
       .sort({ createdAt: -1 });
 
-    if (page && limit) {
-      const pageNum = parseInt(page, 10) || 1;
-      const limitNum = parseInt(limit, 10) || 10;
+    const total = await Project.countDocuments(query);
+
+    let pageNum = 1;
+    let limitNum = total;
+
+    if (page || limit) {
+      pageNum = parseInt(page, 10) || 1;
+      limitNum = Math.min(parseInt(limit, 10) || 10, 100);
       const skipNum = (pageNum - 1) * limitNum;
       queryBuilder = queryBuilder.skip(skipNum).limit(limitNum);
     }
 
     const projects = await queryBuilder;
-    const total = await Project.countDocuments(query);
 
     res.json({
       success: true,
       count: projects.length,
       total,
       page: page ? parseInt(page, 10) : 1,
-      limit: limit ? parseInt(limit, 10) : total,
+      limit: limit ? limitNum : total,
       data: projects
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 
@@ -105,7 +114,8 @@ const getProjectById = async (req, res) => {
 
     res.json({ success: true, project, tasks });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 
@@ -134,7 +144,8 @@ const createProject = async (req, res) => {
 
     res.status(201).json({ success: true, data: project });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 
@@ -153,8 +164,15 @@ const updateProject = async (req, res) => {
       return res.status(403).json({ success: false, message: 'Not authorized to update this project' });
     }
 
+    // Whitelist fields explicitly
+    const allowedFields = ['title', 'description', 'category', 'status', 'deadline'];
+    const updates = {};
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) updates[field] = req.body[field];
+    }
+
     // Update the project
-    project = await Project.findByIdAndUpdate(req.params.id, req.body, {
+    project = await Project.findByIdAndUpdate(req.params.id, updates, {
       new: true,
       runValidators: true
     });
@@ -168,7 +186,8 @@ const updateProject = async (req, res) => {
 
     res.json({ success: true, data: project });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 
@@ -213,7 +232,8 @@ const deleteProject = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 
@@ -292,7 +312,8 @@ const getDashboardAnalytics = async (req, res) => {
       categoryStats
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 

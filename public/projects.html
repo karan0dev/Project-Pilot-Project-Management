@@ -159,7 +159,7 @@
             renderProjects(response.data);
           }
         } catch (error) {
-          projectsContainer.innerHTML = `<p style="color:var(--accent-danger); text-align:center; padding: 50px; grid-column: 1/-1;">Error loading projects catalog: ${error.message}</p>`;
+          projectsContainer.innerHTML = `<p style="color:var(--accent-danger); text-align:center; padding: 50px; grid-column: 1/-1;">Error loading projects catalog: ${API.escapeHtml(error.message)}</p>`;
         }
       }
 
@@ -199,12 +199,12 @@
             <div class="bento-card project-card" onclick="window.location.href='/project-details?id=${proj._id}'">
               <div>
                 <div class="project-card-header">
-                  <span class="project-category">${proj.category}</span>
+                  <span class="project-category">${API.escapeHtml(proj.category)}</span>
                   <span class="project-status-badge ${statusClass}">${statusText}</span>
                 </div>
                 <div class="project-card-body">
-                  <h3>${proj.title}</h3>
-                  <p>${proj.description}</p>
+                  <h3>${API.escapeHtml(proj.title)}</h3>
+                  <p>${API.escapeHtml(proj.description)}</p>
                 </div>
               </div>
               <div>

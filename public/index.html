@@ -1,392 +1,639 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ProjectPilot - Project and Task Management</title>
-  <link rel="stylesheet" href="/css/landing.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ProjectPilot — Plan. Focus. Deliver.</title>
+<link rel="stylesheet" href="/css/landing.css?v=2" />
 </head>
-<body class="landing-page">
-  <div class="scroll-meter" aria-hidden="true">
-    <span id="scroll-meter-fill"></span>
-  </div>
+<body class="dark-mode">
+<div class="noise-layer"></div>
 
-  <header class="site-header" id="site-header">
-    <a class="brand" href="#home" aria-label="ProjectPilot home">
-      <span class="brand-mark">P</span>
-      <span>ProjectPilot</span>
-    </a>
+<!-- ============ HERO ============ -->
+<header class="hero" id="top">
+  <div class="hero-card-shell glass">
+    <!-- ============ NAVBAR ============ -->
+    <nav class="landing-nav">
+      <div class="nav-inner">
+        <a href="#top" class="brand">
+          <span class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none">
+              <rect x="9.5" y="4.5" width="10.5" height="8.5" rx="1.5" fill="white" opacity="0.32" />
+              <rect x="7" y="7" width="10.5" height="8.5" rx="1.5" fill="white" opacity="0.65" />
+              <rect x="4.5" y="9.5" width="10.5" height="8.5" rx="1.5" fill="white" />
+              
+              <circle cx="6.5" cy="11.8" r="0.55" fill="#7c5cff" />
+              <rect x="8" y="11.4" width="5" height="0.8" rx="0.4" fill="#7c5cff" />
+              
+              <circle cx="6.5" cy="13.8" r="0.55" fill="#a5b4fc" />
+              <rect x="8" y="13.4" width="3" height="0.8" rx="0.4" fill="#a5b4fc" />
+              
+              <circle cx="6.5" cy="15.8" r="0.55" fill="#c7d2fe" />
+              <rect x="8" y="15.4" width="3" height="0.8" rx="0.4" fill="#c7d2fe" />
 
-    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open navigation" aria-controls="landing-nav" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-
-    <nav class="nav-menu" id="landing-nav" aria-label="Landing sections">
-      <a class="nav-link active" href="#home">Home</a>
-      <a class="nav-link" href="#about">About</a>
-      <a class="nav-link" href="#features">Features</a>
-      <a class="nav-link" href="#design">Design</a>
-      <a class="nav-link" href="#cta">Start</a>
-      <a class="nav-link mobile-auth-link" href="/login">Login</a>
+              <path d="M10.8 16.5 C11.5 16, 12.2 15.5, 12.6 14.7 L14.2 12.5" stroke="#7c5cff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M12.6 12.5 H14.2 V14.1" stroke="#7c5cff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          ProjectPilot
+        </a>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#design">Design</a></li>
+          <li><a href="#cta">Get Started</a></li>
+        </ul>
+        <div class="nav-right">
+          <button class="theme-toggle clay" id="themeToggle" aria-label="Toggle light and dark theme" title="Toggle theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.4M12 19.6V22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M2 12h2.4M19.6 12H22M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7"/></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.6A9 9 0 1111.4 3 7 7 0 0021 12.6z"/></svg>
+          </button>
+          <a href="/dashboard" class="pill-btn primary">Go to Dashboard</a>
+        </div>
+      </div>
     </nav>
 
-    <div class="header-actions" id="landing-auth-links">
-      <a class="primary-action compact" href="/dashboard">Go to Dashboard</a>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero-section" id="home">
-      <div class="hero-copy reveal">
-        <p class="eyebrow">
-          <span class="eyebrow-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M12 3l2.2 5.2L20 10.4l-5.2 2.2L12 19l-2.8-6.4L4 10.4l5.8-2.2L12 3z"/></svg>
-          </span>
-          Organize. Track. Visualize.
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="badge-pill glass"><span class="dot"></span> Now with live progress tracking</span>
+        <h1 class="hero-title-animate">
+          <span class="word w1">Plan.</span>
+          <span class="word w2">Focus.</span>
+          <span class="word w3 accent">Deliver.</span>
+        </h1>
+        <p class="lead">
+          ProjectPilot is the full-stack workspace where projects, tasks, and teams
+          stay in sync automatically — progress bars, workloads, and deadlines
+          update themselves as work gets done.
         </p>
-
-        <h1>Your Projects, Organized in One <span>Tactile Space</span></h1>
-        <p class="hero-lede">
-          A structured workspace for projects, tasks, deadlines, reports, and teams,
-          wrapped in a polished glass interface with lively 3D-inspired motion.
-        </p>
-
         <div class="hero-actions">
-          <a class="primary-action" href="/register">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 17H3L12 3zm0 5.1L7.9 17h8.2L12 8.1z"/></svg>
+          <a href="/register" class="pill-btn primary hero-cta-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="flex-shrink:0;"><polygon points="12 3 2 21 22 21 12 3"/></svg>
             Initialize Workspace
           </a>
-          <a class="secondary-action" href="/login">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4V4zm9 0h7v5h-7V4zM4 13h7v7H4v-7zm9-2h7v9h-7v-9z"/></svg>
+          <a href="/login" class="pill-btn ghost hero-cta-ghost">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="flex-shrink:0;"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
             Access Panel
           </a>
         </div>
+        <div class="chips-row">
+          <span class="chip glass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.6 6.6L21 11l-6.4 2.4L12 20l-2.6-6.6L3 11l6.4-2.4L12 2z"/></svg> All-in-one workspace</span>
+          <span class="chip glass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg> Better teamwork</span>
+          <span class="chip glass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> On-time delivery</span>
+        </div>
+      </div>
 
-        <div class="trust-points" aria-label="Product strengths">
-          <span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 5 13h6l-1 9 8-12h-6l1-8Z"/></svg>
-            AI-ready insights
-          </span>
-          <span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.3 2.7 8.1 7 10 4.3-1.9 7-5.7 7-10V6l-7-3Z"/></svg>
-            Secure by design
-          </span>
-          <span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6M20 12A8 8 0 0 1 6.3 17.6M18 4v4h-4M6 20v-4h4"/></svg>
-            Real-time sync
-          </span>
-          <span>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11a4 4 0 1 0-8 0M4 21a8 8 0 0 1 16 0M19 8a3 3 0 0 1 0 6M22 21a6 6 0 0 0-4-5.7"/></svg>
-            Built for teams
-          </span>
+    <div class="hero-visual">
+      <div class="jelly-glow-blob"></div>
+      <div class="hero-cards-collage">
+        <!-- Card 1: Live Progress Tracking -->
+        <div class="collage-card progress-tracking-card glass">
+          <div class="card-header-simple">
+            <h4>Live Progress Tracking</h4>
+          </div>
+          <div class="progress-ring-box">
+            <svg class="ring-svg" viewBox="0 0 36 36">
+              <defs>
+                <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ec4899" />
+                  <stop offset="60%" stop-color="#a855f7" />
+                  <stop offset="100%" stop-color="#6366f1" />
+                </linearGradient>
+              </defs>
+              <path class="ring-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(0,0,0,0.03)" stroke-width="3"/>
+              <path class="ring-fill" stroke-dasharray="74, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="url(#ringGradient)" stroke-width="3.5" stroke-linecap="round"/>
+            </svg>
+            <div class="ring-text">
+              <span class="ring-percent">74%</span>
+              <span class="ring-label">Project Completion</span>
+            </div>
+          </div>
         </div>
 
-        <div class="brand-row" aria-label="Trusted companies">
-          <p>Trusted by modern teams worldwide</p>
-          <div>
-            <span>novu</span>
-            <span>arcane</span>
-            <span>cloudly</span>
-            <span>layer</span>
-            <span>circle</span>
+        <!-- Card 2: Projects activity -->
+        <div class="collage-card projects-list-card glass">
+          <div class="card-header-simple">
+            <h4>Projects</h4>
+          </div>
+          <div class="project-activities">
+            <div class="activity-row">
+              <div class="activity-avatar av-alex">A</div>
+              <div class="activity-details">
+                <p><strong>Alex</strong> completed task <span>"API Endpoints"</span></p>
+                <span class="activity-time">7 hours ago</span>
+              </div>
+            </div>
+            <div class="activity-row">
+              <div class="activity-avatar av-sarah">S</div>
+              <div class="activity-details">
+                <p><strong>Sarah</strong> updated project <span>"Q3 Launch"</span></p>
+                <span class="activity-time">7 hours ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Recent Activity Feed -->
+        <div class="collage-card activity-feed-card glass">
+          <div class="card-header-simple">
+            <h4>Recent Activity Feed</h4>
+            <span class="card-dots">•••</span>
+          </div>
+          <div class="timeline-feed">
+            <div class="feed-item">
+              <div class="feed-avatar av-alex">A</div>
+              <div class="feed-details">
+                <p><strong>Alex</strong> completed task "API Endpoints"</p>
+                <span class="feed-time">3 days ago</span>
+              </div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-avatar av-sarah">S</div>
+              <div class="feed-details">
+                <p><strong>Sarah</strong> updated project "Q3 Launch"</p>
+                <span class="feed-time">3 days ago</span>
+              </div>
+            </div>
+            <div class="feed-item">
+              <div class="feed-avatar av-sarah">S</div>
+              <div class="feed-details">
+                <p><strong>Sarah</strong> updated project "Q3 Launch"</p>
+                <span class="feed-time">3 days ago</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Overdue Tasks -->
+        <div class="collage-card overdue-tasks-card glass">
+          <span class="stat-label">Overdue Tasks</span>
+          <span class="stat-val val-red">3</span>
+        </div>
+
+        <!-- Card 5: Active Projects -->
+        <div class="collage-card active-projects-card glass">
+          <span class="stat-label">Active Projects</span>
+          <span class="stat-val val-purple">7</span>
+        </div>
+
+        <!-- Card 6: Dots Card -->
+        <div class="collage-card dots-card glass">
+          <span class="card-dots">•••</span>
+        </div>
+
+        <!-- Card 7: Team Velocity -->
+        <div class="collage-card team-velocity-card glass">
+          <span class="stat-label">Team Velocity</span>
+          <div class="velocity-sparkline">
+            <svg viewBox="0 0 100 30" class="sparkline-svg">
+              <path d="M0 25 C 20 25, 40 10, 60 15 C 80 20, 90 5, 100 2" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"/>
+              <path d="M0 25 C 20 25, 40 10, 60 15 C 80 20, 90 5, 100 2 L 100 30 L 0 30 Z" fill="url(#sparklineGrad)" opacity="0.1"/>
+              <defs>
+                <linearGradient id="sparklineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#8b5cf6"/>
+                  <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Card 8: Task Distribution by Priority -->
+        <div class="collage-card priority-card glass">
+          <span class="stat-label">Task Distribution by Priority</span>
+          <div class="priority-bars">
+            <div class="priority-row">
+              <span class="p-label">High</span>
+              <div class="p-bar-bg"><div class="p-bar-fill bar-high" style="width: 82%;"></div></div>
+            </div>
+            <div class="priority-row">
+              <span class="p-label">Medium</span>
+              <div class="p-bar-bg"><div class="p-bar-fill bar-medium" style="width: 58%;"></div></div>
+            </div>
+            <div class="priority-row">
+              <span class="p-label">Low</span>
+              <div class="p-bar-bg"><div class="p-bar-fill bar-low" style="width: 32%;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ ABOUT — glowing cards ============ -->
+<section class="section-band about-section section-reveal" id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Why ProjectPilot</span>
+      <h2>Everything a team needs to ship on time</h2>
+      <p>No manual status updates. No orphaned tasks. Just a workspace that recalculates itself the moment work changes.</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="glow-card glass reveal">
+        <div class="glow-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        </div>
+        <h3>Live project tracking</h3>
+        <p>Progress bars are never set by hand — they're calculated from completed vs. total tasks the instant something changes.</p>
+      </div>
+
+      <div class="glow-card glass c-blue reveal">
+        <div class="glow-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        </div>
+        <h3>Structured task flows</h3>
+        <p>Priorities, deadlines, and statuses per task, with cascading updates back to the parent project automatically.</p>
+      </div>
+
+      <div class="glow-card glass c-pink reveal">
+        <div class="glow-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3>Team visibility</h3>
+        <p>See who's overloaded and who has room, with workload charts pulled straight from live assignment data.</p>
+      </div>
+
+      <div class="glow-card glass c-green reveal">
+        <div class="glow-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <h3>Secure by default</h3>
+        <p>JWT-based sessions, salted password hashing, and role guards protect every private route out of the box.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<div class="feature-sticky-wrapper">
+  <section class="section-band feature-section section-reveal" id="features">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow reveal-slide-up" style="text-transform: uppercase;">FEATURES</span>
+        <h2 class="word-reveal-heading">Built for the whole lifecycle of a project</h2>
+        <p class="reveal-slide-up" style="transition-delay:0.55s">Built for nonpast of lifecycle to enhances, glassmorphism and enhanced glassmorphism. The layout is expanded for better spatial balance.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Card 1: Dashboard Analytics -->
+        <div class="feature-item glass reveal span-tall">
+          <div class="feature-info">
+            <div class="f-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></div>
+            <h4>Dashboard analytics</h4>
+            <p>Dashboard analytics with azine widgets and cnane glass dashboards.</p>
+          </div>
+          <div class="feature-mockup">
+            <div class="mockup-dashboard glass">
+              <span class="m-title">DASHBOARD</span>
+              <div class="progress-box-single">
+                <span class="m-card-title">Progress</span>
+                <div class="m-ring"><span>56%</span></div>
+                <ul class="m-stats-list">
+                  <li>
+                    <span class="m-stat-lbl"><span class="dot dot-blue"></span>Overall users</span>
+                    <span class="m-stat-val">75%</span>
+                  </li>
+                  <li>
+                    <span class="m-stat-lbl"><span class="dot dot-orange"></span>Task completion</span>
+                    <span class="m-stat-val">60%</span>
+                  </li>
+                  <li>
+                    <span class="m-stat-lbl"><span class="dot dot-pink"></span>On-time delivery</span>
+                    <span class="m-stat-val">90%</span>
+                  </li>
+                  <li>
+                    <span class="m-stat-lbl"><span class="dot dot-purple"></span>Pending items</span>
+                    <span class="m-stat-val">25%</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Full Task CRUD -->
+        <div class="feature-item glass reveal span-wide c-blue">
+          <div class="feature-info">
+            <div class="f-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="m9 14 2 2 4-4"></path></svg></div>
+            <h4>Full task CRUD</h4>
+            <p>Full task exocznms multipletiemre interactive task board view.</p>
+          </div>
+          <div class="feature-mockup">
+            <div class="mockup-board glass">
+              <div class="mockup-board-header">
+                <span>Task board ▾</span>
+                <div class="header-btns"><span>View</span> <span class="btn-purple">Add</span></div>
+              </div>
+              <div class="mockup-board-cols">
+                <div class="board-col">
+                  <span class="col-title">TO DO</span>
+                  <div class="board-card">
+                    <div class="b-card-line"></div>
+                    <div class="b-card-line short"></div>
+                  </div>
+                </div>
+                <div class="board-col">
+                  <span class="col-title">IN PROGRESS</span>
+                  <div class="board-card">
+                    <div class="b-card-avatars">
+                      <span class="av-dot" style="background:#3b82f6;"></span>
+                      <span class="av-dot" style="background:#ec4899;"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="board-col">
+                  <span class="col-title">DONE</span>
+                  <div class="board-card">
+                    <div class="b-card-line"></div>
+                    <div class="b-card-line short"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Admin Console -->
+        <div class="feature-item glass reveal span-normal c-pink">
+          <div class="feature-info">
+            <div class="f-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+            <h4>Admin console</h4>
+            <p>Mini of user profile management screen is cascading delices.</p>
+          </div>
+          <div class="feature-mockup">
+            <div class="mockup-profiles glass">
+              <div class="mockup-profiles-header">
+                <span>User profile</span>
+              </div>
+              <div class="profile-rows">
+                <div class="p-row">
+                  <div class="p-avatar letter-avatar" style="background: linear-gradient(135deg, #0ea5e9, #2563eb);">A</div>
+                  <span class="p-name">Admin Avatar</span>
+                  <a href="#" class="p-manage" onclick="event.preventDefault()">Manage</a>
+                  <span class="p-tag role">Role</span>
+                  <span class="p-more">•••</span>
+                </div>
+                <div class="p-row">
+                  <div class="p-avatar letter-avatar" style="background: linear-gradient(135deg, #f59e0b, #d97706);">J</div>
+                  <span class="p-name">Jolen Avatar</span>
+                  <a href="#" class="p-manage" onclick="event.preventDefault()">Manage</a>
+                  <span class="p-tag role">Role</span>
+                  <span class="p-more">•••</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Activity Logs -->
+        <div class="feature-item glass reveal span-normal c-green">
+          <div class="feature-info">
+            <div class="f-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="11" y2="17"></line></svg></div>
+            <h4>Activity logs</h4>
+            <p>Create the macent logs scrozlting and promocionst recent activity.</p>
+          </div>
+          <div class="feature-mockup">
+            <div class="mockup-logs glass">
+              <div class="mockup-logs-header">
+                <span>November 12, 2023</span>
+              </div>
+              <ul class="logs-list">
+                <li>
+                  <span class="log-dot"></span>
+                  <div class="log-item-content">
+                    <p>Task CRUD updated <span>[admin]</span></p>
+                    <span class="log-date">November 12, 2023 10:30 AM</span>
+                  </div>
+                </li>
+                <li>
+                  <span class="log-dot"></span>
+                  <div class="log-item-content">
+                    <p>Task CRUD created. <span>[admin]</span></p>
+                    <span class="log-date">November 12, 2023 09:15 AM</span>
+                  </div>
+                </li>
+                <li>
+                  <span class="log-dot"></span>
+                  <div class="log-item-content">
+                    <p>Project plan updated <span>[System]</span></p>
+                    <span class="log-date">November 12, 2023 08:45 AM</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: Dark & Light Themes -->
+        <div class="feature-item glass reveal span-wide c-orange">
+          <div class="feature-info">
+            <div class="f-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M6.34 17.66l-1.41 1.41"></path><path d="M19.07 4.93l-1.41 1.41"></path></svg></div>
+            <h4>Dark & light themes</h4>
+            <p>Bulancos glassmorar in dark mode and light friar color re-tuning.</p>
+          </div>
+          <div class="feature-mockup">
+            <div class="mockup-split-theme glass">
+              <div class="theme-half dark-half">
+                <span>Dashboard</span>
+                <div class="half-box">
+                  <div class="half-circle"><span>520</span></div>
+                  <div class="half-lines">
+                    <span></span><span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="theme-half light-half">
+                <span>Dashboard</span>
+                <div class="half-box">
+                  <div class="half-circle"><span>520</span></div>
+                  <div class="half-lines">
+                    <span></span><span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6: Responsive by Design -->
+        <div class="feature-item glass reveal span-normal c-cyan">
+          <div class="feature-info">
+            <div class="f-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg></div>
+            <h4>Responsive by design</h4>
+            <p>Perfectly responsive and withunparily re-fluoned for each screen size.</p>
+          </div>
+          <div class="feature-mockup">
+            <div class="mockup-responsive glass">
+              <div class="responsive-container">
+                <div class="mock-device mock-desktop">
+                  <div class="mock-inner">
+                    <span class="m-bar"></span>
+                    <div class="m-grid"><span></span><span></span></div>
+                  </div>
+                </div>
+                <div class="mock-device mock-tablet">
+                  <div class="mock-inner">
+                    <span class="m-bar"></span>
+                    <div class="m-grid"><span></span></div>
+                  </div>
+                </div>
+                <div class="mock-device mock-mobile">
+                  <div class="mock-inner">
+                    <span class="m-bar"></span>
+                    <div class="m-list"><span></span><span></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="hero-visual reveal delay-1" data-tilt>
-        <div class="device-frame">
-          <div class="jelly-glow-blob"></div>
-          <div class="panel-card progress-card float-one">
-            <div class="panel-head">
-              <span class="icon-tile violet">
-                <svg viewBox="0 0 24 24"><path d="M4 7h6l2 2h8v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/></svg>
-              </span>
-              <div>
-                <strong>Project Progress</strong>
-                <small>Website Redesign</small>
-              </div>
-              <b>80%</b>
-            </div>
-            <div class="progress-track"><span style="width: 80%"></span></div>
-            <div class="avatar-strip">
-              <span>A</span>
-              <span>M</span>
-              <span>J</span>
-              <button aria-label="Add teammate">+</button>
-            </div>
+      <div class="feature-strip glass reveal">
+        <div class="strip-col">
+          <span class="num">01</span>
+          <div class="strip-text">
+            <strong>All-in-one workspace</strong>
+            <span>Everything you need in one place</span>
           </div>
-
-          <div class="panel-card dark-card task-ring-card float-two">
-            <div class="panel-head">
-              <span class="icon-tile blue">
-                <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
-              </span>
-              <strong>Tasks Overview</strong>
-            </div>
-            <div class="ring-wrap">
-              <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
-                <circle cx="60" cy="60" r="46"></circle>
-                <circle class="ring-value" cx="60" cy="60" r="46"></circle>
-              </svg>
-              <div><b>86%</b><span>complete</span></div>
-            </div>
-            <ul class="dark-list">
-              <li><span class="dot done"></span>Completed <b>43</b></li>
-              <li><span class="dot work"></span>In Progress <b>7</b></li>
-              <li><span class="dot review"></span>Pending <b>12</b></li>
-            </ul>
+        </div>
+        <div class="strip-col">
+          <span class="num">02</span>
+          <div class="strip-text">
+            <strong>Better teamwork</strong>
+            <span>Collaborate and achieve more</span>
           </div>
-
-          <div class="panel-card chart-card float-three">
-            <div class="panel-head">
-              <span class="icon-tile pink">
-                <svg viewBox="0 0 24 24"><path d="M5 9.2h3V20H5V9.2zm5.5-4h3V20h-3V5.2zM16 12h3v8h-3v-8z"/></svg>
-              </span>
-              <strong>Team Performance</strong>
-            </div>
-            <div class="donut-row">
-              <div class="donut" aria-hidden="true"></div>
-              <div class="legend">
-                <span><i class="violet-dot"></i>Design 40%</span>
-                <span><i class="blue-dot"></i>Development 30%</span>
-                <span><i class="pink-dot"></i>Content 20%</span>
-                <span><i class="amber-dot"></i>Marketing 10%</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="panel-card milestone-card float-four">
-            <div class="panel-head">
-              <span class="icon-tile green">
-                <svg viewBox="0 0 24 24"><path d="M12 2l2.8 6 6.2.9-4.5 4.4 1.1 6.2L12 16.6 6.4 19.5l1.1-6.2L3 8.9 9.2 8 12 2z"/></svg>
-              </span>
-              <strong>Milestones</strong>
-            </div>
-            <ol class="timeline">
-              <li class="done"><span></span>Project Kickoff <b>Apr 10</b></li>
-              <li class="done"><span></span>Wireframes <b>Apr 24</b></li>
-              <li class="active"><span></span>Design System <b>May 08</b></li>
-              <li><span></span>Final Review <b>May 24</b></li>
-            </ol>
+        </div>
+        <div class="strip-col">
+          <span class="num">03</span>
+          <div class="strip-text">
+            <strong>On-time delivery</strong>
+            <span>Stay on track and deliver on time</span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
+</div>
 
-    <section class="about-section section-band" id="about">
-      <div class="about-copy reveal">
-        <div class="about-badge">
-          <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px; margin-right: 6px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
-          <span>PLANNING SMARTER. DELIVERING BETTER.</span>
-        </div>
-        <h2>Built to help teams plan, focus, and deliver</h2>
-        <p>ProjectPilot was created for teams who want clarity without complexity. It combines practical workflows with a visual system that makes daily project work easier to manage.</p>
-        <div class="hero-actions">
-          <a class="primary-action" href="/register">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M4.5 16.5c-1.5 1.26-2 3.42-2 3.42s2.16-.5 3.42-2M22 2s-5.5 1.5-8.5 5.5S10 15 10 15s.5.5 1 1 1.5.5 1.5.5 5.5-1.5 9.5-4.5S22 2 22 2zM9 15l-3 3v3h3l3-3-3-3z"/></svg>
-            Get Started for Free
+<!-- ============ DESIGN SHOWCASE ============ -->
+<section class="section-band design-section section-reveal" id="design">
+  <div class="wrap design-grid">
+    <!-- Image on the Left Side (Redesigned per Senior Changes & User Swap Request) -->
+    <div class="design-visual glass reveal">
+      <img src="/images/design_showcase.png" alt="ProjectPilot team collaborating around a dark dashboard" class="dark-only-img" />
+      <img src="/images/about_characters.png" alt="ProjectPilot team collaborating around a light dashboard" class="light-only-img" />
+    </div>
+    <!-- Heading/Text on the Right Side -->
+    <div class="design-copy reveal">
+      <span class="eyebrow">Design language</span>
+      <h2>A premium glass &amp; clay interface, not another flat dashboard</h2>
+      <p>
+        Frosted panels, soft specular edges, and liquid gradient accents run through
+        every screen — from the landing page to the workspace you use every day.
+        Built with backdrop blur, layered depth, and motion that responds to you.
+      </p>
+      <div class="design-tags">
+        <span class="glass">Glassmorphic cards</span>
+        <span class="glass">Conic-gradient charts</span>
+        <span class="glass">Cascading section layout</span>
+        <span class="glass">Scroll-aware navbar</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="section-band cta-section section-reveal" id="cta">
+  <div class="wrap">
+    <div class="cta-wrap reveal">
+      <img src="/images/peeking_boy.png" alt="" class="cta-character boy" />
+      <div class="cta-panel glass">
+        <h2>Ready to plan, focus, and deliver?</h2>
+        <p>Spin up your first project in under a minute. Free for individuals and small teams.</p>
+        <div class="cta-actions">
+          <a href="/register" class="pill-btn primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="flex-shrink: 0;"><polygon points="12 3 2 21 22 21 12 3"/></svg>
+            Initialize Workspace
           </a>
-          <a class="secondary-action" href="/login">
-            Watch Our Story
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          <a href="/login" class="pill-btn ghost">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="flex-shrink: 0;"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            Access Panel
           </a>
         </div>
       </div>
+      <img src="/images/peeking_girl.png" alt="" class="cta-character girl" />
+    </div>
+  </div>
+</section>
 
-      <div class="about-grid">
-        <article class="about-card reveal">
-          <div class="card-icon purple-bg">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-          </div>
-          <h3>Our mission</h3>
-          <p>Give teams clarity, focus, and confidence to deliver their best work.</p>
-        </article>
-        <article class="about-card reveal delay-1">
-          <div class="card-icon blue-bg">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <h3>How we work</h3>
-          <p>We blend strategy, design, and engineering into focused workflows.</p>
-        </article>
-        <article class="about-card values-card reveal delay-2">
-          <div class="card-icon pink-bg">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-          </div>
-          <h3>Our values</h3>
-          <ul>
-            <li><span class="value-dot purple"></span>Clarity</li>
-            <li><span class="value-dot blue"></span>Collaboration</li>
-            <li><span class="value-dot pink"></span>Ownership</li>
-            <li><span class="value-dot green"></span>Growth</li>
-          </ul>
-        </article>
-        <figure class="team-image-card reveal delay-3">
-          <img src="/images/about_characters.png" alt="Project team collaborating around laptops" loading="lazy">
-        </figure>
-      </div>
+<!-- ============ FOOTER ============ -->
+<footer class="landing-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="brand">
+          <span class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none">
+              <rect x="9.5" y="4.5" width="10.5" height="8.5" rx="1.5" fill="white" opacity="0.32" />
+              <rect x="7" y="7" width="10.5" height="8.5" rx="1.5" fill="white" opacity="0.65" />
+              <rect x="4.5" y="9.5" width="10.5" height="8.5" rx="1.5" fill="white" />
+              
+              <circle cx="6.5" cy="11.8" r="0.55" fill="#7c5cff" />
+              <rect x="8" y="11.4" width="5" height="0.8" rx="0.4" fill="#7c5cff" />
+              
+              <circle cx="6.5" cy="13.8" r="0.55" fill="#a5b4fc" />
+              <rect x="8" y="13.4" width="3" height="0.8" rx="0.4" fill="#a5b4fc" />
+              
+              <circle cx="6.5" cy="15.8" r="0.55" fill="#c7d2fe" />
+              <rect x="8" y="15.4" width="3" height="0.8" rx="0.4" fill="#c7d2fe" />
 
-    </section>
-
-    <section class="feature-section section-band" id="features">
-      <div class="features-container reveal">
-        <div class="features-left">
-          <div class="about-badge">
-            <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px; margin-right: 6px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
-            <span>All-in-One. Intuitive. Effortless.</span>
-          </div>
-          <h2>Powerful Features <br><span class="gradient-text">for Smarter <br>Project Management</span></h2>
-          <p>Everything you need to plan, track, collaborate, and deliver successful projects. ProjectPilot brings your team, tasks, and goals together in one beautiful workspace.</p>
-          <div class="hero-actions">
-            <a class="primary-action" href="/register">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M4.5 16.5c-1.5 1.26-2 3.42-2 3.42s2.16-.5 3.42-2M22 2s-5.5 1.5-8.5 5.5S10 15 10 15s.5.5 1 1 1.5.5 1.5.5 5.5-1.5 9.5-4.5S22 2 22 2zM9 15l-3 3v3h3l3-3-3-3z"/></svg>
-              Start Free Trial
-            </a>
-            <a class="secondary-action" href="/login">
-              View Demo
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-            </a>
-          </div>
-          
-          <div class="features-bullets">
-            <div class="feature-bullet-item">
-              <div class="bullet-icon purple-bg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
-              </div>
-              <div class="bullet-content">
-                <h4>All-in-One Platform</h4>
-                <p>Everything in one connected workspace.</p>
-              </div>
-            </div>
-            <div class="feature-bullet-item">
-              <div class="bullet-icon blue-bg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-              </div>
-              <div class="bullet-content">
-                <h4>Enterprise Secure</h4>
-                <p>Your data is protected with bank-grade security.</p>
-              </div>
-            </div>
-            <div class="feature-bullet-item">
-              <div class="bullet-icon pink-bg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              </div>
-              <div class="bullet-content">
-                <h4>Real-time Sync</h4>
-                <p>Stay updated with instant real-time collaboration.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="features-right">
-          <div class="features-image-container">
-            <img src="/images/features_showcase.png" alt="Interactive features dashboard showcase cards and 3D shapes" loading="lazy">
-          </div>
+              <path d="M10.8 16.5 C11.5 16, 12.2 15.5, 12.6 14.7 L14.2 12.5" stroke="#7c5cff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M12.6 12.5 H14.2 V14.1" stroke="#7c5cff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          ProjectPilot
+        </a>
+        <p>A full-stack project &amp; task management system with a premium glassmorphic interface.</p>
+        <div class="footer-socials">
+          <a href="https://github.com/karan0dev" target="_blank" aria-label="GitHub" title="GitHub">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"></path></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/karandeepo/" target="_blank" aria-label="LinkedIn" title="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="social-icon"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+          </a>
         </div>
       </div>
-    </section>
-
-    <section class="design-section section-band" id="design">
-      <div class="design-container reveal">
-        <div class="design-left">
-          <div class="about-badge">
-            <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px; margin-right: 6px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
-            <span>Design. System. Support.</span>
-          </div>
-          <h2>Design Systems <br><span class="gradient-text">That Feel Tactile <br>and Effortless</span></h2>
-          <p>Craft beautiful, consistent experiences with a design system built for clarity and scale. From foundational tokens to responsive components, everything works together seamlessly.</p>
-          <div class="hero-actions">
-            <a class="primary-action" href="/register">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M4.5 16.5c-1.5 1.26-2 3.42-2 3.42s2.16-.5 3.42-2M22 2s-5.5 1.5-8.5 5.5S10 15 10 15s.5.5 1 1 1.5.5 1.5.5 5.5-1.5 9.5-4.5S22 2 22 2zM9 15l-3 3v3h3l3-3-3-3z"/></svg>
-              Explore Design System
-            </a>
-            <a class="secondary-action" href="/login">
-              View Components
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            </a>
-          </div>
-          
-          <div class="design-bullets">
-            <div class="bullet-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
-              <span>Consistent by Design</span>
-            </div>
-            <div class="bullet-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-              <span>Responsive Ready</span>
-            </div>
-            <div class="bullet-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polygon points="2 17 12 22 22 17 2 17"/><polygon points="2 12 12 17 22 12 2 12"/></svg>
-              <span>Built for Scale</span>
-            </div>
-          </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Product</h5>
+          <a href="#about">About</a>
+          <a href="#features">Features</a>
+          <a href="#design">Design</a>
         </div>
-        
-        <div class="design-right">
-          <div class="design-image-container">
-            <img src="/images/design_showcase.png" alt="Interactive design system showcase cards and 3D clay shapes" loading="lazy">
-          </div>
+        <div class="footer-col">
+          <h5>Account</h5>
+          <a href="/login">Sign in</a>
+          <a href="/register">Create account</a>
+          <a href="/dashboard">Dashboard</a>
+        </div>
+        <div class="footer-col">
+          <h5>Project</h5>
+          <a href="https://github.com/karan0dev" target="_blank">GitHub</a>
+          <a href="https://www.linkedin.com/in/karandeepo/" target="_blank">LinkedIn</a>
+          <a href="#top">Documentation</a>
         </div>
       </div>
-      
-      <div class="logos-footer reveal delay-1">
-        <p class="logos-title">Trusted by modern teams worldwide</p>
-        <div class="logos-grid">
-          <div class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; margin-right: 6px;"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            <span>novu</span>
-          </div>
-          <div class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; margin-right: 6px;"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v12"/><path d="M8 10h8"/></svg>
-            <span>arcane</span>
-          </div>
-          <div class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; margin-right: 6px;"><path d="M17.5 19a4.5 4.5 0 0 1-1.25-8.8 4 4 0 0 1-7.5-1.5 4.5 4.5 0 0 1-1.25 8.8"/></svg>
-            <span>cloudly</span>
-          </div>
-          <div class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; margin-right: 6px;"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/><path d="M3 9h18"/><path d="M3 15h18"/></svg>
-            <span>layer</span>
-          </div>
-          <div class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; margin-right: 6px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/></svg>
-            <span>circle</span>
-          </div>
-        </div>
-      </div>
-    </section>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 ProjectPilot. Built by Karandeep Singh.</span>
+      <span>Node.js · Express · MongoDB · JWT</span>
+    </div>
+  </div>
+</footer>
 
-    <section class="cta-section section-band reveal" id="cta">
-      <div class="cta-card">
-        <!-- Floating 3D Peeking Characters -->
-        <img class="cta-character peeking-left" src="/images/peeking_boy.png" alt="Peeking Character Left" loading="lazy">
-        <img class="cta-character peeking-right" src="/images/peeking_girl.png" alt="Peeking Character Right" loading="lazy">
-
-        <div class="cta-content">
-          <div class="about-badge">
-            <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor" style="width: 14px; height: 14px; margin-right: 6px;"><path d="M12 2l2.4 7.2L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>
-            <span>Get Started Instantly</span>
-          </div>
-          <h2>Ready to transform your workflow?</h2>
-          <p>Join thousands of teams using ProjectPilot to deliver their best work, faster. Create your free account or sign in to your workspace today.</p>
-          <div class="hero-actions cta-buttons">
-            <a class="primary-action" href="/register">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-              Create Free Account
-            </a>
-            <a class="secondary-action" href="/login">
-              Sign In to Workspace
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <script src="/js/api.js"></script>
-  <script src="/js/landing.js"></script>
+<script src="/js/landing.js"></script>
 </body>
 </html>

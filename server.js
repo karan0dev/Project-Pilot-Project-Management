@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
 const dotenv = require('dotenv');
 const path = require('path');
 const connectDB = require('./config/db');
@@ -14,7 +16,14 @@ connectDB();
 const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(helmet({
+  contentSecurityPolicy: false
+}));
+app.use(mongoSanitize());
+app.use(cors({
+  origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : '*',
+  credentials: true
+}));
 app.use(express.json());
 
 // Serve static assets (CSS, JS, images)
@@ -28,6 +37,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/projects', require('./routes/projectRoutes'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
+app.use('/api/team', require('./routes/teamRoutes'));
 
 // Clean URLs for Frontend Pages
 app.get('/', (req, res) => {

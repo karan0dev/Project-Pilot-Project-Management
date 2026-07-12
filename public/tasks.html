@@ -170,13 +170,22 @@
             `).join('');
           }
 
-          // Load users list
-          const usersRes = await API.getUsers();
-          if (usersRes.success) {
-            const users = usersRes.data;
-            assigneeSelect.innerHTML = '<option value="">Select Member</option>' + users.map(u => `
-              <option value="${u._id}">${u.username} (${u.role})</option>
-            `).join('');
+          // Load assignable team members
+          const me = API.getUser();
+          if (me) {
+            if (me.role === 'admin') {
+              const teamRes = await API.getTeamMembers();
+              const members = teamRes.success ? teamRes.data : [];
+              const assignableUsers = [
+                { _id: me._id, username: `${me.username} (You)`, role: 'admin' },
+                ...members
+              ];
+              assigneeSelect.innerHTML = '<option value="">Select Member</option>' + assignableUsers.map(u => `
+                <option value="${u._id}">${u.username} (${u.role})</option>
+              `).join('');
+            } else {
+              assigneeSelect.innerHTML = `<option value="">Select Member</option><option value="${me._id}">${me.username} (You)</option>`;
+            }
           }
         } catch (error) {
           console.error('Failed to pre-load selectors:', error);
@@ -198,7 +207,7 @@
             renderTasks(response.data);
           }
         } catch (error) {
-          tasksContainer.innerHTML = `<p style="color:var(--accent-danger); text-align:center; padding: 50px; grid-column: 1/-1;">Error loading tasks directory: ${error.message}</p>`;
+          tasksContainer.innerHTML = `<p style="color:var(--accent-danger); text-align:center; padding: 50px; grid-column: 1/-1;">Error loading tasks directory: ${API.escapeHtml(error.message)}</p>`;
         }
       }
 
@@ -232,11 +241,11 @@
             <div class="bento-card" style="display:flex; flex-direction:column; justify-content:space-between; height: 230px; padding: 20px;">
               <div>
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 8px;">
-                  <span style="font-size:0.75rem; color:var(--accent-secondary); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">${projectTitle}</span>
+                  <span style="font-size:0.75rem; color:var(--accent-secondary); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">${API.escapeHtml(projectTitle)}</span>
                   <span class="task-priority-badge priority-${task.priority}" style="margin-bottom:0;">${task.priority}</span>
                 </div>
-                <h3 style="font-size: 1.15rem; font-weight:700; margin-bottom: 6px; color:var(--text-primary);">${task.title}</h3>
-                <p style="font-size:0.85rem; color:var(--text-secondary); line-height: 1.4; display:-webkit-box; -webkit-line-clamp: 2; -webkit-box-orient:vertical; overflow:hidden;">${task.description}</p>
+                <h3 style="font-size: 1.15rem; font-weight:700; margin-bottom: 6px; color:var(--text-primary);">${API.escapeHtml(task.title)}</h3>
+                <p style="font-size:0.85rem; color:var(--text-secondary); line-height: 1.4; display:-webkit-box; -webkit-line-clamp: 2; -webkit-box-orient:vertical; overflow:hidden;">${API.escapeHtml(task.description)}</p>
               </div>
 
               <div>
@@ -246,8 +255,8 @@
                 </div>
                 <div class="project-card-footer" style="padding-top:10px;">
                   <div class="task-assignee" style="font-size: 0.8rem;">
-                    <div class="assignee-avatar">${initials}</div>
-                    <span>${assigneeName}</span>
+                    <div class="assignee-avatar">${API.escapeHtml(initials)}</div>
+                    <span>${API.escapeHtml(assigneeName)}</span>
                   </div>
                   <div style="display:flex; gap:10px; align-items:center;">
                     <div style="font-size:0.75rem; color:var(--text-secondary);">

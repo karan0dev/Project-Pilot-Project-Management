@@ -183,21 +183,6 @@
   }
   body.light-mode .brand-side::after{background:linear-gradient(115deg, rgba(124,92,255,0.06), transparent 55%);}
 
-  .brand-header-row{
-    display:flex;align-items:center;justify-content:space-between;width:100%;z-index:2;
-  }
-  .back-home-btn{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;color:var(--muted);
-    background:rgba(255,255,255,0.03);border:1px solid var(--glass-border);
-    text-decoration:none;transition:all 0.3s var(--ease);
-  }
-  body.light-mode .back-home-btn{background:rgba(124,92,255,0.05);color:var(--ink);}
-  .back-home-btn:hover{color:var(--ink);background:rgba(255,255,255,0.08);border-color:var(--violet-soft);transform:translateY(-1px);}
-  body.light-mode .back-home-btn:hover{background:rgba(124,92,255,0.1);border-color:var(--violet);}
-  .back-home-btn svg{width:13px;height:13px;stroke:currentColor;transition:transform 0.3s var(--ease);flex:none;}
-  .back-home-btn:hover svg{transform:translateX(-2px);}
-
   .brand{
     display:inline-flex;align-items:center;gap:10px;
     font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;
@@ -346,25 +331,6 @@
     margin-bottom:clamp(18px,2.8vh,26px);
   }
 
-  /* Dynamic Alert Messages styling */
-  .auth-alert {
-    display: none;
-    margin-bottom: 20px;
-    padding: 12px 18px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 1.4;
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    background: rgba(239, 68, 68, 0.08);
-    color: #ef4444;
-  }
-  body.light-mode .auth-alert {
-    background: rgba(220, 38, 38, 0.06);
-    border-color: rgba(220, 38, 38, 0.15);
-    color: #dc2626;
-  }
-
   .field{margin-bottom:clamp(12px,1.8vh,16px);}
   .field label{display:block;font-size:11.5px;font-weight:600;color:var(--ink);margin-bottom:6px;}
   .input-wrap{position:relative;display:flex;align-items:center;}
@@ -384,46 +350,6 @@
   .input-wrap input::placeholder{color:var(--muted-2);}
   .input-wrap input:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,92,255,.15);}
   .toggle-eye{position:absolute;right:13px;cursor:pointer;width:16px;height:16px;color:var(--muted);background:none;border:none;padding:0;display:flex;}
-
-  .auth-select{
-    width:100%;
-    padding:clamp(10px,1.7vh,12px) 14px clamp(10px,1.7vh,12px) 40px;
-    border:1.5px solid var(--glass-border);
-    border-radius:12px;
-    font-size:13.5px;font-family:'Inter',sans-serif;
-    color:var(--ink);
-    background:rgba(255,255,255,0.03);
-    outline:none;
-    transition:border-color .15s, background .3s;
-    appearance: none;
-    -webkit-appearance: none;
-    cursor: pointer;
-  }
-  body.light-mode .auth-select{background:#fff;}
-  .auth-select:focus{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,92,255,.15);}
-  .auth-select option{
-    background:#100b22;
-    color:#f5f3ff;
-  }
-  body.light-mode .auth-select option{
-    background:#eeecf9;
-    color:#14102b;
-  }
-  .select-arrow {
-    position: absolute;
-    right: 14px;
-    pointer-events: none;
-    color: var(--muted);
-    width: 14px;
-    height: 14px;
-    display: flex;
-    align-items: center;
-  }
-  .select-arrow svg {
-    width: 100%;
-    height: 100%;
-    stroke: currentColor;
-  }
 
   .row-between{display:flex;align-items:center;justify-content:space-between;margin-bottom:clamp(14px,2.2vh,20px);font-size:11.5px;}
   .remember{display:flex;align-items:center;gap:7px;color:var(--muted);}
@@ -445,11 +371,10 @@
     cursor:pointer;position:relative;overflow:hidden;
     box-shadow:0 10px 25px -4px rgba(189,36,255,.45), 0 4px 12px -2px rgba(36,101,255,.35), inset 0 2px 2px rgba(255,255,255,.55);
     margin-bottom:clamp(14px,2.2vh,20px);
-    transition:transform .3s var(--ease), box-shadow .3s var(--ease), opacity .3s;
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease);
   }
   .btn-submit:hover{transform:translateY(-2px);box-shadow:0 16px 36px -2px rgba(189,36,255,.65), 0 8px 20px -2px rgba(36,101,255,.5), inset 0 2px 2px rgba(255,255,255,.65);}
   .btn-submit:active{transform:translateY(1px);}
-  .btn-submit:disabled{opacity: 0.7; cursor: not-allowed;}
   .btn-submit svg{width:15px;height:15px;}
 
   .divider{display:flex;align-items:center;gap:12px;color:var(--muted-2);font-size:11.5px;margin-bottom:clamp(14px,2.2vh,18px);}
@@ -545,22 +470,16 @@
 
   <!-- ============ LEFT: BRAND / SHOWCASE ============ -->
   <div class="brand-side">
-    <div class="brand-header-row">
-      <a class="brand" href="/">
-        <span class="brand-mark">
-          <svg viewBox="0 0 24 24" fill="none">
-            <rect x="9.5" y="4.5" width="10.5" height="8.5" rx="1.5" fill="white" opacity="0.32"/>
-            <rect x="7" y="7" width="10.5" height="8.5" rx="1.5" fill="white" opacity="0.65"/>
-            <rect x="4.5" y="9.5" width="10.5" height="8.5" rx="1.5" fill="white"/>
-          </svg>
-        </span>
-        ProjectPilot
-      </a>
-      <a class="back-home-btn" href="/">
-        <svg fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        <span>Back to Home</span>
-      </a>
-    </div>
+    <a class="brand" href="#">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none">
+          <rect x="9.5" y="4.5" width="10.5" height="8.5" rx="1.5" fill="white" opacity="0.32"/>
+          <rect x="7" y="7" width="10.5" height="8.5" rx="1.5" fill="white" opacity="0.65"/>
+          <rect x="4.5" y="9.5" width="10.5" height="8.5" rx="1.5" fill="white"/>
+        </svg>
+      </span>
+      ProjectPilot
+    </a>
 
     <span class="badge-pill"><span class="dot"></span> Secure access, always in sync</span>
 
@@ -613,22 +532,19 @@
         <h2>Welcome back</h2>
         <p class="sub">Sign in to your ProjectPilot workspace</p>
 
-        <!-- Alert messages container for Login -->
-        <div id="login-alert" class="auth-alert"></div>
-
         <div class="field">
           <label>Email address</label>
           <div class="input-wrap">
             <svg class="leading" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6l9 7 9-7"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
-            <input type="email" id="login-email" placeholder="you@projectpilot.com" autocomplete="email" required>
+            <input type="email" placeholder="you@projectpilot.com" autocomplete="email" required>
           </div>
         </div>
 
         <div class="field">
           <label>Password</label>
           <div class="input-wrap">
-            <svg class="leading" fill="none" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-            <input class="pw-input" type="password" id="login-password" placeholder="••••••••••" autocomplete="current-password" required>
+            <svg class="leading" fill="none" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+            <input class="pw-input" type="password" placeholder="••••••••••" autocomplete="current-password" required>
             <button type="button" class="toggle-eye" data-toggle-eye>
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
@@ -637,7 +553,7 @@
 
         <div class="row-between">
           <label class="remember"><input type="checkbox"> Remember me</label>
-          <a href="#" onclick="event.preventDefault(); const activeAlert = document.getElementById('login-alert'); activeAlert.innerText = 'Password reset instructions have been simulated to your email.'; activeAlert.style.display = 'block'; activeAlert.style.color = 'var(--violet-soft)'; activeAlert.style.borderColor = 'rgba(124, 92, 255, 0.2)'; activeAlert.style.background = 'rgba(124, 92, 255, 0.08)';">Forgot password?</a>
+          <a href="#">Forgot password?</a>
         </div>
 
         <button type="submit" class="btn-submit">
@@ -667,14 +583,11 @@
         <h2>Create your workspace</h2>
         <p class="sub">Start planning, tracking, and delivering today</p>
 
-        <!-- Alert messages container for Registration -->
-        <div id="register-alert" class="auth-alert"></div>
-
         <div class="field">
-          <label>Username</label>
+          <label>Full name</label>
           <div class="input-wrap">
             <svg class="leading" fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"/></svg>
-            <input type="text" id="register-username" placeholder="alexm" autocomplete="username" required minlength="3">
+            <input type="text" placeholder="Jordan Lee" autocomplete="name" required>
           </div>
         </div>
 
@@ -682,32 +595,18 @@
           <label>Email address</label>
           <div class="input-wrap">
             <svg class="leading" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6l9 7 9-7"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
-            <input type="email" id="register-email" placeholder="you@projectpilot.com" autocomplete="email" required>
+            <input type="email" placeholder="you@projectpilot.com" autocomplete="email" required>
           </div>
         </div>
 
         <div class="field">
           <label>Password</label>
           <div class="input-wrap">
-            <svg class="leading" fill="none" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-            <input class="pw-input" type="password" id="register-password" placeholder="Create a password" autocomplete="new-password" required minlength="6">
+            <svg class="leading" fill="none" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+            <input class="pw-input" type="password" placeholder="Create a password" autocomplete="new-password" required>
             <button type="button" class="toggle-eye" data-toggle-eye>
-               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Account Type</label>
-          <div class="input-wrap">
-            <svg class="leading" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            <select id="register-role" class="auth-select">
-              <option value="user">User (Manage your own projects)</option>
-              <option value="admin">Admin (Manage a team & invite users)</option>
-            </select>
-            <div class="select-arrow">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-            </div>
           </div>
         </div>
 
@@ -733,46 +632,18 @@
 
 </div>
 
-<script src="/js/api.js"></script>
 <script>
-  // ---------- Theme Engine ----------
-  const THEME_KEY = 'projectpilot_theme';
+  // ---------- Theme toggle ----------
   const themeToggle = document.getElementById('themeToggle');
-
-  const applyTheme = (theme) => {
-    if (theme === 'light') document.body.classList.add('light-mode');
-    else document.body.classList.remove('light-mode');
-  };
-
-  const initTheme = () => {
-    const saved = localStorage.getItem(THEME_KEY);
-    if (saved) {
-      applyTheme(saved);
-    } else {
-      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-      applyTheme(prefersLight ? 'light' : 'dark');
-    }
-  };
-
-  const toggleTheme = () => {
-    const isLight = document.body.classList.toggle('light-mode');
-    localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark');
-  };
-
-  initTheme();
-  if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light-mode');
+  });
 
   // ---------- Password visibility ----------
   document.querySelectorAll('[data-toggle-eye]').forEach(btn => {
     btn.addEventListener('click', () => {
       const input = btn.previousElementSibling;
       input.type = input.type === 'password' ? 'text' : 'password';
-      
-      if (input.type === 'text') {
-        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
-      } else {
-        btn.innerHTML = `<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>`;
-      }
     });
   });
 
@@ -780,10 +651,8 @@
   document.addEventListener('mousemove', (e) => {
     const x = (window.innerWidth / 2 - e.clientX) / 60;
     const y = (window.innerHeight / 2 - e.clientY) / 60;
-    const blobA = document.getElementById('blobA');
-    const blobB = document.getElementById('blobB');
-    if (blobA) blobA.style.transform = `translate(${x}px, ${y}px)`;
-    if (blobB) blobB.style.transform = `translate(${-x * 0.7}px, ${-y * 0.7}px)`;
+    document.getElementById('blobA').style.transform = `translate(${x}px, ${y}px)`;
+    document.getElementById('blobB').style.transform = `translate(${-x * 0.7}px, ${-y * 0.7}px)`;
   });
 
   // ---------- Portal reveal transition (login <-> register) ----------
@@ -791,187 +660,66 @@
   const portalText = document.getElementById('portalText');
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
-  const loginAlert = document.getElementById('login-alert');
-  const registerAlert = document.getElementById('register-alert');
   const stage = document.getElementById('authStage');
   let animating = false;
 
-  function setFormState(targetTab, animate = false, clientClickCoords = null) {
-    if (animating) return;
-
-    const showLogin = targetTab === 'login';
-    const activeForm = showLogin ? loginForm : registerForm;
-    const inactiveForm = showLogin ? registerForm : loginForm;
-
-    if (!animate) {
-      inactiveForm.hidden = true;
-      activeForm.hidden = false;
-      document.title = showLogin ? "Sign In — ProjectPilot" : "Create Account — ProjectPilot";
-      return;
-    }
-
-    animating = true;
-    portalText.textContent = showLogin ? 'Returning to sign in…' : 'Setting up registration…';
-
-    if (clientClickCoords) {
-      const stageRect = stage.getBoundingClientRect();
-      const px = ((clientClickCoords.x - stageRect.left) / stageRect.width) * 100;
-      const py = ((clientClickCoords.y - stageRect.top) / stageRect.height) * 100;
-      veil.style.setProperty('--px', px + '%');
-      veil.style.setProperty('--py', py + '%');
-    } else {
-      veil.style.setProperty('--px', '50%');
-      veil.style.setProperty('--py', '50%');
-    }
-
-    // Hide alerts on switch
-    loginAlert.style.display = 'none';
-    registerAlert.style.display = 'none';
-
-    veil.classList.add('expanding');
-
-    const onExpand = (ev) => {
-      if (ev.animationName !== 'portal-expand') return;
-      veil.removeEventListener('animationend', onExpand);
-
-      inactiveForm.hidden = true;
-      activeForm.hidden = false;
-      document.title = showLogin ? "Sign In — ProjectPilot" : "Create Account — ProjectPilot";
-
-      veil.classList.remove('expanding');
-      veil.classList.add('shrinking');
-
-      const onShrink = (ev2) => {
-        if (ev2.animationName !== 'portal-shrink') return;
-        veil.removeEventListener('animationend', onShrink);
-        veil.classList.remove('shrinking');
-        animating = false;
-      };
-      veil.addEventListener('animationend', onShrink);
-    };
-    veil.addEventListener('animationend', onExpand);
-  }
-
-  // Bind Switch Navigation links
   document.querySelectorAll('[data-goto]').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
+      if (animating) return;
+      animating = true;
       const target = link.getAttribute('data-goto');
       const rect = link.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
+      const stageRect = stage.getBoundingClientRect();
+      const px = ((rect.left + rect.width / 2 - stageRect.left) / stageRect.width) * 100;
+      const py = ((rect.top + rect.height / 2 - stageRect.top) / stageRect.height) * 100;
+      veil.style.setProperty('--px', px + '%');
+      veil.style.setProperty('--py', py + '%');
+      portalText.textContent = target === 'register' ? 'Setting up registration…' : 'Returning to sign in…';
 
-      history.pushState({ tab: target }, '', '/' + target);
-      setFormState(target, true, { x, y });
+      veil.classList.add('expanding');
+
+      veil.addEventListener('animationend', function onExpand(ev){
+        if (ev.animationName !== 'portal-expand') return;
+        veil.removeEventListener('animationend', onExpand);
+
+        // swap forms while fully covered
+        if (target === 'register') {
+          loginForm.hidden = true;
+          registerForm.hidden = false;
+        } else {
+          registerForm.hidden = true;
+          loginForm.hidden = false;
+        }
+
+        veil.classList.remove('expanding');
+        veil.classList.add('shrinking');
+
+        veil.addEventListener('animationend', function onShrink(ev2){
+          if (ev2.animationName !== 'portal-shrink') return;
+          veil.removeEventListener('animationend', onShrink);
+          veil.classList.remove('shrinking');
+          animating = false;
+        });
+      });
     });
   });
 
-  // Handle Browser back/forward navigation
-  window.addEventListener('popstate', (e) => {
-    const path = window.location.pathname;
-    const target = path.includes('/register') ? 'register' : 'login';
-    setFormState(target, true);
-  });
-
-  // Display errors in the corresponding alert container
-  function showError(alertEl, message) {
-    alertEl.innerText = message;
-    alertEl.style.display = 'block';
-    
-    // Reset back to standard error styles in case it was altered
-    alertEl.style.color = '#ef4444';
-    alertEl.style.borderColor = 'rgba(239, 68, 68, 0.2)';
-    alertEl.style.background = 'rgba(239, 68, 68, 0.08)';
-    
-    if (document.body.classList.contains('light-mode')) {
-      alertEl.style.color = '#dc2626';
-      alertEl.style.borderColor = 'rgba(220, 38, 38, 0.15)';
-      alertEl.style.background = 'rgba(220, 38, 38, 0.06)';
-    }
-  }
-
-  // Handle Social buttons feedback
-  document.querySelectorAll('.social-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const activeAlert = !loginForm.hidden ? loginAlert : registerAlert;
-      activeAlert.innerText = 'Social authentication is currently simulated in this demo.';
-      activeAlert.style.display = 'block';
-      activeAlert.style.color = 'var(--violet-soft)';
-      activeAlert.style.borderColor = 'rgba(124, 92, 255, 0.2)';
-      activeAlert.style.background = 'rgba(124, 92, 255, 0.08)';
+  // ---------- Submit feedback (front-end only demo) ----------
+  [loginForm, registerForm].forEach(form => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('.btn-submit');
+      const label = btn.querySelector('.btn-label');
+      const original = label.textContent;
+      label.textContent = form === loginForm ? 'Signing in…' : 'Creating account…';
+      btn.style.opacity = '.85';
+      setTimeout(() => {
+        label.textContent = '✓ Success';
+        setTimeout(() => { label.textContent = original; btn.style.opacity = '1'; }, 1400);
+      }, 900);
     });
   });
-
-  // ---------- Submit Login Form ----------
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value;
-    
-    loginAlert.style.display = 'none';
-
-    const btn = loginForm.querySelector('.btn-submit');
-    const label = btn.querySelector('.btn-label');
-    const originalText = label.textContent;
-    label.textContent = 'Signing in…';
-    btn.disabled = true;
-
-    try {
-      const response = await API.login(email, password);
-      if (response.success) {
-        label.textContent = '✓ Success';
-        setTimeout(() => {
-          window.location.href = '/dashboard';
-        }, 400);
-      } else {
-        showError(loginAlert, response.message || 'Login failed');
-        label.textContent = originalText;
-        btn.disabled = false;
-      }
-    } catch (error) {
-      showError(loginAlert, error.message || 'Network error occurred');
-      label.textContent = originalText;
-      btn.disabled = false;
-    }
-  });
-
-  // ---------- Submit Register Form ----------
-  registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const username = document.getElementById('register-username').value.trim();
-    const email = document.getElementById('register-email').value.trim();
-    const password = document.getElementById('register-password').value;
-    
-    registerAlert.style.display = 'none';
-
-    const btn = registerForm.querySelector('.btn-submit');
-    const label = btn.querySelector('.btn-label');
-    const originalText = label.textContent;
-    label.textContent = 'Creating account…';
-    btn.disabled = true;
-
-    try {
-      const role = document.getElementById('register-role').value;
-      const response = await API.register(username, email, password, role);
-      if (response.success) {
-        label.textContent = '✓ Success';
-        setTimeout(() => {
-          window.location.href = '/dashboard';
-        }, 400);
-      } else {
-        showError(registerAlert, response.message || 'Registration failed');
-        label.textContent = originalText;
-        btn.disabled = false;
-      }
-    } catch (error) {
-      showError(registerAlert, error.message || 'Network error occurred');
-      label.textContent = originalText;
-      btn.disabled = false;
-    }
-  });
-
-  // Set initial tab state for the Sign In page
-  setFormState('login', false);
 </script>
 
 </body>

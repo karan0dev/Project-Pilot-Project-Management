@@ -30,6 +30,21 @@ const UserSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'user'
   },
+  passwordChangedAt: {
+    type: Date
+  },
+  teamName: {
+    type: String,
+    trim: true
+  },
+  teamAdmin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  teamMembers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   createdAt: {
     type: Date,
     default: Date.now
@@ -37,13 +52,17 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Encrypt password using bcrypt before saving
-UserSchema.pre('save', async function () {
+UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
-    return;
+    return next ? next() : undefined;
   }
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+
+  if (!this.isNew) {
+    this.passwordChangedAt = Date.now() - 1000;
+  }
 });
 
 // Match user entered password to hashed password in database

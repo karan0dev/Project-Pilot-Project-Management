@@ -6,7 +6,7 @@
   <title>Users Administration — ProjectPilot</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
+<body class="workspace-page light-mode users-page">
 
   <!-- Background Blobs -->
   <div class="bg-blobs">
@@ -120,7 +120,7 @@
           const actionsHtml = isSelf ? `
             <span style="font-size:0.8rem; color:var(--text-secondary); font-style:italic;">Logged In</span>
           ` : `
-            <button class="btn-clay danger" onclick="window.deleteUserAccount('${user._id}', '${user.username}')" style="padding: 6px 12px; font-size: 0.8rem;">
+            <button class="btn-clay danger" onclick="window.deleteUserAccount('${user._id}', '${user.username.replace(/'/g, "\\'")}')" style="padding: 6px 12px; font-size: 0.8rem;">
               🗑️ Delete
             </button>
           `;
@@ -129,11 +129,11 @@
             <tr>
               <td>
                 <div style="display:flex; align-items:center; gap:12px;">
-                  <div class="assignee-avatar" style="background:linear-gradient(135deg, var(--accent-primary), var(--accent-pink)); box-shadow:none;">${initials}</div>
-                  <span style="font-weight:600;">${user.username}</span>
+                  <div class="assignee-avatar" style="background:linear-gradient(135deg, var(--accent-primary), var(--accent-pink)); box-shadow:none;">${API.escapeHtml(initials)}</div>
+                  <span style="font-weight:600;">${API.escapeHtml(user.username)}</span>
                 </div>
               </td>
-              <td style="color:var(--text-secondary);">${user.email}</td>
+              <td style="color:var(--text-secondary);">${API.escapeHtml(user.email)}</td>
               <td><span class="role-badge ${roleClass}">${user.role}</span></td>
               <td style="color:var(--text-secondary);">${joinedDate}</td>
               <td style="text-align: right;">${actionsHtml}</td>

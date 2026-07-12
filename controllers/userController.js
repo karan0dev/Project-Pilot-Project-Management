@@ -14,26 +14,31 @@ const getUsers = async (req, res) => {
 
     let queryBuilder = User.find({}).select('-password').sort({ createdAt: -1 });
 
-    if (page && limit) {
-      const pageNum = parseInt(page, 10) || 1;
-      const limitNum = parseInt(limit, 10) || 10;
+    const total = await User.countDocuments({});
+
+    let pageNum = 1;
+    let limitNum = total;
+
+    if (page || limit) {
+      pageNum = parseInt(page, 10) || 1;
+      limitNum = Math.min(parseInt(limit, 10) || 10, 100);
       const skipNum = (pageNum - 1) * limitNum;
       queryBuilder = queryBuilder.skip(skipNum).limit(limitNum);
     }
 
     const users = await queryBuilder;
-    const total = await User.countDocuments({});
 
     res.json({
       success: true,
       count: users.length,
       total,
       page: page ? parseInt(page, 10) : 1,
-      limit: limit ? parseInt(limit, 10) : total,
+      limit: limit ? limitNum : total,
       data: users
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 
@@ -98,7 +103,8 @@ const deleteUser = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 

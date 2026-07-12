@@ -5,6 +5,766 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - ProjectPilot</title>
   <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .team-space-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    .team-section-title {
+      font-size: 1rem;
+      font-weight: 750;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .team-member-list, .invitation-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .team-member-item, .invitation-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+    }
+    body.light-mode .team-member-item, body.light-mode .invitation-item {
+      background: rgba(255, 255, 255, 0.5);
+    }
+    .member-details {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .member-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--accent-primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .member-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .member-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .member-email {
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+    }
+    .team-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    .team-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .team-form-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .team-form-row {
+      display: flex;
+      gap: 10px;
+    }
+    .team-input {
+      flex-grow: 1;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-primary);
+      outline: none;
+      font-size: 0.85rem;
+    }
+    body.light-mode .team-input {
+      background: #fff;
+    }
+    .team-input:focus {
+      border-color: var(--accent-primary);
+    }
+    .invite-status-badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge-pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+    }
+    .action-btn-row {
+      display: flex;
+      gap: 8px;
+    }
+    .alert-box {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .alert-success {
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    .alert-danger {
+      background: rgba(239, 68, 68, 0.12);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+    
+    /* Team Chat Styles */
+    .chat-msg-bubble {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      line-height: 1.45;
+    }
+    .chat-msg-self {
+      align-self: flex-end;
+      background: var(--accent-primary);
+      color: #fff;
+      border-bottom-right-radius: 3px;
+      box-shadow: 0 4px 12px rgba(124, 92, 255, 0.15);
+    }
+    .chat-msg-other {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-primary);
+      border-top-left-radius: 3px;
+      border: 1px solid var(--glass-border);
+    }
+    body.light-mode .chat-msg-other {
+      background: rgba(255, 255, 255, 0.85);
+    }
+    .chat-msg-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.68rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    body.light-mode .chat-msg-self .chat-msg-meta {
+      color: rgba(255, 255, 255, 0.85);
+    }
+    .chat-msg-other .chat-msg-meta {
+      color: var(--text-secondary);
+    }
+    .chat-sender-name {
+      font-weight: 700;
+    }
+
+    /* ===================== Floating Liquid-Glass Claymorphic Team Chat ===================== */
+    .floating-chat-bubble {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      z-index: 999;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 45%),
+        linear-gradient(135deg, #a78bfa 0%, #7c5cff 35%, #00b2fe 70%, #fe5ea6 100%);
+      background-size: 220% 220%;
+      animation: chatBubbleShift 8s ease-in-out infinite;
+      backdrop-filter: blur(14px) saturate(180%);
+      -webkit-backdrop-filter: blur(14px) saturate(180%);
+      box-shadow:
+        7px 7px 16px rgba(0, 0, 0, 0.35),
+        -4px -4px 12px rgba(255, 255, 255, 0.15),
+        inset 1px 1px 1px rgba(255, 255, 255, 0.5),
+        inset -3px -3px 8px rgba(0, 0, 0, 0.25);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease;
+    }
+    .floating-chat-bubble:hover {
+      transform: translateY(-4px) scale(1.07);
+      box-shadow:
+        9px 12px 22px rgba(0, 0, 0, 0.4),
+        -4px -4px 14px rgba(255, 255, 255, 0.18),
+        inset 1px 1px 1px rgba(255, 255, 255, 0.55),
+        inset -3px -3px 8px rgba(0, 0, 0, 0.25),
+        0 0 30px rgba(124, 92, 255, 0.55);
+    }
+    .floating-chat-bubble.is-open {
+      transform: rotate(90deg) scale(1);
+    }
+    .floating-chat-bubble svg {
+      width: 26px;
+      height: 26px;
+      color: #fff;
+      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+      transition: opacity 0.2s ease, transform 0.3s ease;
+    }
+    .floating-chat-bubble .icon-close { display: none; }
+    .floating-chat-bubble.is-open .icon-chat { display: none; }
+    .floating-chat-bubble.is-open .icon-close { display: block; }
+
+    @keyframes chatBubbleShift {
+      0% { background-position: 0% 30%; }
+      50% { background-position: 100% 70%; }
+      100% { background-position: 0% 30%; }
+    }
+
+    .chat-unread-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 5px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff4d9d, #ff5e5e);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg-color, #060713);
+      box-shadow: 0 2px 6px rgba(255, 77, 157, 0.5);
+    }
+    .chat-unread-badge.hidden { display: none; }
+
+    .floating-chat-panel {
+      position: fixed;
+      right: 28px;
+      bottom: 104px;
+      width: 350px;
+      max-width: calc(100vw - 40px);
+      height: 480px;
+      max-height: calc(100vh - 150px);
+      z-index: 998;
+      display: flex;
+      flex-direction: column;
+      border-radius: 26px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(0, 0, 0, 0.08) 100%),
+        rgba(15, 16, 35, 0.86);
+      backdrop-filter: blur(28px) saturate(200%);
+      -webkit-backdrop-filter: blur(28px) saturate(200%);
+      box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.45),
+        inset 1px 1px 0px rgba(255, 255, 255, 0.18),
+        inset -1px -1px 0px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateY(24px) scale(0.94);
+      pointer-events: none;
+      transform-origin: bottom right;
+      transition: opacity 0.28s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.28s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .floating-chat-panel.is-open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    body.light-mode .floating-chat-panel {
+      background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.2) 100%),
+        rgba(255, 255, 255, 0.88);
+      box-shadow:
+        0 25px 60px rgba(120, 130, 170, 0.28),
+        inset 1px 1px 0px rgba(255, 255, 255, 0.7);
+    }
+
+    .floating-chat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
+      background: linear-gradient(135deg, rgba(124, 92, 255, 0.28), rgba(0, 178, 254, 0.18));
+      border-bottom: 1px solid var(--glass-border);
+      flex-shrink: 0;
+    }
+    .floating-chat-header-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 45%), linear-gradient(135deg, #a78bfa, #7c5cff, #00b2fe);
+      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3), -2px -2px 6px rgba(255, 255, 255, 0.12), inset 1px 1px 1px rgba(255, 255, 255, 0.5);
+    }
+    .floating-chat-header-icon svg { width: 18px; height: 18px; color: #fff; }
+    .floating-chat-header-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .floating-chat-header-text strong { font-size: 0.9rem; color: var(--text-primary); font-weight: 750; }
+    .floating-chat-header-text span { font-size: 0.7rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .floating-chat-close {
+      margin-left: auto;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .floating-chat-close:hover { background: rgba(255, 255, 255, 0.18); transform: rotate(90deg); }
+    .floating-chat-close svg { width: 13px; height: 13px; }
+
+    .floating-chat-messages {
+      flex-grow: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .floating-chat-inputbar {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      border-top: 1px solid var(--glass-border);
+      background: rgba(0, 0, 0, 0.12);
+      flex-shrink: 0;
+      margin: 0;
+    }
+    body.light-mode .floating-chat-inputbar { background: rgba(255, 255, 255, 0.35); }
+    .floating-chat-input {
+      flex-grow: 1;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1.5px solid var(--glass-border);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      outline: none;
+      font-size: 0.85rem;
+      font-family: inherit;
+    }
+    body.light-mode .floating-chat-input { background: rgba(255, 255, 255, 0.85); }
+    .floating-chat-input:focus { border-color: var(--accent-primary); }
+    .floating-chat-send {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      border-radius: 13px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 45%), linear-gradient(135deg, #a78bfa, #7c5cff, #00b2fe);
+      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3), inset 1px 1px 1px rgba(255, 255, 255, 0.5);
+      transition: transform 0.2s ease;
+    }
+    .floating-chat-send:hover { transform: scale(1.08); }
+    .floating-chat-send:active { transform: scale(0.94); }
+    .floating-chat-send svg { width: 15px; height: 15px; color: #fff; }
+
+    @media (max-width: 480px) {
+      .floating-chat-panel { right: 16px; bottom: 92px; width: calc(100vw - 32px); }
+      .floating-chat-bubble { right: 16px; bottom: 16px; }
+    }
+
+    /* ===================== Workspace Statistics Breakdown v2 ===================== */
+    .stats-breakdown-card-v2 { padding: 26px 28px 30px; }
+    .stats-v2-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .stats-v2-header-left { display: flex; align-items: center; gap: 12px; }
+    .stats-v2-header-icon { font-size: 1.3rem; }
+    .stats-v2-header-title { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); }
+    .stats-v2-overview-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--glass-border);
+      background: rgba(124, 92, 255, 0.08);
+      color: var(--accent-primary);
+      font-weight: 750;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .stats-v2-overview-btn:hover { background: rgba(124, 92, 255, 0.18); transform: translateY(-1px); }
+    .stats-v2-overview-btn svg { width: 15px; height: 15px; }
+
+    .stats-v2-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .stats-v2-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .stats-v2-cell {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    body.light-mode .stats-v2-cell { background: rgba(255, 255, 255, 0.55); }
+    .stats-v2-cell:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); }
+
+    .stats-v2-icon {
+      width: 52px;
+      height: 52px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -3px -3px 8px rgba(255, 255, 255, 0.08), inset 1px 1px 1px rgba(255, 255, 255, 0.4);
+    }
+    .stats-v2-icon svg { width: 22px; height: 22px; }
+    .stats-v2-icon.purple { background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.5), rgba(255,255,255,0) 45%), linear-gradient(135deg, #b79bff, #7c5cff); color: #fff; }
+    .stats-v2-icon.blue { background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.5), rgba(255,255,255,0) 45%), linear-gradient(135deg, #5ec8ff, #1284ff); color: #fff; }
+    .stats-v2-icon.green { background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.5), rgba(255,255,255,0) 45%), linear-gradient(135deg, #5be79a, #00c853); color: #fff; }
+    .stats-v2-icon.orange { background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.5), rgba(255,255,255,0) 45%), linear-gradient(135deg, #ffbd6b, #ff9f43); color: #fff; }
+
+    .stats-v2-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .stats-v2-text h3 { font-size: 1.7rem; font-weight: 900; color: var(--text-primary); line-height: 1.1; }
+    .stats-v2-text p { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+    .stats-v2-bar { display: block; width: 28px; height: 3px; border-radius: 3px; margin-top: 6px; }
+    .stats-v2-bar.purple { background: linear-gradient(90deg, #b79bff, #7c5cff); }
+    .stats-v2-bar.blue { background: linear-gradient(90deg, #5ec8ff, #1284ff); }
+    .stats-v2-bar.green { background: linear-gradient(90deg, #5be79a, #00c853); }
+    .stats-v2-bar.orange { background: linear-gradient(90deg, #ffbd6b, #ff9f43); }
+
+    /* ===================== Active Projects Progress v2 ===================== */
+    .project-progress-capsule-v2 {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    body.light-mode .project-progress-capsule-v2 { background: rgba(255, 255, 255, 0.55); }
+    .project-progress-capsule-v2:hover { transform: translateY(-3px); box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); }
+    .proj-ring-v2 {
+      width: 54px;
+      height: 54px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .proj-ring-v2::before {
+      content: "";
+      position: absolute;
+      inset: 5px;
+      border-radius: 50%;
+      background: var(--bg-color);
+    }
+    .proj-ring-v2 span { position: relative; z-index: 1; }
+    .proj-body-v2 { flex-grow: 1; min-width: 0; }
+    .proj-body-v2 .proj-header-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+    .proj-body-v2 .proj-title-txt { font-size: 0.98rem; font-weight: 750; color: var(--text-primary); }
+    .proj-body-v2 .proj-title-txt a { color: inherit; text-decoration: none; }
+    .proj-body-v2 .proj-category-txt { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; margin-left: 6px; }
+    .proj-body-v2 .progress-container { height: 8px; border-radius: 6px; background: rgba(150, 160, 190, 0.2); overflow: hidden; }
+    .proj-body-v2 .progress-bar { height: 100%; border-radius: 6px; background: linear-gradient(90deg, #7c5cff, #00b2fe); }
+    .proj-body-v2 .proj-footer-row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; gap: 10px; flex-wrap: wrap; }
+    .proj-body-v2 .overdue-tag { padding: 3px 8px; border-radius: 7px; background: rgba(255, 77, 77, 0.14); color: #ff5e5e; font-size: 0.68rem; font-weight: 800; }
+
+    /* ===================== Recent Activities v2 ===================== */
+    .activity-item-v2 {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    body.light-mode .activity-item-v2 { background: rgba(255, 255, 255, 0.55); }
+    .activity-item-v2:hover { transform: translateX(3px); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12); }
+    .activity-icon-v2 {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2), inset 1px 1px 1px rgba(255, 255, 255, 0.35);
+    }
+    .activity-icon-v2 svg { width: 17px; height: 17px; }
+    .activity-copy-v2 { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .activity-copy-v2 span:first-child { font-size: 0.88rem; font-weight: 600; color: var(--text-primary); }
+    .activity-copy-v2 span:last-child { font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; }
+
+    /* ===================== Team Space polish ===================== */
+    .team-section-title-v2 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .team-section-title-v2 .ts-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2), inset 1px 1px 1px rgba(255, 255, 255, 0.4);
+    }
+    .team-section-title-v2 .ts-icon svg { width: 16px; height: 16px; }
+    .team-section-title-v2 .ts-icon.purple { background: linear-gradient(135deg, #b79bff, #7c5cff); }
+    .team-section-title-v2 .ts-icon.blue { background: linear-gradient(135deg, #5ec8ff, #1284ff); }
+    .team-section-title-v2 span:last-child { font-size: 0.95rem; font-weight: 800; color: var(--text-primary); text-transform: none; letter-spacing: normal; }
+
+    .team-space-header-v2 {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .team-space-header-icon {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(124, 92, 255, 0.12);
+      color: var(--accent-primary);
+    }
+    .team-space-header-icon svg { width: 20px; height: 20px; }
+    .team-space-header-v2 h3 { font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 3px; }
+    .team-space-header-v2 p { font-size: 0.82rem; color: var(--text-secondary); font-weight: 500; }
+
+    .team-activity-strip {
+      display: none;
+      align-items: center;
+      gap: 18px;
+      margin-top: 24px;
+      padding: 16px 20px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      flex-wrap: wrap;
+    }
+    body.light-mode .team-activity-strip { background: rgba(255, 255, 255, 0.5); }
+    .team-activity-strip-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      min-width: 180px;
+    }
+    .team-activity-strip-label strong { display: block; font-size: 0.85rem; font-weight: 750; color: var(--text-primary); }
+    .team-activity-strip-label span { font-size: 0.72rem; color: var(--text-secondary); }
+    .team-activity-chips {
+      display: flex;
+      gap: 12px;
+      flex-grow: 1;
+      flex-wrap: wrap;
+    }
+    .team-activity-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      flex: 1 1 200px;
+      min-width: 180px;
+    }
+    body.light-mode .team-activity-chip { background: rgba(255, 255, 255, 0.65); }
+    .team-activity-chip-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+    .team-activity-chip-text strong { font-size: 0.78rem; font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .team-activity-chip-text span { font-size: 0.7rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    @media (max-width: 720px) {
+      .team-activity-strip { flex-direction: column; align-items: stretch; }
+      .team-activity-strip-label { min-width: 0; }
+      .team-activity-chip { min-width: 0; flex-basis: 100%; }
+      .stats-v2-grid { grid-template-columns: 1fr !important; }
+      .stats-v2-header { flex-direction: row; }
+      .floating-chat-bubble { width: 54px; height: 54px; }
+      .floating-chat-bubble svg { width: 22px; height: 22px; }
+    }
+    @media (max-width: 400px) {
+      .stats-v2-cell { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* Premium Chat Pop Notification Bubble */
+    .chat-pop-notification {
+      position: fixed;
+      right: 104px;
+      bottom: 34px;
+      width: 240px;
+      padding: 12px 16px;
+      border-radius: 16px;
+      background: rgba(15, 16, 35, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 1px 1px 0 rgba(255,255,255,0.15);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      opacity: 0;
+      transform: translateX(20px) scale(0.9);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    body.light-mode .chat-pop-notification {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 30px rgba(120, 130, 170, 0.2), inset 1px 1px 0 rgba(255,255,255,0.7);
+    }
+    .chat-pop-notification.show {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+    /* Speech bubble arrow pointing to the chat button */
+    .chat-pop-notification::after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 8px 0 8px 8px;
+      border-style: solid;
+      border-color: transparent transparent transparent rgba(15, 16, 35, 0.9);
+      display: block;
+      width: 0;
+      z-index: 1;
+    }
+    body.light-mode .chat-pop-notification::after {
+      border-color: transparent transparent transparent rgba(255, 255, 255, 0.92);
+    }
+    /* Border for the speech bubble arrow */
+    .chat-pop-notification::before {
+      content: "";
+      position: absolute;
+      right: -9px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 9px 0 9px 9px;
+      border-style: solid;
+      border-color: transparent transparent transparent rgba(255, 255, 255, 0.15);
+      display: block;
+      width: 0;
+      z-index: 0;
+    }
+    body.light-mode .chat-pop-notification::before {
+      border-color: transparent transparent transparent rgba(0, 0, 0, 0.08);
+    }
+    
+    .chat-pop-notification .pop-close {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+    .chat-pop-notification .pop-close:hover {
+      color: var(--text-primary);
+    }
+    .chat-pop-notification .pop-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-right: 15px; /* space for close button */
+    }
+    .chat-pop-notification .pop-content strong {
+      font-size: 0.85rem;
+      color: var(--accent-primary);
+      font-weight: 750;
+    }
+    .chat-pop-notification .pop-content span {
+      font-size: 0.78rem;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 500;
+    }
+
+    /* Shake Keyframes */
+    @keyframes chatBubbleShake {
+      0%, 100% { transform: translateY(0) scale(1); }
+      10%, 30%, 50%, 70%, 90% { transform: translateY(-4px) rotate(-5deg) scale(1.05); }
+      20%, 40%, 60%, 80% { transform: translateY(-4px) rotate(5deg) scale(1.05); }
+    }
+    .floating-chat-bubble.shake {
+      animation: chatBubbleShake 1.2s cubic-bezier(.36,.07,.19,.97) both;
+      box-shadow:
+        0 0 25px rgba(124, 92, 255, 0.6),
+        0 0 10px rgba(124, 92, 255, 0.3);
+    }
+  </style>
 </head>
 <body class="dashboard-page light-mode">
   <div class="bg-blobs" aria-hidden="true">
@@ -27,7 +787,7 @@
       </div>
 
       <div class="bento-grid">
-        <div class="bento-card stat-card-3d purple col-span-1">
+        <a href="/projects" class="bento-card stat-card-3d purple col-span-1" style="text-decoration: none;">
           <div class="stat-info-left">
             <span class="stat-title">Total Projects</span>
             <div class="stat-value" id="stat-total-projects">-</div>
@@ -36,9 +796,9 @@
           <div class="stat-icon-3d">
             <img src="/images/dashboard_total_projects.png" alt="Projects" onerror="this.onerror=null; this.classList.add('fallback-icon'); this.src='/images/3d_folder.png';">
           </div>
-        </div>
+        </a>
 
-        <div class="bento-card stat-card-3d cyan col-span-1">
+        <a href="/projects" class="bento-card stat-card-3d yellow col-span-1" style="text-decoration: none;">
           <div class="stat-info-left">
             <span class="stat-title">Active Projects</span>
             <div class="stat-value" id="stat-active-projects">-</div>
@@ -47,9 +807,9 @@
           <div class="stat-icon-3d">
             <img src="/images/dashboard_active_projects.png" alt="Active" onerror="this.onerror=null; this.classList.add('fallback-icon'); this.src='/images/3d_lightning.png';">
           </div>
-        </div>
+        </a>
 
-        <div class="bento-card stat-card-3d green col-span-1">
+        <a href="/tasks" class="bento-card stat-card-3d green col-span-1" style="text-decoration: none;">
           <div class="stat-info-left">
             <span class="stat-title">Completed Tasks</span>
             <div class="stat-value" id="stat-completed-tasks">-</div>
@@ -58,9 +818,9 @@
           <div class="stat-icon-3d">
             <img src="/images/dashboard_completed_tasks.png" alt="Completed" onerror="this.onerror=null; this.classList.add('fallback-icon'); this.src='/images/3d_checkmark.png';">
           </div>
-        </div>
+        </a>
 
-        <div class="bento-card stat-card-3d red col-span-1">
+        <a href="/tasks" class="bento-card stat-card-3d red col-span-1" style="text-decoration: none;">
           <div class="stat-info-left">
             <span class="stat-title">Overdue Tasks</span>
             <div class="stat-value" id="stat-overdue-tasks">-</div>
@@ -69,9 +829,9 @@
           <div class="stat-icon-3d">
             <img src="/images/dashboard_overdue_tasks.png" alt="Overdue" onerror="this.onerror=null; this.classList.add('fallback-icon'); this.src='/images/3d_alarm.png';">
           </div>
-        </div>
+        </a>
 
-        <div class="bento-card col-span-2 row-span-2">
+        <div class="bento-card col-span-2" id="active-projects-card">
           <div class="bento-card-title">
             <span>&#9889; Active Projects Progress</span>
             <span class="card-menu-dots">&bull;&bull;&bull;</span>
@@ -81,42 +841,124 @@
           </div>
         </div>
 
-        <div class="bento-card col-span-2 row-span-2">
-          <div class="bento-card-title">
-            <span>&#128338; Recent Activities</span>
-            <button class="link-button" type="button" onclick="window.location.href='/reports'">View all</button>
+        <!-- Team Space Section -->
+        <div class="bento-card col-span-2" id="team-space-card" style="display:none;">
+          <div class="team-space-header-v2">
+            <span class="team-space-header-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            <div>
+              <h3>Team Space</h3>
+              <p>Collaborate with your team and manage members seamlessly.</p>
+            </div>
           </div>
-          <ul class="activity-list" id="activity-feed-container">
-            <li class="dashboard-empty-state">Loading activity feed...</li>
-          </ul>
+          <div id="team-space-alert" class="alert-box" style="display:none;"></div>
+
+          <div id="team-directory-content" style="display: block;">
+            <div id="team-space-body" class="team-space-container">
+              <p class="dashboard-empty-state">Loading team details...</p>
+            </div>
+          </div>
+
+
         </div>
 
-        <div class="bento-card col-span-4 stats-breakdown-card">
-          <div class="bento-card-title">
-            <span>&#128202; Workspace Statistics Breakdown</span>
+        <div class="bento-card col-span-4 stats-breakdown-card-v2">
+          <div class="stats-v2-header">
+            <div class="stats-v2-header-left">
+              <span class="stats-v2-header-icon">📊</span>
+              <span class="stats-v2-header-title">Workspace Statistics Breakdown</span>
+            </div>
+            <button type="button" class="stats-v2-overview-btn" onclick="window.location.href='/reports'">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>
+              <span>Overview</span>
+            </button>
           </div>
-          <div class="stats-breakdown-grid">
-            <div>
-              <h3 id="breakdown-projects">-</h3>
-              <p>Created Projects</p>
+          <div class="stats-v2-grid">
+            <div class="stats-v2-cell">
+              <div class="stats-v2-icon purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></svg>
+              </div>
+              <div class="stats-v2-text">
+                <h3 id="breakdown-projects">-</h3>
+                <p>Created Projects</p>
+                <span class="stats-v2-bar purple"></span>
+              </div>
             </div>
-            <div>
-              <h3 id="breakdown-tasks">-</h3>
-              <p>Tracked Tasks</p>
+            <div class="stats-v2-cell">
+              <div class="stats-v2-icon blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </div>
+              <div class="stats-v2-text">
+                <h3 id="breakdown-tasks">-</h3>
+                <p>Tracked Tasks</p>
+                <span class="stats-v2-bar blue"></span>
+              </div>
             </div>
-            <div>
-              <h3 id="breakdown-completed-projects">-</h3>
-              <p>Completed Projects</p>
+            <div class="stats-v2-cell">
+              <div class="stats-v2-icon green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              </div>
+              <div class="stats-v2-text">
+                <h3 id="breakdown-completed-projects">-</h3>
+                <p>Completed Projects</p>
+                <span class="stats-v2-bar green"></span>
+              </div>
             </div>
-            <div>
-              <h3 id="breakdown-team">-</h3>
-              <p>Workspace Users</p>
+            <div class="stats-v2-cell">
+              <div class="stats-v2-icon orange">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div class="stats-v2-text">
+                <h3 id="breakdown-team">-</h3>
+                <p>Workspace Users</p>
+                <span class="stats-v2-bar orange"></span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </main>
   </div>
+
+  <!-- Floating Liquid-Glass Team Chat Widget -->
+  <div class="floating-chat-panel" id="floating-chat-panel">
+    <div class="floating-chat-header">
+      <div class="floating-chat-header-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </div>
+      <div class="floating-chat-header-text">
+        <strong>Team Chat</strong>
+        <span id="floating-chat-team-name">Loading team...</span>
+      </div>
+      <button type="button" class="floating-chat-close" id="floating-chat-close-btn" aria-label="Close chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="floating-chat-messages" id="floating-chat-messages">
+      <p class="dashboard-empty-state">Loading chat history...</p>
+    </div>
+    <form class="floating-chat-inputbar" id="floating-chat-form">
+      <input type="text" id="floating-chat-input" class="floating-chat-input" placeholder="Type a message..." required autocomplete="off">
+      <button type="submit" class="floating-chat-send" aria-label="Send message">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </form>
+  </div>
+
+  <div class="chat-pop-notification" id="chat-pop-notification">
+    <span class="pop-close" id="chat-pop-close-btn">&times;</span>
+    <div class="pop-content">
+      <strong id="chat-pop-sender">Someone</strong>
+      <span id="chat-pop-text">New message...</span>
+    </div>
+  </div>
+
+  <button type="button" class="floating-chat-bubble" id="floating-chat-bubble" aria-label="Open team chat">
+    <span class="chat-unread-badge hidden" id="floating-chat-unread-badge">0</span>
+    <svg class="icon-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
 
   <script src="/js/api.js"></script>
   <script>
@@ -147,34 +989,11 @@
           document.getElementById('breakdown-completed-projects').innerText = stats.completedProjects;
           document.getElementById('breakdown-team').innerText = stats.totalUsers;
 
-          renderActivities(response.recentActivities);
           fetchActiveProjectsProgress();
+          loadTeamSpace();
         }
       } catch (error) {
         console.error('Failed to load dashboard metrics:', error);
-      }
-
-      function renderActivities(activities) {
-        const container = document.getElementById('activity-feed-container');
-        if (!activities || activities.length === 0) {
-          container.innerHTML = '<li class="dashboard-empty-state">No recent activities logged</li>';
-          return;
-        }
-
-        container.innerHTML = activities.map((act) => {
-          const initials = act.user ? act.user.username.substring(0, 2).toUpperCase() : 'PP';
-          const relativeTime = getRelativeTime(new Date(act.createdAt));
-
-          return `
-            <li class="activity-item">
-              <div class="activity-avatar">${initials}</div>
-              <div class="activity-copy">
-                <span>${act.description}</span>
-                <span>${relativeTime}</span>
-              </div>
-            </li>
-          `;
-        }).join('');
       }
 
       async function fetchActiveProjectsProgress() {
@@ -192,22 +1011,28 @@
             container.innerHTML = projects.map((proj) => {
               const overdueText = new Date(proj.deadline) < new Date() ? '<span class="overdue-tag">OVERDUE</span>' : '';
               const deadlineStr = new Date(proj.deadline).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+              const pct = proj.progress || 0;
+              const ringColor = pct >= 75 ? '#00c853' : pct >= 40 ? '#7c5cff' : '#ff9f43';
 
               return `
-                <div class="project-progress-capsule">
-                  <div class="proj-header-row">
-                    <div>
-                      <span class="proj-title-txt"><a href="/project-details?id=${proj._id}">${proj.title}</a></span>
-                      <span class="proj-category-txt">(${proj.category})</span>
+                <div class="project-progress-capsule-v2">
+                  <div class="proj-ring-v2" style="background: conic-gradient(${ringColor} ${pct * 3.6}deg, rgba(150,160,190,0.25) 0deg);">
+                    <span>${pct}%</span>
+                  </div>
+                  <div class="proj-body-v2">
+                    <div class="proj-header-row">
+                      <div>
+                        <span class="proj-title-txt"><a href="/project-details?id=${proj._id}">${proj.title}</a></span>
+                        <span class="proj-category-txt">(${proj.category})</span>
+                      </div>
                     </div>
-                    <span class="proj-percent-txt">${proj.progress}%</span>
-                  </div>
-                  <div class="progress-container">
-                    <div class="progress-bar" style="width: ${proj.progress}%;"></div>
-                  </div>
-                  <div class="proj-footer-row">
-                    <span>&#128197; Deadline: ${deadlineStr} ${overdueText}</span>
-                    <span>Created by: <b>${proj.createdBy ? proj.createdBy.username : 'Unknown'}</b></span>
+                    <div class="progress-container">
+                      <div class="progress-bar" style="width: ${pct}%;"></div>
+                    </div>
+                    <div class="proj-footer-row">
+                      <span>&#128197; Deadline: ${deadlineStr} ${overdueText}</span>
+                      <span>Created by: <b>${proj.createdBy ? proj.createdBy.username : 'Unknown'}</b></span>
+                    </div>
                   </div>
                 </div>
               `;
@@ -232,6 +1057,543 @@
         if (delta < day) return Math.floor(delta / hour) + ' hours ago';
         if (delta < 2 * day) return 'yesterday';
         return Math.floor(delta / day) + ' days ago';
+      }
+
+      // Floating Team Chat widget
+      let chatPollInterval = null;
+      let idlePollInterval = null;
+      let isChatOpen = false;
+      let knownMessageCount = 0;
+      let unreadCount = 0;
+
+      const floatingBubble = document.getElementById('floating-chat-bubble');
+      const floatingPanel = document.getElementById('floating-chat-panel');
+      const floatingCloseBtn = document.getElementById('floating-chat-close-btn');
+      const unreadBadge = document.getElementById('floating-chat-unread-badge');
+
+      function setUnreadBadge(count) {
+        unreadCount = count;
+        if (count > 0) {
+          unreadBadge.innerText = count > 9 ? '9+' : count;
+          unreadBadge.classList.remove('hidden');
+        } else {
+          unreadBadge.classList.add('hidden');
+        }
+      }
+
+      function openChat() {
+        isChatOpen = true;
+        floatingBubble.classList.add('is-open');
+        floatingPanel.classList.add('is-open');
+        setUnreadBadge(0);
+        loadChatHistory();
+        if (idlePollInterval) { clearInterval(idlePollInterval); idlePollInterval = null; }
+        if (!chatPollInterval) chatPollInterval = setInterval(loadChatHistory, 3000);
+        setTimeout(() => document.getElementById('floating-chat-input').focus(), 300);
+      }
+
+      function closeChat() {
+        isChatOpen = false;
+        floatingBubble.classList.remove('is-open');
+        floatingPanel.classList.remove('is-open');
+        if (chatPollInterval) { clearInterval(chatPollInterval); chatPollInterval = null; }
+        if (!idlePollInterval) idlePollInterval = setInterval(loadChatHistory, 15000);
+      }
+
+      if (floatingBubble) {
+        floatingBubble.addEventListener('click', () => {
+          isChatOpen ? closeChat() : openChat();
+        });
+      }
+      if (floatingCloseBtn) {
+        floatingCloseBtn.addEventListener('click', closeChat);
+      }
+
+      const popAlert = document.getElementById('chat-pop-notification');
+      if (popAlert) {
+        popAlert.addEventListener('click', (e) => {
+          if (e.target.id === 'chat-pop-close-btn') {
+            popAlert.classList.remove('show');
+            return;
+          }
+          openChat();
+          popAlert.classList.remove('show');
+        });
+      }
+
+      let popTimeout = null;
+      function triggerChatAlert(senderName, messageText) {
+        const bubble = document.getElementById('floating-chat-bubble');
+        if (bubble) {
+          bubble.classList.remove('shake');
+          void bubble.offsetWidth; // Trigger reflow
+          bubble.classList.add('shake');
+          setTimeout(() => bubble.classList.remove('shake'), 1200);
+        }
+
+        const pop = document.getElementById('chat-pop-notification');
+        const popSender = document.getElementById('chat-pop-sender');
+        const popText = document.getElementById('chat-pop-text');
+        if (pop && popSender && popText) {
+          popSender.innerText = senderName;
+          popText.innerText = messageText;
+          pop.classList.add('show');
+
+          if (popTimeout) clearTimeout(popTimeout);
+          popTimeout = setTimeout(() => {
+            pop.classList.remove('show');
+          }, 5000);
+        }
+      }
+
+      // Send chat form submit
+      const chatSendForm = document.getElementById('floating-chat-form');
+      const chatInput = document.getElementById('floating-chat-input');
+      if (chatSendForm) {
+        chatSendForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const text = chatInput.value.trim();
+          if (!text) return;
+          
+          chatInput.value = '';
+          
+          try {
+            const res = await API.sendTeamChatMessage(text);
+            if (res.success) {
+              appendChatMessage(res.data);
+              scrollChatToBottom();
+              knownMessageCount++;
+            }
+          } catch (error) {
+            console.error('Failed to send chat message:', error);
+          }
+        });
+      }
+
+      async function loadChatHistory() {
+        const msgContainer = document.getElementById('floating-chat-messages');
+        if (!msgContainer) return;
+        
+        try {
+          const res = await API.getTeamChatMessages();
+          if (res.success) {
+            const messages = res.data;
+
+            if (messages.length > knownMessageCount) {
+              const newMsgs = messages.slice(knownMessageCount);
+              if (knownMessageCount > 0 && !isChatOpen) {
+                const lastMsg = newMsgs[newMsgs.length - 1];
+                const me = API.getUser();
+                if (!me || !lastMsg.sender || lastMsg.sender._id !== me._id) {
+                  const senderName = lastMsg.sender ? lastMsg.sender.username : 'Someone';
+                  triggerChatAlert(senderName, lastMsg.text);
+                }
+              }
+              if (!isChatOpen) {
+                setUnreadBadge(unreadCount + (messages.length - knownMessageCount));
+              }
+            }
+            knownMessageCount = messages.length;
+
+            if (!isChatOpen) return;
+
+            if (messages.length === 0) {
+              msgContainer.innerHTML = '<p class="dashboard-empty-state">No messages in team room yet. Start the conversation!</p>';
+              return;
+            }
+
+            const me = API.getUser();
+            const scrollAfter = msgContainer.scrollHeight - msgContainer.scrollTop === msgContainer.clientHeight;
+            
+            msgContainer.innerHTML = messages.map(msg => {
+              const isSelf = me && msg.sender && msg.sender._id === me._id;
+              const senderName = msg.sender ? msg.sender.username : 'Unknown';
+              const alignmentClass = isSelf ? 'chat-msg-self' : 'chat-msg-other';
+              const timeStr = new Date(msg.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+              
+              return `
+                <div class="chat-msg-bubble ${alignmentClass}">
+                  ${!isSelf ? `<span class="chat-sender-name" style="font-size: 0.72rem; color:var(--accent-primary);">${API.escapeHtml(senderName)}</span>` : ''}
+                  <span>${API.escapeHtml(msg.text)}</span>
+                  <div class="chat-msg-meta">
+                    <span></span>
+                    <span>${timeStr}</span>
+                  </div>
+                </div>
+              `;
+            }).join('');
+
+            if (scrollAfter || msgContainer.querySelector('.dashboard-empty-state')) {
+              scrollChatToBottom();
+            }
+          }
+        } catch (error) {
+          console.error('Failed to fetch chat logs:', error);
+        }
+      }
+
+      function appendChatMessage(msg) {
+        const msgContainer = document.getElementById('floating-chat-messages');
+        if (!msgContainer) return;
+        
+        const emptyState = msgContainer.querySelector('.dashboard-empty-state');
+        if (emptyState) msgContainer.innerHTML = '';
+        
+        const me = API.getUser();
+        const isSelf = me && msg.sender && msg.sender._id === me._id;
+        const senderName = msg.sender ? msg.sender.username : 'Unknown';
+        const alignmentClass = isSelf ? 'chat-msg-self' : 'chat-msg-other';
+        const timeStr = new Date(msg.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        
+        const div = document.createElement('div');
+        div.className = `chat-msg-bubble ${alignmentClass}`;
+        div.innerHTML = `
+          ${!isSelf ? `<span class="chat-sender-name" style="font-size: 0.72rem; color:var(--accent-primary);">${API.escapeHtml(senderName)}</span>` : ''}
+          <span>${API.escapeHtml(msg.text)}</span>
+          <div class="chat-msg-meta">
+            <span></span>
+            <span>${timeStr}</span>
+          </div>
+        `;
+        msgContainer.appendChild(div);
+      }
+
+      function scrollChatToBottom() {
+        const msgContainer = document.getElementById('floating-chat-messages');
+        if (msgContainer) {
+          msgContainer.scrollTop = msgContainer.scrollHeight;
+        }
+      }
+
+      async function loadTeamSpace() {
+        const card = document.getElementById('team-space-card');
+        const alertBox = document.getElementById('team-space-alert');
+        const body = document.getElementById('team-space-body');
+        
+        card.style.display = 'flex';
+        alertBox.style.display = 'none';
+
+        try {
+          const me = await API.getProfile();
+          
+          const showMsg = (text, type = 'success') => {
+            alertBox.className = `alert-box alert-${type}`;
+            alertBox.innerText = text;
+            alertBox.style.display = 'block';
+            window.scrollTo({ top: card.offsetTop - 20, behavior: 'smooth' });
+          };
+
+          const hasTeam = me.role === 'admin' ? !!me.teamName : !!me.teamAdmin;
+          if (hasTeam) {
+            floatingBubble.style.display = 'flex';
+            const teamLabel = me.role === 'admin' ? (me.teamName || 'Unnamed Team') : (me.teamAdmin.teamName || 'Unnamed Team');
+            document.getElementById('floating-chat-team-name').innerText = teamLabel;
+            if (!idlePollInterval && !chatPollInterval) {
+              loadChatHistory();
+              idlePollInterval = setInterval(loadChatHistory, 15000);
+            }
+          } else {
+            floatingBubble.style.display = 'none';
+            floatingPanel.classList.remove('is-open');
+            isChatOpen = false;
+            if (chatPollInterval) { clearInterval(chatPollInterval); chatPollInterval = null; }
+            if (idlePollInterval) { clearInterval(idlePollInterval); idlePollInterval = null; }
+          }
+
+          if (me.role === 'admin') {
+            // --- ADMIN WORKSPACE ---
+            const [membersRes, invitesRes] = await Promise.all([
+              API.getTeamMembers(),
+              API.getAdminPendingInvites()
+            ]);
+
+            const members = membersRes.success ? membersRes.data : [];
+            const invites = invitesRes.success ? invitesRes.data : [];
+
+            let html = `
+              <div class="team-space-grid">
+                <div>
+                  ${!me.teamName
+                    ? `<div class="team-section-title-v2"><span class="ts-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span>Create Team</span></div>`
+                    : `<div class="team-section-title-v2"><span class="ts-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span>Team Status</span></div>`
+                  }
+            `;
+
+            if (!me.teamName) {
+              html += `
+                <p class="dashboard-empty-state" style="text-align: left; margin: 0 0 15px;">You haven't created a team yet. Naming your team allows you to invite standard users.</p>
+                <form class="team-form" id="create-team-form">
+                  <div class="team-form-group">
+                    <label>Team Name</label>
+                    <div class="team-form-row">
+                      <input type="text" id="new-team-name" class="team-input" placeholder="e.g. Apollo Devs" required>
+                      <button type="submit" class="btn-clay primary" style="padding: 8px 16px; margin:0;">Create Team</button>
+                    </div>
+                  </div>
+                </form>
+              `;
+            } else {
+              html += `
+                <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+                  <span style="font-size: 1.15rem; font-weight: 750; color: var(--accent-primary);">${API.escapeHtml(me.teamName)}</span>
+                  <button type="button" class="btn-clay secondary" id="btn-rename-team" style="padding: 4px 10px; font-size:0.75rem; margin:0;">Rename</button>
+                </div>
+                <div class="team-form" id="rename-team-form" style="display:none; margin-bottom: 20px;">
+                  <div class="team-form-row">
+                    <input type="text" id="rename-team-input" class="team-input" value="${API.escapeHtml(me.teamName)}" required>
+                    <button type="button" id="submit-rename-team" class="btn-clay primary" style="padding: 6px 12px; margin:0;">Save</button>
+                    <button type="button" id="cancel-rename-team" class="btn-clay secondary" style="padding: 6px 12px; margin:0;">Cancel</button>
+                  </div>
+                </div>
+
+                <div class="team-section-title-v2" style="margin-top: 15px;"><span class="ts-icon purple" style="width:28px;height:28px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span style="font-size:0.82rem;">Active Members (${members.length})</span></div>
+                <ul class="team-member-list">
+              `;
+
+              if (members.length === 0) {
+                html += '<li class="dashboard-empty-state">No team members added yet. Share your Admin ID with users and invite them below.</li>';
+              } else {
+                html += members.map(m => `
+                  <li class="team-member-item">
+                    <div class="member-details">
+                      <div class="member-avatar">${API.escapeHtml(m.username.substring(0, 2).toUpperCase())}</div>
+                      <div class="member-info">
+                        <span class="member-name">${API.escapeHtml(m.username)}</span>
+                        <span class="member-email">${API.escapeHtml(m.email)} (ID: ${m._id})</span>
+                      </div>
+                    </div>
+                    <button type="button" class="btn-clay danger btn-remove-member" data-id="${m._id}" style="padding: 4px 8px; font-size:0.72rem; margin:0;">Remove</button>
+                  </li>
+                `).join('');
+              }
+
+              html += `</ul>`;
+            }
+
+            html += `
+                </div>
+                <div>
+                  <div class="team-section-title-v2"><span class="ts-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span><span>Invite Member</span></div>
+            `;
+
+            if (!me.teamName) {
+              html += `<p class="dashboard-empty-state">Please name your team first to enable member invitations.</p>`;
+            } else {
+              html += `
+                <form class="team-form" id="send-invite-form">
+                  <div class="team-form-group">
+                    <label>Recipient User ID</label>
+                    <div class="team-form-row">
+                      <input type="text" id="invite-recipient-id" class="team-input" placeholder="Enter User ID (e.g. 64b8a...)" required>
+                      <button type="submit" class="btn-clay primary" style="padding: 8px 16px; margin:0;">Send Invite</button>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="team-section-title-v2" style="margin-top: 20px;"><span class="ts-icon blue" style="width:28px;height:28px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span><span style="font-size:0.82rem;">Sent Invitations (Pending)</span></div>
+                <ul class="invitation-list">
+              `;
+
+              if (invites.length === 0) {
+                html += '<li class="dashboard-empty-state">No pending invitations.</li>';
+              } else {
+                html += invites.map(i => `
+                  <li class="invitation-item">
+                    <div class="member-details">
+                      <div class="member-avatar" style="background:var(--text-secondary);">${API.escapeHtml(i.recipient ? i.recipient.username.substring(0, 2).toUpperCase() : 'PP')}</div>
+                      <div class="member-info">
+                        <span class="member-name">${API.escapeHtml(i.recipient ? i.recipient.username : 'Unknown')}</span>
+                        <span class="member-email">${API.escapeHtml(i.recipient ? i.recipient.email : '')}</span>
+                      </div>
+                    </div>
+                    <span class="invite-status-badge badge-pending">Pending</span>
+                  </li>
+                `).join('');
+              }
+
+              html += `</ul>`;
+            }
+
+            html += `
+                </div>
+              </div>
+            `;
+
+            body.innerHTML = html;
+
+
+
+            // --- ADMIN HANDLERS ---
+            const createForm = document.getElementById('create-team-form');
+            if (createForm) {
+              createForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const teamName = document.getElementById('new-team-name').value;
+                const res = await API.createTeam(teamName);
+                if (res.success) {
+                  showMsg(res.message, 'success');
+                  loadTeamSpace();
+                } else {
+                  showMsg(res.message, 'danger');
+                }
+              });
+            }
+
+            const renameBtn = document.getElementById('btn-rename-team');
+            if (renameBtn) {
+              const renameForm = document.getElementById('rename-team-form');
+              const cancelBtn = document.getElementById('cancel-rename-team');
+              const saveBtn = document.getElementById('submit-rename-team');
+              
+              renameBtn.addEventListener('click', () => {
+                renameForm.style.display = 'block';
+                renameBtn.style.display = 'none';
+              });
+              cancelBtn.addEventListener('click', () => {
+                renameForm.style.display = 'none';
+                renameBtn.style.display = 'block';
+              });
+              saveBtn.addEventListener('click', async () => {
+                const teamName = document.getElementById('rename-team-input').value;
+                const res = await API.createTeam(teamName);
+                if (res.success) {
+                  showMsg(res.message, 'success');
+                  loadTeamSpace();
+                } else {
+                  showMsg(res.message, 'danger');
+                }
+              });
+            }
+
+            const sendInviteForm = document.getElementById('send-invite-form');
+            if (sendInviteForm) {
+              sendInviteForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const recipientId = document.getElementById('invite-recipient-id').value;
+                try {
+                  const res = await API.sendTeamInvitation(recipientId);
+                  if (res.success) {
+                    showMsg(res.message, 'success');
+                    loadTeamSpace();
+                  } else {
+                    showMsg(res.message, 'danger');
+                  }
+                } catch (err) {
+                  showMsg(err.message, 'danger');
+                }
+              });
+            }
+
+            document.querySelectorAll('.btn-remove-member').forEach(btn => {
+              btn.addEventListener('click', async () => {
+                const memberId = btn.getAttribute('data-id');
+                if (confirm('Are you sure you want to remove this member from your team?')) {
+                  const res = await API.removeTeamMember(memberId);
+                  if (res.success) {
+                    showMsg(res.message, 'success');
+                    loadTeamSpace();
+                  } else {
+                    showMsg(res.message, 'danger');
+                  }
+                }
+              });
+            });
+
+          } else {
+            // --- STANDARD USER WORKSPACE ---
+            const invitesRes = await API.getUserInvitations();
+            const invites = invitesRes.success ? invitesRes.data : [];
+
+            let html = `
+              <div class="team-space-grid">
+                <div>
+                  <div class="team-section-title-v2"><span class="ts-icon purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span>My Team Membership</span></div>
+            `;
+
+            if (!me.teamAdmin) {
+              html += `
+                <p class="dashboard-empty-state" style="text-align: left; margin:0;">You do not currently belong to any administrator's team. You are managing your projects on your own.</p>
+              `;
+            } else {
+              html += `
+                <div style="padding: 15px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);">
+                  <p style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-bottom: 5px;">Member of team: <span style="color:var(--accent-primary);">${API.escapeHtml(me.teamAdmin.teamName || 'Unnamed Team')}</span></p>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 15px;">Administered by: <b>${API.escapeHtml(me.teamAdmin.username)}</b> (${API.escapeHtml(me.teamAdmin.email)})</p>
+                  <button type="button" class="btn-clay danger" id="btn-leave-team" style="padding: 8px 16px; margin:0;">Leave Team</button>
+                </div>
+              `;
+            }
+
+            html += `
+                </div>
+                <div>
+                  <div class="team-section-title-v2"><span class="ts-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span><span>Pending Invitations (${invites.length})</span></div>
+                  <ul class="invitation-list">
+            `;
+
+            if (invites.length === 0) {
+              html += '<li class="dashboard-empty-state">No pending team invitations.</li>';
+            } else {
+              html += invites.map(i => `
+                <li class="invitation-item">
+                  <div class="member-details">
+                    <div class="member-avatar">${API.escapeHtml(i.admin ? i.admin.username.substring(0, 2).toUpperCase() : 'PP')}</div>
+                    <div class="member-info">
+                      <span class="member-name">${API.escapeHtml(i.admin ? i.admin.username : 'Unknown')}</span>
+                      <span class="member-email">Invited you to join <b>${API.escapeHtml(i.admin ? i.admin.teamName : 'Unnamed Team')}</b></span>
+                    </div>
+                  </div>
+                  <div class="action-btn-row">
+                    <button type="button" class="btn-clay success btn-respond-invite" data-id="${i._id}" data-action="accept" style="padding: 4px 8px; font-size:0.72rem; margin:0;">Accept</button>
+                    <button type="button" class="btn-clay secondary btn-respond-invite" data-id="${i._id}" data-action="decline" style="padding: 4px 8px; font-size:0.72rem; margin:0;">Decline</button>
+                  </div>
+                </li>
+              `).join('');
+            }
+
+            html += `
+                  </ul>
+                </div>
+              </div>
+            `;
+
+            body.innerHTML = html;
+
+
+
+            // --- USER HANDLERS ---
+            const leaveBtn = document.getElementById('btn-leave-team');
+            if (leaveBtn) {
+              leaveBtn.addEventListener('click', async () => {
+                if (confirm('Are you sure you want to leave your team?')) {
+                  const res = await API.leaveTeam();
+                  if (res.success) {
+                    showMsg(res.message, 'success');
+                    loadTeamSpace();
+                  } else {
+                    showMsg(res.message, 'danger');
+                  }
+                }
+              });
+            }
+
+            document.querySelectorAll('.btn-respond-invite').forEach(btn => {
+              btn.addEventListener('click', async () => {
+                const inviteId = btn.getAttribute('data-id');
+                const action = btn.getAttribute('data-action');
+                const res = await API.respondToInvitation(inviteId, action);
+                if (res.success) {
+                  showMsg(res.message, 'success');
+                  loadTeamSpace();
+                } else {
+                  showMsg(res.message, 'danger');
+                }
+              });
+            });
+          }
+        } catch (error) {
+          body.innerHTML = `<p class="dashboard-empty-state error-state">Failed to load team workspace: ${error.message}</p>`;
+        }
       }
     });
   </script>

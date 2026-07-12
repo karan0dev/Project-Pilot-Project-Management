@@ -2,6 +2,11 @@
 const API_URL = '/api';
 
 const API = {
+  escapeHtml(str) {
+    return String(str || '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  },
   // Session storage keys
   TOKEN_KEY: 'projectpilot_token',
   USER_KEY: 'projectpilot_user',
@@ -101,10 +106,10 @@ const API = {
     return res;
   },
 
-  async register(username, email, password) {
+  async register(username, email, password, role) {
     const res = await this.request('/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ username, email, password })
+      body: JSON.stringify({ username, email, password, role })
     });
     if (res.success) {
       this.setToken(res.token);
@@ -126,6 +131,63 @@ const API = {
     return await this.request('/auth/updatepassword', {
       method: 'PUT',
       body: JSON.stringify({ currentPassword, newPassword })
+    });
+  },
+
+  // Team Operations
+  async createTeam(teamName) {
+    return await this.request('/team/create', {
+      method: 'POST',
+      body: JSON.stringify({ teamName })
+    });
+  },
+
+  async sendTeamInvitation(recipientId) {
+    return await this.request('/team/invite', {
+      method: 'POST',
+      body: JSON.stringify({ recipientId })
+    });
+  },
+
+  async getAdminPendingInvites() {
+    return await this.request('/team/pending-invites');
+  },
+
+  async getTeamMembers() {
+    return await this.request('/team/members');
+  },
+
+  async removeTeamMember(memberId) {
+    return await this.request(`/team/remove/${memberId}`, {
+      method: 'DELETE'
+    });
+  },
+
+  async getUserInvitations() {
+    return await this.request('/team/invitations');
+  },
+
+  async respondToInvitation(requestId, action) {
+    return await this.request(`/team/invitations/${requestId}/respond`, {
+      method: 'POST',
+      body: JSON.stringify({ action })
+    });
+  },
+
+  async leaveTeam() {
+    return await this.request('/team/leave', {
+      method: 'POST'
+    });
+  },
+
+  async getTeamChatMessages() {
+    return await this.request('/team/chat');
+  },
+
+  async sendTeamChatMessage(text) {
+    return await this.request('/team/chat', {
+      method: 'POST',
+      body: JSON.stringify({ text })
     });
   },
 
@@ -234,6 +296,8 @@ const API = {
     const savedTheme = localStorage.getItem('projectpilot_theme') || 'dark';
     if (savedTheme === 'light') {
       document.body.classList.add('light-mode');
+    } else {
+      document.body.classList.remove('light-mode');
     }
   },
 
@@ -245,90 +309,8 @@ const API = {
       document.body.classList.add('light-mode');
       localStorage.setItem('projectpilot_theme', 'light');
     }
+    if (typeof API.renderSidebar === 'function') API.renderSidebar();
   },
-
-  // Render Top Navigation Header (styled as a horizontal bar)
-  renderSidebar() {
-    const sidebarEl = document.getElementById('sidebar-placeholder');
-    if (!sidebarEl) return;
-
-    const user = this.getUser() || { username: 'Guest', role: 'user' };
-    const avatarInitials = user.username.substring(0, 2).toUpperCase();
-    const currentPath = window.location.pathname;
-
-    const navItems = [
-      { name: 'Dashboard', path: '/dashboard', icon: '📊' },
-      { name: 'Projects', path: '/projects', icon: '📂' },
-      { name: 'Tasks', path: '/tasks', icon: '✅' },
-      { name: 'Reports', path: '/reports', icon: '📈' },
-      { name: 'Profile', path: '/profile', icon: '👤' },
-      { name: 'Users', path: '/users', icon: '👥', adminOnly: true }
-    ];
-
-    let navHtml = '';
-    navItems.forEach(item => {
-      if (item.adminOnly && user.role !== 'admin') return;
-
-      const isActive = currentPath === item.path || currentPath.endsWith(item.path) || (item.path === '/projects' && currentPath.includes('/project-details'));
-      const activeClass = isActive ? 'active' : '';
-      navHtml += `
-        <li class="horizontal-nav-item ${activeClass}">
-          <a href="${item.path}">
-            <span>${item.icon}</span>
-            <span>${item.name}</span>
-          </a>
-        </li>
-      `;
-    });
-
-    sidebarEl.innerHTML = `
-      <!-- Left Logo -->
-      <div class="logo-container" style="margin-bottom: 0; padding-left: 0;">
-        <div class="logo-icon">P</div>
-        <span class="logo-text">ProjectPilot</span>
-      </div>
-
-      <!-- Center Horizontal Navigation Menu -->
-      <ul class="horizontal-nav" style="display: flex; list-style: none; gap: 8px; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 20px; border: 1px solid var(--glass-border);">
-        ${navHtml}
-      </ul>
-
-      <!-- Right Actions & User Controls -->
-      <div style="display: flex; align-items: center; gap: 15px;">
-        
-        <!-- Global Action Buttons (Matching Mockup) -->
-        <div style="display: flex; gap: 10px; margin-right: 5px;">
-          <a href="/projects" class="btn-clay neutral" style="padding: 8px 16px; font-size: 0.85rem;">📁 View Projects</a>
-          <a href="/tasks" class="btn-clay success" style="padding: 8px 16px; font-size: 0.85rem; background: linear-gradient(135deg, #00c853, #00994d); box-shadow: 0 6px 12px rgba(0,200,83,0.25);">✅ Manage Tasks</a>
-        </div>
-
-        <!-- Theme Toggle -->
-        <button id="theme-toggle" style="background: none; border: 1px solid var(--glass-border); color: var(--text-primary); cursor: pointer; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: inset 1px 1px 2px rgba(255,255,255,0.05);">
-          🌙
-        </button>
-
-        <!-- User Avatar & Logout Capsule -->
-        <div class="user-info-widget" style="padding: 4px 10px; border-radius: 18px; display: flex; align-items: center; gap: 8px;">
-          <div class="user-avatar" style="width: 28px; height: 28px; font-size: 0.72rem; box-shadow: none;">${avatarInitials}</div>
-          <span class="user-name" style="font-size: 0.85rem; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${user.username}</span>
-          <button id="logout-btn" style="background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--text-secondary); display: flex; align-items: center; justify-content: center;">
-            🚪
-          </button>
-        </div>
-      </div>
-    `;
-
-    // Bind event listeners
-    document.getElementById('theme-toggle').addEventListener('click', () => {
-      this.toggleTheme();
-    });
-
-    document.getElementById('logout-btn').addEventListener('click', () => {
-      if (confirm('Are you sure you want to log out?')) {
-        this.logout();
-      }
-    });
-  }
 };
 
 API.renderSidebar = function() {
@@ -371,6 +353,9 @@ API.renderSidebar = function() {
     `;
   }).join('');
 
+  const isLight = document.body.classList.contains('light-mode');
+  const roleLabel = user.role === 'admin' ? 'Admin' : 'Member';
+
   sidebarEl.innerHTML = `
     <div class="logo-container">
       <div class="logo-icon">P</div>
@@ -382,21 +367,32 @@ API.renderSidebar = function() {
     </ul>
 
     <div class="topbar-actions">
-      <a href="/tasks" class="btn-clay success">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
-        <span>Manage Tasks</span>
-      </a>
-
       <button id="theme-toggle" aria-label="Toggle theme">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.1A7.4 7.4 0 0 1 8.9 3.6 8.3 8.3 0 1 0 20.4 15.1Z"></path></svg>
+        ${isLight
+          ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"></path></svg>'
+          : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 15.1A7.4 7.4 0 0 1 8.9 3.6 8.3 8.3 0 1 0 20.4 15.1Z"></path></svg>'
+        }
       </button>
 
-      <div class="user-info-widget">
-        <div class="user-avatar">${avatarInitials}</div>
-        <span class="user-name">${user.username}</span>
-        <button id="logout-btn" aria-label="Log out">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"></path></svg>
-        </button>
+      <div class="user-info-widget" id="user-info-widget" tabindex="0">
+        <div class="user-avatar">${API.escapeHtml(avatarInitials)}</div>
+        <div class="user-name-stack">
+          <span class="user-name">${API.escapeHtml(user.username)}</span>
+          <span class="user-role">${roleLabel}</span>
+        </div>
+        <span class="dropdown-chevron">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:10px; height:10px;"><path d="m6 9 6 6 6-6"></path></svg>
+        </span>
+        <div class="user-dropdown-menu" id="user-dropdown-menu">
+          <a href="/profile" class="user-dropdown-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:2px;"><circle cx="12" cy="8" r="4"></circle><path d="M5 20c0-3 3-5 7-5s7 2 7 5"></path></svg>
+            <span>My Profile</span>
+          </a>
+          <button type="button" class="user-dropdown-item danger" id="dropdown-logout-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px; height:14px; margin-right:2px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            <span>Log Out</span>
+          </button>
+        </div>
       </div>
     </div>
   `;
@@ -405,11 +401,28 @@ API.renderSidebar = function() {
     this.toggleTheme();
   });
 
-  document.getElementById('logout-btn').addEventListener('click', () => {
-    if (confirm('Are you sure you want to log out?')) {
-      this.logout();
+  const userWidget = document.getElementById('user-info-widget');
+  if (userWidget) {
+    userWidget.addEventListener('click', (e) => {
+      e.stopPropagation();
+      userWidget.classList.toggle('active');
+    });
+
+    document.addEventListener('click', () => {
+      userWidget.classList.remove('active');
+    });
+
+    const dropdownLogout = document.getElementById('dropdown-logout-btn');
+    if (dropdownLogout) {
+      dropdownLogout.addEventListener('click', (e) => {
+        e.stopPropagation();
+        userWidget.classList.remove('active');
+        if (confirm('Are you sure you want to log out?')) {
+          this.logout();
+        }
+      });
     }
-  });
+  }
 };
 
 // Auto-run on page load

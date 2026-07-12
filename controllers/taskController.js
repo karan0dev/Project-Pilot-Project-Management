@@ -5,6 +5,8 @@ const User = require('../models/User');
 const Activity = require('../models/Activity');
 const { updateProjectProgress } = require('../services/projectService');
 
+const isObjectId = value => typeof value === 'string' && /^[0-9a-fA-F]{24}$/.test(value);
+
 // @desc    Get all tasks with filters and search
 // @route   GET /api/tasks
 // @access  Private
@@ -27,31 +29,35 @@ const getTasks = async (req, res) => {
     }
 
     // Filter by project ID
-    if (projectId) {
+    if (projectId && isObjectId(projectId)) {
       andConditions.push({ projectId });
     }
 
     // Filter by status
-    if (status) {
+    const VALID_TASK_STATUSES = ['pending', 'in_progress', 'completed'];
+    if (status && VALID_TASK_STATUSES.includes(status)) {
       andConditions.push({ status });
     }
 
     // Filter by priority
-    if (priority) {
+    const VALID_TASK_PRIORITIES = ['low', 'medium', 'high'];
+    if (priority && VALID_TASK_PRIORITIES.includes(priority)) {
       andConditions.push({ priority });
     }
 
     // Filter by assignee
-    if (assignedTo) {
+    if (assignedTo && isObjectId(assignedTo)) {
       andConditions.push({ assignedTo });
     }
 
     // Filter by text search
-    if (search) {
+    if (search && typeof search === 'string') {
+      const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const escapedSearch = escapeRegex(search);
       andConditions.push({
         $or: [
-          { title: { $regex: search, $options: 'i' } },
-          { description: { $regex: search, $options: 'i' } }
+          { title: { $regex: escapedSearch, $options: 'i' } },
+          { description: { $regex: escapedSearch, $options: 'i' } }
         ]
       });
     }
@@ -65,26 +71,31 @@ const getTasks = async (req, res) => {
       .populate('assignedTo', 'username email')
       .sort({ createdAt: -1 });
 
-    if (page && limit) {
-      const pageNum = parseInt(page, 10) || 1;
-      const limitNum = parseInt(limit, 10) || 10;
+    const total = await Task.countDocuments(query);
+
+    let pageNum = 1;
+    let limitNum = total;
+
+    if (page || limit) {
+      pageNum = parseInt(page, 10) || 1;
+      limitNum = Math.min(parseInt(limit, 10) || 10, 100);
       const skipNum = (pageNum - 1) * limitNum;
       queryBuilder = queryBuilder.skip(skipNum).limit(limitNum);
     }
 
     const tasks = await queryBuilder;
-    const total = await Task.countDocuments(query);
 
     res.json({
       success: true,
       count: tasks.length,
       total,
       page: page ? parseInt(page, 10) : 1,
-      limit: limit ? parseInt(limit, 10) : total,
+      limit: limit ? limitNum : total,
       data: tasks
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 
@@ -112,7 +123,8 @@ const getTaskById = async (req, res) => {
 
     res.json({ success: true, data: task });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 
@@ -138,6 +150,22 @@ const createTask = async (req, res) => {
       await session.abortTransaction();
       session.endSession();
       return res.status(404).json({ success: false, message: 'Assigned user not found' });
+    }
+
+    if (req.user.role === 'admin') {
+      const isSelf = assignedUser._id.toString() === req.user._id.toString();
+      const isTeamMember = assignedUser.teamAdmin && assignedUser.teamAdmin.toString() === req.user._id.toString();
+      if (!isSelf && !isTeamMember) {
+        await session.abortTransaction();
+        session.endSession();
+        return res.status(400).json({ success: false, message: 'Admins can only assign tasks to themselves or their team members' });
+      }
+    } else {
+      if (assignedUser._id.toString() !== req.user._id.toString()) {
+        await session.abortTransaction();
+        session.endSession();
+        return res.status(400).json({ success: false, message: 'Standard users can only assign tasks to themselves' });
+      }
     }
 
     const tasks = await Task.create([{
@@ -169,7 +197,8 @@ const createTask = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 
@@ -218,10 +247,33 @@ const updateTask = async (req, res) => {
         session.endSession();
         return res.status(404).json({ success: false, message: 'Assigned user not found' });
       }
+
+      if (req.user.role === 'admin') {
+        const isSelf = assignedUser._id.toString() === req.user._id.toString();
+        const isTeamMember = assignedUser.teamAdmin && assignedUser.teamAdmin.toString() === req.user._id.toString();
+        if (!isSelf && !isTeamMember) {
+          await session.abortTransaction();
+          session.endSession();
+          return res.status(400).json({ success: false, message: 'Admins can only assign tasks to themselves or their team members' });
+        }
+      } else {
+        if (assignedUser._id.toString() !== req.user._id.toString()) {
+          await session.abortTransaction();
+          session.endSession();
+          return res.status(400).json({ success: false, message: 'Standard users can only assign tasks to themselves' });
+        }
+      }
+    }
+
+    // Whitelist task fields explicitly
+    const allowedFields = ['title', 'description', 'projectId', 'assignedTo', 'priority', 'status', 'deadline'];
+    const updates = {};
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) updates[field] = req.body[field];
     }
     
     // Update task
-    task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+    task = await Task.findByIdAndUpdate(req.params.id, updates, {
       new: true,
       runValidators: true,
       session
@@ -258,7 +310,8 @@ const updateTask = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 
@@ -316,7 +369,8 @@ const deleteTask = async (req, res) => {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    res.status(500).json({ success: false, message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Server error occurred' });
   }
 };
 

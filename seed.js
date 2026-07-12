@@ -14,6 +14,14 @@ const seedData = async () => {
     await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/projectpilot');
     console.log('Seed: Connected to Database...');
 
+    // Check if database is already seeded to avoid overwriting team/member records
+    const userCount = await User.countDocuments();
+    if (userCount > 0) {
+      console.log('Seed: Database already populated. Skipping standard seed data to preserve project/team records.');
+      mongoose.connection.close();
+      process.exit(0);
+    }
+
     // Clear existing collections
     await User.deleteMany({});
     await Project.deleteMany({});
