@@ -648,6 +648,41 @@
       .stats-v2-header { flex-direction: row; }
       .floating-chat-bubble { width: 54px; height: 54px; }
       .floating-chat-bubble svg { width: 22px; height: 22px; }
+
+      /* Mobile Chat Pop Overrides */
+      .chat-pop-notification {
+        right: 20px !important;
+        left: 20px !important;
+        bottom: 96px !important;
+        width: auto !important;
+        transform: translateY(20px) scale(0.95) !important;
+      }
+      .chat-pop-notification.show {
+        transform: translateY(0) scale(1) !important;
+      }
+      /* Point arrow down on mobile */
+      .chat-pop-notification::after {
+        right: 46px !important;
+        top: 100% !important;
+        left: auto !important;
+        transform: translateX(50%) !important;
+        border-width: 8px 8px 0 8px !important;
+        border-color: rgba(15, 16, 35, 0.9) transparent transparent transparent !important;
+      }
+      body.light-mode .chat-pop-notification::after {
+        border-color: rgba(255, 255, 255, 0.92) transparent transparent transparent !important;
+      }
+      .chat-pop-notification::before {
+        right: 45px !important;
+        top: 100% !important;
+        left: auto !important;
+        transform: translateX(50%) !important;
+        border-width: 9px 9px 0 9px !important;
+        border-color: rgba(255, 255, 255, 0.15) transparent transparent transparent !important;
+      }
+      body.light-mode .chat-pop-notification::before {
+        border-color: rgba(0, 0, 0, 0.08) transparent transparent transparent !important;
+      }
     }
     @media (max-width: 400px) {
       .stats-v2-cell { flex-direction: column; align-items: flex-start; }

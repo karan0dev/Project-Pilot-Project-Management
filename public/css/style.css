@@ -3405,13 +3405,27 @@ body.dashboard-page:not(.light-mode) .user-role {
   }
 
   .dashboard-page .bento-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
   }
 
   .dashboard-page .col-span-2,
   .dashboard-page .col-span-4 {
-    grid-column: span 1;
+    grid-column: span 2;
+  }
+
+  .dashboard-page .stat-card-3d {
+    padding: 16px 14px;
+    height: 110px;
+  }
+
+  .dashboard-page .stat-icon-3d {
+    width: 42px;
+    height: 42px;
+  }
+
+  .dashboard-page .stat-value {
+    font-size: 1.8rem;
   }
 
   .dashboard-page .stats-breakdown-grid {
@@ -3421,6 +3435,33 @@ body.dashboard-page:not(.light-mode) .user-role {
 
   .dashboard-page .stats-breakdown-grid > div::after {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-page .bento-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .dashboard-page .col-span-2,
+  .dashboard-page .col-span-4 {
+    grid-column: span 1;
+  }
+
+  .dashboard-page .stat-card-3d {
+    padding: 16px;
+    height: auto;
+  }
+
+  .dashboard-page .stat-icon-3d {
+    width: 48px;
+    height: 48px;
+  }
+
+  .dashboard-page .user-name, 
+  .workspace-page .user-name {
+    max-width: 100px;
   }
 }
 
