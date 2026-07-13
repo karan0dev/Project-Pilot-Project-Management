@@ -51,13 +51,8 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Username or email already exists' });
     }
 
-    let requestedRole = (req.body.role || 'user').trim().toLowerCase();
-    if (!['user', 'admin'].includes(requestedRole)) {
-      requestedRole = 'user';
-    }
-
+    let role = 'user';
     const ADMIN_ALLOWLIST = (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean);
-    let role = requestedRole;
     if (ADMIN_ALLOWLIST.length > 0) {
       if (ADMIN_ALLOWLIST.includes(normalizedEmail)) {
         role = 'admin';
