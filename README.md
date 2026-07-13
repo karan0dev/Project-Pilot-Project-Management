@@ -1,8 +1,17 @@
 <div align="center">
 
-# 🚀 ProjectPilot
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=220&section=header&text=ProjectPilot&fontSize=70&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Full-Stack%20Project%20%26%20Task%20Management%20System&descAlignY=58&descSize=20" width="100%"/>
 
-### Full-Stack Project & Task Management System
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&duration=2800&pause=900&color=8A5CF5&center=true&vCenter=true&multiline=true&repeat=true&width=700&height=60&lines=Glassmorphic+%2F+Claymorphic+UI+%E2%9C%A8;Node.js+%2B+Express+%2B+MongoDB+%E2%9A%99%EF%B8%8F;JWT+Auth+%2B+Real-Time+Team+Chat+%F0%9F%92%AC" alt="Typing SVG" />
+
+<br/>
+
+### 🔗 [**LIVE DEMO → project-pilot-project-management.onrender.com**](https://project-pilot-project-management.onrender.com/)
+
+[![Live Demo](https://img.shields.io/badge/🚀_LIVE_DEMO-Visit_App-8A5CF5?style=for-the-badge&labelColor=1a1a2e)](https://project-pilot-project-management.onrender.com/)
+[![Deployed on Render](https://img.shields.io/badge/Deployed_on-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://project-pilot-project-management.onrender.com/)
+
+<br/>
 
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
@@ -10,14 +19,18 @@
 [![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)](https://jwt.io/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
+<img src="https://img.shields.io/github/last-commit/karan0dev/projectpilot?style=for-the-badge&color=8A5CF5&labelColor=1a1a2e" />
+<img src="https://img.shields.io/badge/status-live-brightgreen?style=for-the-badge&labelColor=1a1a2e" />
+
 A high-fidelity, full-stack project and task management platform with a premium **glassmorphic/claymorphic** UI — built with Node.js, Express, MongoDB, and Vanilla JS.
 
 ProjectPilot is a full-stack project management system built for planning, task tracking, analytics, and profile-based portfolio presentation. It combines a Node.js and Express API with MongoDB persistence and a polished glassmorphic/claymorphic frontend.
 
 The application includes a premium landing page, animated login/register experience, responsive dashboard, project catalog, task workspace, analytics reports, user administration, and a profile portfolio section that showcases completed work.
 
+[🔗 Live Demo](https://project-pilot-project-management.onrender.com/) · [Features](#-features) · [Tech Stack](#-tech-stack) · [Getting Started](#-getting-started) · [API Reference](#-api-reference) · [Project Structure](#-project-structure)
 
-[Features](#-features) · [Tech Stack](#-tech-stack) · [Getting Started](#-getting-started) · [API Reference](#-api-reference) · [Project Structure](#-project-structure)
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20&height=3&width=100%"/>
 
 </div>
 
@@ -55,6 +68,8 @@ The application includes a premium landing page, animated login/register experie
 ---
 
 ## 🚀 Getting Started
+
+> 💡 **Just want to try it out?** Skip setup entirely and use the **[live deployed app](https://project-pilot-project-management.onrender.com/)** — no installation required. Note: it's hosted on Render's free tier, so the first load after inactivity may take ~30–50s to spin up.
 
 ### Prerequisites
 
@@ -299,6 +314,16 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
+---
+
 <div align="center">
-  <sub>Built with ☕ and Node.js</sub>
+
+### 🔗 Try it live: **[project-pilot-project-management.onrender.com](https://project-pilot-project-management.onrender.com/)**
+
+[![Live Demo](https://img.shields.io/badge/🚀_LIVE_DEMO-Visit_App-8A5CF5?style=for-the-badge&labelColor=1a1a2e)](https://project-pilot-project-management.onrender.com/)
+
+<sub>Built with ☕ and Node.js</sub>
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=120&section=footer"/>
+
 </div>
