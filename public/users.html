@@ -117,13 +117,14 @@
           
           // Prevent deleting yourself
           const isSelf = currentUser && currentUser._id === user._id;
+          const canDelete = currentUser && currentUser.email === 'karandeep@projectpilot.com';
           const actionsHtml = isSelf ? `
             <span style="font-size:0.8rem; color:var(--text-secondary); font-style:italic;">Logged In</span>
-          ` : `
+          ` : (canDelete ? `
             <button class="btn-clay danger" onclick="window.deleteUserAccount('${user._id}', '${user.username.replace(/'/g, "\\'")}')" style="padding: 6px 12px; font-size: 0.8rem;">
               🗑️ Delete
             </button>
-          `;
+          ` : '');
 
           return `
             <tr>

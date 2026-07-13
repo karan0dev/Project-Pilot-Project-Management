@@ -58,6 +58,13 @@ const deleteUser = async (req, res) => {
       return res.status(400).json({ success: false, message: 'You cannot delete your own admin account' });
     }
 
+    // Only karandeep@projectpilot.com has the access to delete users
+    if (req.user.email !== 'karandeep@projectpilot.com') {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(403).json({ success: false, message: 'Not authorized: Only karandeep@projectpilot.com is allowed to delete users' });
+    }
+
     const user = await User.findById(userId).session(session);
     if (!user) {
       await session.abortTransaction();
