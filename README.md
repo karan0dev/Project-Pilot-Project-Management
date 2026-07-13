@@ -2,8 +2,6 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&amp;color=gradient&amp;customColorList=6,11,20&amp;height=220&amp;section=header&amp;text=ProjectPilot&amp;fontSize=70&amp;fontColor=ffffff&amp;animation=fadeIn&amp;fontAlignY=38&amp;desc=Full-Stack%20Project%20and%20Task%20Management%20System&amp;descAlignY=58&amp;descSize=20" width="100%"/>
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&amp;weight=600&amp;size=22&amp;duration=2800&amp;pause=900&amp;color=8A5CF5&amp;center=true&amp;vCenter=true&amp;multiline=true&amp;repeat=true&amp;width=700&amp;height=60&amp;lines=Glassmorphic+%2F+Claymorphic+UI+%E2%9C%A8;Node.js+%2B+Express+%2B+MongoDB+%E2%9A%99%EF%B8%8F;JWT+Auth+%2B+Real-Time+Team+Chat+%F0%9F%92%AC" alt="Typing SVG" />
-
 <br/>
 
 ### 🔗 [**LIVE DEMO → project-pilot-project-management.onrender.com**](https://project-pilot-project-management.onrender.com/)
